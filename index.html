@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punku Open - Generador de Prompt de Sesiones de Aprendizaje</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* light theme default: light gray */
+            color: #1f2937; /* Default text color for light theme */
+        }
+        .dark {
+            background: linear-gradient(to right, #1a202c, #000000); /* Dark theme background with gradient */
+            color: #e2e8f0; /* light text in dark theme */
+        }
+        .dark .bg-white {
+            background-color: #2d3748; /* darker background for cards in dark theme */
+            color: #e2e8f0;
+        }
+        .dark .text-gray-600 {
+            color: #cbd5e0;
+        }
+        .dark .text-gray-700 {
+            color: #e2e8f0;
+        }
+        .dark .border-gray-300 {
+            border-color: #4a5568;
+        }
+        .dark .bg-blue-50 {
+            background-color: #4a5568; /* background for prompt output area in dark theme */
+            border-color: #2d3748;
+        }
+        .dark .text-blue-800 {
+            color: #FACC15; /* Golden for prompt header in dark theme */
+        }
+        .dark .text-gray-800 {
+            color: #e2e8f0;
+        }
+        .dark .bg-gray-50 {
+            background-color: #1a202c; /* Background for left column in dark theme (black) */
+        }
+
+        /* Golden primary button style */
+        .btn-primary {
+            background-color: #D97706; /* Darker golden for light theme button */
+            color: #ffffff;
+            font-weight: 700; /* bold */
+            padding-top: 0.75rem; /* py-3 */
+            padding-bottom: 0.75rem; /* py-3 */
+            padding-left: 1.5rem; /* px-6 */
+            padding-right: 1.5rem; /* px-6 */
+            border-radius: 0.375rem; /* rounded-md */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            transition: all 0.3s ease-in-out; /* transition-all duration-300 */
+        }
+        .btn-primary:hover {
+            background-color: #FACC15; /* Lighter golden on hover */
+            transform: scale(1.05); /* transform hover:scale-105 */
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .dark .btn-primary {
+             background-color: #FACC15; /* Golden button in dark theme */
+             color: #1a202c; /* Dark text on golden button */
+        }
+        .dark .btn-primary:hover {
+            background-color: #ECC94B; /* Lighter golden on hover */
+        }
+
+        /* Custom style for Logout button */
+        .btn-logout {
+            background-color: #EF4444; /* Red color */
+            color: #ffffff;
+            font-weight: 700;
+            padding: 0.5rem 1rem; /* Smaller padding than primary button */
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-logout:hover {
+            background-color: #DC2626; /* Darker red on hover */
+            transform: scale(1.05);
+        }
+        .btn-logout.logging-out { /* Class for green state when logging out */
+            background-color: #22C55E; /* Green color */
+        }
+        .dark .btn-logout {
+            background-color: #F87171; /* Lighter red for dark theme */
+            color: #1a202c;
+        }
+        .dark .btn-logout:hover {
+            background-color: #EF4444; /* Darker red on hover */
+        }
+        .dark .btn-logout.logging-out {
+            background-color: #4ADE80; /* Lighter green for dark theme */
+        }
+
+
+        /* Golden hover effect for selects and inputs */
+        select:hover, input:hover {
+            background-color: #FACC15; /* Golden yellow */
+            color: #1a202c; /* Dark text */
+            border-color: #D97706; /* Darker golden border */
+        }
+        .dark select:hover, .dark input:hover {
+            background-color: #ECC94B; /* Lighter golden yellow for dark theme hover */
+            color: #1a202c; /* Dark text */
+            border-color: #FACC15; /* Golden border */
+        }
+
+        /* Specific styles for the generated prompt output */
+        #generatedPromptOutput {
+            white-space: pre-wrap; /* Ensure text wraps and preserves whitespace */
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace; /* Monospaced font for code/prompt */
+            background-color: #e2e8f0; /* Light gray for prompt output */
+            border: 1px solid #cbd5e0;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            overflow-x: auto; /* Allow horizontal scrolling for very long lines */
+            color: #1f2937;
+        }
+        .dark #generatedPromptOutput {
+            background-color: #1a202c; /* Dark background for prompt output */
+            border-color: #2d3748;
+            color: #e2e8f0;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #4a5568;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #FACC15;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #D97706;
+        }
+
+        /* Custom Checkbox styles for selection */
+        .checkbox-container {
+            border: 1px solid #d1d5db; /* Light gray border */
+            border-radius: 0.375rem; /* rounded-md */
+            padding: 0.5rem;
+            max-height: 200px; /* Limit height for scrollability */
+            overflow-y: auto; /* Enable scrolling */
+            background-color: #ffffff; /* White background */
+            transition: all 0.2s ease-in-out;
+        }
+        .checkbox-container[disabled] { /* Add this selector */
+            cursor: not-allowed;
+        }
+        .dark .checkbox-container {
+            background-color: #2d3748; /* Darker background in dark theme */
+            border-color: #4a5568;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.3rem 0.5rem;
+            cursor: pointer;
+            border-radius: 0.25rem; /* sm:rounded */
+            transition: background-color 0.2s;
+        }
+        .checkbox-item:hover {
+            background-color: #f0f0f0; /* Light gray hover */
+        }
+        .dark .checkbox-item:hover {
+            background-color: #3a475a; /* Darker gray hover */
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 0.75rem; /* Space between checkbox and text */
+            accent-color: #D97706; /* Golden accent color for checkbox */
+            width: 1.25rem; /* Larger checkbox */
+            height: 1.25rem;
+        }
+        .checkbox-item label {
+            flex-grow: 1; /* Allow label to take available space */
+            cursor: pointer;
+            color: #1f2937; /* Default text color */
+        }
+        .dark .checkbox-item label {
+            color: #e2e8f0; /* Light text in dark theme */
+        }
+
+        /* Styles for copy confirmation message */
+        #copyConfirmation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #34D399; /* Green color for success */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        #copyConfirmation.show {
+            opacity: 1;
+        }
+
+        /* --- Custom styles for dark theme text visibility --- */
+        /* Ensures all labels, input, and select elements have light text in dark mode */
+        .dark label,
+        .dark input[type="text"],
+        .dark input[type="password"],
+        .dark select,
+        .dark .checkbox-item label {
+            color: #e2e8f0 !important; /* Forces light text for better contrast */
+        }
+
+        /* General override for any text-gray-900 that might not be handled by dark: utility */
+        .dark .text-gray-900 {
+            color: #e2e8f0 !important;
+        }
+        /* --- End custom styles --- */
+    </style>
+    <script>
+        // Function to handle logo loading errors
+        function handleLogoError(imgElement) {
+            imgElement.src = 'https://placehold.co/80x80/FACC15/1a202c?text=PUNKU';
+            imgElement.onerror = null; // Prevent infinite loop
+            console.error('Logo punku_open.png no encontrado. Verifica la ruta y el nombre del archivo.');
+        }
+    </script>
+</head>
+<body class="p-4 sm:p-6 md:p-8 flex flex-col items-center min-h-screen transition-colors duration-300">
+
+    <!-- Login Container -->
+    <div id="login-container" class="w-full max-w-md bg-white p-6 sm:p-8 rounded-lg shadow-xl border border-gray-200 transition-colors duration-300 mt-20 dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex flex-col items-center mb-6">
+            <img id="login-logo" src="imag/punku_open.png" onerror="handleLogoError(this);" alt="Punku Logo" class="w-20 h-20 rounded-full mr-0 shadow-md object-cover transform transition-transform duration-300 hover:scale-110">
+            <div class="text-center mt-4">
+                <h1 class="text-3xl sm:text-4xl font-bold transition-colors duration-300">
+                    <span class="text-yellow-500 dark:text-yellow-500">Punku</span>
+                    <span class="text-red-600 dark:text-red-600">Open</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-700 dark:text-gray-300 transition-colors duration-300">Inicio de Sesión</p>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="usernameInput" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Usuario:</label>
+            <input type="text" id="usernameInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Usuario">
+        </div>
+        <div class="mb-6">
+            <label for="pinInput" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">PIN:</label>
+            <input type="password" id="pinInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="****">
+        </div>
+        <div class="flex items-center justify-between">
+            <button id="loginBtn" class="btn-primary w-full py-2 px-4 rounded-md focus:outline-none focus:shadow-outline">
+                Iniciar Sesión
+            </button>
+        </div>
+        <p id="loginMessage" class="text-red-500 text-center mt-4 hidden">Usuario o PIN incorrecto.</p>
+        <!-- Se eliminó la advertencia de seguridad según lo solicitado por el usuario -->
+    </div>
+
+    <!-- Main Application Container (Hidden by default until login) -->
+    <div id="main-app-container" class="w-full max-w-6xl hidden">
+        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-6xl border border-gray-200 transition-colors duration-300">
+            <div class="flex flex-col items-center mb-6 relative">
+                <div class="flex flex-col items-center mb-4">
+                    <img id="logo" src="imag/punku_open.png" onerror="handleLogoError(this);" alt="Punku Logo" class="w-20 h-20 rounded-full mr-0 shadow-md object-cover transform transition-transform duration-300 hover:scale-110">
+                    <div class="text-center mt-4">
+                        <h1 class="text-4xl sm:text-5xl font-bold transition-colors duration-300">
+                            <span class="text-yellow-500 dark:text-yellow-500">Punku</span>
+                            <span class="text-red-600 dark:text-red-600">Open</span>
+                        </h1>
+                        <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 transition-colors duration-300">Generador de Prompts de Sesiones de Aprendizaje</p>
+                    </div>
+                </div>
+                <div class="absolute top-0 right-0 mt-2 mr-2 flex gap-2">
+                    <button id="themeToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-full shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 flex items-center">
+                        <span class="mr-2" id="themeIcon">☀️</span> Tema
+                    </button>
+                    <!-- Botón Cerrar Sesión -->
+                    <button id="logoutBtn" class="btn-logout">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-gray-600 dark:text-gray-300 text-center mb-8">Selecciona las opciones para construir un prompt educativo basado en el Currículo Nacional de la Educación Básica (CNEB).</p>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Left Column: Fields -->
+                <div class="flex flex-col lg:w-1/2 p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Parámetros de la Sesión</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <!-- Nombre de la I.E. -->
+                        <div class="flex flex-col">
+                            <label for="ieNameInput" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Nombre de la I.E.:</label>
+                            <input type="text" id="ieNameInput" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white" placeholder="Ej. IE 001 Mi Escuela">
+                        </div>
+                        <!-- Nombre del Docente -->
+                        <div class="flex flex-col">
+                            <label for="teacherNameInput" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Nombre del Docente:</label>
+                            <input type="text" id="teacherNameInput" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white" placeholder="Ej. Juan Pérez">
+                        </div>
+                        <!-- Tema de la Sesión -->
+                        <div class="flex flex-col md:col-span-2">
+                            <label for="sessionTopicInput" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Tema de la Sesión:</label>
+                            <input type="text" id="sessionTopicInput" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white" placeholder="Ej. La importancia del agua">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <!-- Nivel Educativo -->
+                        <div class="flex flex-col">
+                            <label for="nivelSelect" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Nivel Educativo:</label>
+                            <select id="nivelSelect" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white">
+                                <option value="">Selecciona un nivel</option>
+                            </select>
+                        </div>
+
+                        <!-- Ciclo -->
+                        <div class="flex flex-col">
+                            <label for="cicloSelect" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Ciclo:</label>
+                            <select id="cicloSelect" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white" disabled>
+                                <option value="">Selecciona un ciclo</option>
+                            </select>
+                        </div>
+
+                        <!-- Grado -->
+                        <div class="flex flex-col">
+                            <label for="gradoSelect" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Grado/Edad:</label>
+                            <select id="gradoSelect" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white" disabled>
+                                <option value="">Selecciona un grado/edad</option>
+                            </select>
+                        </div>
+
+                        <!-- Área -->
+                        <div class="flex flex-col">
+                            <label for="areaSelect" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Área:</label>
+                            <select id="areaSelect" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white" disabled>
+                                <option value="">Selecciona un área</option>
+                            </select>
+                        </div>
+
+                        <!-- Competencia (Custom Checkbox List) -->
+                        <div class="flex flex-col">
+                            <label class="text-gray-900 dark:text-gray-200 font-medium mb-2">Competencia(s):</label>
+                            <div id="competenciaCheckboxesContainer" class="checkbox-container" disabled>
+                                <!-- Checkboxes will be populated by JS -->
+                            </div>
+                            <!-- Hidden original select to maintain CNEB data structure for JS logic -->
+                            <select id="competenciaSelect" multiple class="hidden"></select>
+                        </div>
+
+                        <!-- Capacidad (Custom Checkbox List) -->
+                        <div class="flex flex-col">
+                            <label class="text-gray-900 dark:text-gray-200 font-medium mb-2">Capacidad(es):</label>
+                            <div id="capacidadCheckboxesContainer" class="checkbox-container" disabled>
+                                <!-- Checkboxes will be populated by JS -->
+                            </div>
+                            <!-- Hidden original select to maintain CNEB data structure for JS logic -->
+                            <select id="capacidadSelect" multiple class="hidden"></select>
+                        </div>
+
+                        <!-- Duración de la Sesión -->
+                        <div class="flex flex-col md:col-span-2">
+                            <label for="sessionDurationSelect" class="text-gray-900 dark:text-gray-200 font-medium mb-2">Duración Total de la Sesión:</label>
+                            <select id="sessionDurationSelect" class="p-3 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white">
+                                <option value="">Selecciona la duración</option>
+                                <option value="15">15 minutos</option>
+                                <option value="30">30 minutos</option>
+                                <option value="45">45 minutos</option>
+                                <option value="60">60 minutos</option>
+                                <option value="90">90 minutos</option>
+                                <option value="105">105 minutos</option>
+                                <option value="120">120 minutos</option>
+                                <option value="135">135 minutos</option>
+                                <option value="150">150 minutos</option>
+                                <option value="180">180 minutos</option>
+                            </select>
+                        </div>
+
+                        <!-- Enfoques Transversales (Custom Checkbox List) -->
+                        <div class="flex flex-col md:col-span-2">
+                            <label class="text-gray-900 dark:text-gray-200 font-medium mb-2">Enfoques Transversales:</label>
+                            <div id="enfoquesTransversalesCheckboxesContainer" class="checkbox-container">
+                                <!-- Checkboxes will be populated by JS -->
+                            </div>
+                            <!-- Hidden original select to maintain CNEB data structure for JS logic -->
+                            <select id="enfoquesTransversalesSelect" multiple class="hidden"></select>
+                        </div>
+
+                    </div>
+
+                    <!-- Botón Generar Prompt Sesión -->
+                    <button id="generatePromptBtn" class="w-full text-white font-bold py-3 px-6 rounded-md shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary mb-4">
+                        Generar Prompt para Sesión de Aprendizaje
+                    </button>
+
+                    <!-- Nueva Sección: Prompts Adicionales -->
+                    <div class="mt-6 border-t border-gray-200 dark:border-gray-600 pt-6">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Prompts Adicionales (Basados en la sesión principal)</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button id="generateRubricBtn" class="w-full text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                                Generar Rúbrica
+                            </button>
+                            <button id="generateChecklistBtn" class="w-full text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                                Generar Lista de Cotejo
+                            </button>
+                            <button id="generateEvaluationBtn" class="w-full text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                                Generar Evaluación (20 Preguntas)
+                            </button>
+                            <button id="generateContentBtn" class="w-full text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                                Generar Contenido del Tema
+                            </button>
+                            <button id="generateInnovativeSessionBtn" class="w-full sm:col-span-2 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                                Generar Ideas de Sesión Innovadora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Prompt Generated by IA -->
+                <div class="flex flex-col lg:w-1/2 p-4 bg-blue-50 dark:bg-gray-700 rounded-lg border border-blue-200 dark:border-gray-600 shadow-inner transition-colors duration-300">
+                    <h2 class="text-xl font-semibold text-blue-800 dark:text-yellow-300 mb-4 flex items-center justify-between">
+                        <span>Prompt Generado para IA</span>
+                        <div id="loadingSpinner" class="hidden animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-500 dark:border-yellow-300"></div>
+                    </h2>
+                    <div id="generatedPromptOutput" class="text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-900 p-4 rounded-md border border-gray-300 dark:border-gray-600 min-h-[400px] whitespace-pre-wrap overflow-y-auto custom-scroll">
+                        <!-- El prompt generado por IA aparecerá aquí -->
+                        Completa los campos y selecciona las opciones para generar el prompt.
+                    </div>
+
+                    <!-- New action buttons for generated prompt -->
+                    <div class="flex flex-col sm:flex-row justify-end gap-2 mt-4">
+                        <button id="copySessionBtn" class="w-full sm:w-auto text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                            Copiar Prompt
+                        </button>
+                        <button id="openGeminiBtn" class="w-full sm:w-auto text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                            Abrir Gemini
+                        </button>
+                        <button id="openChatGPTBtn" class="w-full sm:w-auto text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed btn-primary" disabled>
+                            Abrir ChatGPT
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy Confirmation Message -->
+    <div id="copyConfirmation" class="hidden">
+        ¡Prompt copiado!
+    </div>
+
+    <script>
+        // --- CNEB Data (Currículo Nacional de la Educación Básica) ---
+        // Este objeto contiene la estructura jerárquica de niveles educativos, ciclos, grados, áreas,
+        // competencias y capacidades según el CNEB de Perú.
+        const cnebData = {
+          "nivelesEducativos": {
+            "inicial": {
+              "nombre": "Nivel Inicial",
+              "ciclos": {
+                "i": {
+                  "nombre": "Ciclo I",
+                  "descripcion": "Niños y niñas de 0 a 2 años",
+                  "grados": {
+                    "0-2": {
+                      "nombre": "0-2 años"
+                    }
+                  }
+                },
+                "ii": {
+                  "nombre": "Ciclo II",
+                  "descripcion": "Niños y niñas de 3 a 5 años",
+                  "grados": {
+                    "3": {
+                      "nombre": "3 años"
+                    },
+                    "4": {
+                      "nombre": "4 años"
+                    },
+                    "5": {
+                      "nombre": "5 años"
+                    }
+                  }
+                }
+              },
+              "areas": {
+                "personalSocial": {
+                  "nombre": "Personal Social",
+                  "competencias": [
+                    {
+                      "nombre": "Construye su identidad",
+                      "capacidades": [
+                        "Se valora a sí mismo",
+                        "Autorregula sus emociones"
+                      ]
+                    },
+                    {
+                      "nombre": "Convive y participa democráticamente en la búsqueda del bien común",
+                      "capacidades": [
+                        "Interactúa con todas las personas",
+                        "Construye y asume acuerdos y normas",
+                        "Maneja conflictos de manera constructiva",
+                        "Delibera sobre asuntos de interés común",
+                        "Participa en acciones que promueven el bienestar común"
+                      ]
+                    }
+                  ]
+                },
+                "comunicacion": {
+                  "nombre": "Comunicación",
+                  "competencias": [
+                    {
+                      "nombre": "Se comunica oralmente en su lengua materna",
+                      "capacidades": [
+                        "Obtiene información del texto oral",
+                        "Infiere e interpreta información del texto oral",
+                        "Adecúa, organiza y desarrolla las ideas de forma coherente y cohesionada",
+                        "Utiliza recursos no verbales y paraverbales de forma estratégica",
+                        "Interactúa estratégicamente con distintos interlocutores",
+                        "Reflexiona y evalúa la forma, el contenido y el contexto del texto oral"
+                      ]
+                    },
+                    {
+                      "nombre": "Lee diversos tipos de textos en su lengua materna",
+                      "capacidades": [
+                        "Obtiene información del texto escrito",
+                        "Infiere e interpreta información del texto escrito",
+                        "Reflexiona y evalúa la forma, el contenido y el contexto del texto escrito"
+                      ]
+                    },
+                    {
+                      "nombre": "Escribe diversos tipos de textos en su lengua materna",
+                      "capacidades": [
+                        "Adecúa el texto a la situación comunicativa",
+                        "Organiza y desarrolla las ideas de forma coherente y cohesionada",
+                        "Utiliza convenciones del lenguaje escrito de forma pertinente",
+                        "Reflexiona y evalúa la forma, el contenido y el contexto del texto escrito"
+                      ]
+                    },
+                    {
+                      "nombre": "Crea proyectos desde los lenguajes artísticos",
+                      "capacidades": [
+                        "Explora y experimenta los lenguajes del arte",
+                        "Aplica procesos creativos",
+                        "Socializa sus procesos y proyectos"
+                      ]
+                    },
+                    {
+                      "nombre": "Aprecia de manera crítica manifestaciones artístico-culturales",
+                      "capacidades": [
+                        "Percibe manifestaciones artístico-culturales",
+                        "Contextualiza manifestaciones artístico-culturales",
+                        "Reflexiona creativa y críticamente sobre manifestaciones artístico-culturales"
+                      ]
+                    }
+                  ]
+                },
+                "matematica": {
+                  "nombre": "Matemática",
+                  "competencias": [
+                    {
+                      "nombre": "Resuelve problemas de cantidad",
+                      "capacidades": [
+                        "Traduce cantidades a expresiones numéricas",
+                        "Comunica su comprensión sobre los números y las operaciones",
+                        "Usa estrategias y procedimientos de estimación y cálculo",
+                        "Argumenta afirmaciones sobre las relaciones numéricas y las operaciones"
+                      ]
+                    },
+                    {
+                      "nombre": "Resuelve problemas de forma, movimiento y localización",
+                      "capacidades": [
+                        "Modela objetos con formas geométricas y sus transformaciones",
+                        "Comunica su comprensión sobre las formas y relaciones geométricas",
+                        "Usa estrategias y procedimientos para orientarse en el espacio",
+                        "Argumenta afirmaciones sobre relaciones geométricas"
+                      ]
+                    }
+                  ]
+                },
+                "cienciaYTecnologia": {
+                  "nombre": "Ciencia y Tecnología",
+                  "competencias": [
+                    {
+                      "nombre": "Indaga mediante métodos científicos para construir sus conocimientos",
+                      "capacidades": [
+                        "Problematiza situaciones para hacer indagación",
+                        "Diseña estrategias para hacer indagación",
+                        "Genera y registra datos e información",
+                        "Analiza datos e información",
+                        "Evalúa y comunica el proceso y resultados de su indagación"
+                      ]
+                    },
+                    {
+                      "nombre": "Explica el mundo físico basándose en conocimientos sobre los seres vivos, materia y energía, biodiversidad, Tierra y universo",
+                      "capacidades": [
+                        "Comprende y usa conocimientos sobre los seres vivos; materia y energía; biodiversidad, Tierra y universo",
+                        "Evalúa las implicancias del saber y del quehacer científico y tecnológico"
+                      ]
+                    },
+                    {
+                      "nombre": "Diseña y construye soluciones tecnológicas para resolver problemas de su entorno",
+                      "capacidades": [
+                        "Determina una alternativa de solución tecnológica",
+                        "Diseña la alternativa de solución tecnológica",
+                        "Implementa y valida la alternativa de solución tecnológica",
+                        "Evalúa y comunica el funcionamiento y los impactos de su alternativa de solución tecnológica"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "competenciasTransversales": [
+                {
+                  "nombre": "Gestiona su aprendizaje de manera autónoma",
+                  "capacidades": [
+                    "Define metas de aprendizaje",
+                    "Organiza acciones estratégicas para alcanzar sus metas",
+                    "Monitorea y ajusta su desempeño durante el proceso de aprendizaje"
+                  ]
+                },
+                {
+                  "nombre": "Se desenvuelve en los entornos virtuales generados por las TIC",
+                  "capacidades": [
+                    "Personaliza entornos virtuales",
+                    "Gestiona información del entorno virtual",
+                    "Interactúa en entornos virtuales",
+                    "Crea objetos virtuales en diversos formatos"
+                  ]
+                }
+              ]
+            },
+            "primaria": {
+              "nombre": "Nivel Primaria",
+              "ciclos": {
+                "iii": {
+                  "nombre": "Ciclo III",
+                  "descripcion": "1.er y 2.do grados",
+                  "grados": {
+                    "1": {"nombre": "1er grado"},
+                    "2": {"nombre": "2do grado"}
+                  }
+                },
+                "iv": {
+                  "nombre": "Ciclo IV",
+                  "descripcion": "3.er y 4.to grados",
+                  "grados": {
+                    "3": {"nombre": "3er grado"},
+                    "4": {"nombre": "4to grado"}
+                  }
+                },
+                "v": {
+                  "nombre": "Ciclo V",
+                  "descripcion": "5.to y 6.to grados",
+                  "grados": {
+                    "5": {"nombre": "5to grado"},
+                    "6": {"nombre": "6to grado"}
+                  }
+                }
+              },
+              "areas": {
+                "personalSocial": {
+                  "nombre": "Personal Social",
+                  "competencias": [
+                    {
+                      "nombre": "Construye su identidad",
+                      "capacidades": [
+                        "Se valora a sí mismo",
+                        "Autorregula sus emociones",
+                        "Reflexiona y argumenta éticamente",
+                        "Vive su sexualidad de manera integral y responsable"
+                      ]
+                    },
+                    {
+                      "nombre": "Convive y participa democráticamente en la búsqueda del bien común",
+                      "capacidades": [
+                        "Interactúa con todas las personas",
+                        "Construye y asume acuerdos y normas",
+                        "Maneja conflictos de manera constructiva",
+                        "Delibera sobre asuntos públicos",
+                        "Participa en acciones que promueven el bienestar común"
+                      ]
+                    },
+                    {
+                      "nombre": "Se desenvuelve de manera autónoma a través de su motricidad",
+                      "capacidades": [
+                        "Comprende su cuerpo",
+                        "Se expresa corporalmente"
+                      ]
+                    },
+                    {
+                      "nombre": "Construye interpretaciones históricas",
+                      "capacidades": [
+                        "Interpreta críticamente fuentes diversas",
+                        "Comprende el tiempo histórico",
+                        "Elabora explicaciones sobre procesos históricos"
+                      ]
+                    },
+                    {
+                      "nombre": "Gestiona responsablemente el espacio y el ambiente",
+                      "capacidades": [
+                        "Comprende las relaciones entre los elementos naturales y sociales",
+                        "Maneja fuentes de información para comprender el espacio geográfico y el ambiente",
+                        "Genera acciones para conservar el ambiente local y global"
+                      ]
+                    },
+                    {
+                      "nombre": "Gestiona responsablemente los recursos económicos",
+                      "capacidades": [
+                        "Comprende las relaciones entre los elementos del sistema económico y financiero",
+                        "Toma decisiones económicas y financieras"
+                      ]
+                    },
+                    {
+                      "nombre": "Asume una vida saludable",
+                      "capacidades": [
+                        "Comprende las relaciones entre la actividad física, alimentación, postura e higiene personal y la salud",
+                        "Incorpora prácticas que mejoran su calidad de vida"
+                      ]
+                    }
+                  ]
+                },
+                "comunicacion": {
+                  "nombre": "Comunicación",
+                  "competencias": [
+                    {
+                      "nombre": "Se comunica oralmente en su lengua materna",
+                      "capacidades": [
+                        "Obtiene información del texto oral",
+                        "Infiere e interpreta información del texto oral",
+                        "Adecúa, organiza y desarrolla las ideas de forma coherente y cohesionada",
+                        "Utiliza recursos no verbales y paraverbales de forma estratégica",
+                        "Interactúa estratégicamente con distintos interlocutores",
+                        "Reflexiona y evalúa la forma, el contenido y el contexto del texto oral"
+                      ]
+                    },
+                    {
+                      "nombre": "Lee diversos tipos de textos en su lengua materna",
+                      "capacidades": [
+                        "Obtiene información del texto escrito",
+                        "Infiere e interpreta información del texto escrito",
+                        "Reflexiona y evalúa la forma, el contenido y el contexto del texto escrito"
+                      ]
+                    },
+                    {
+                      "nombre": "Escribe diversos tipos de textos en su lengua materna",
+                      "capacidades": [
+                        "Adecúa el texto a la situación comunicativa",
+                        "Organiza y desarrolla las ideas de forma coherente y cohesionada",
+                        "Utiliza convenciones del lenguaje escrito de forma pertinente",
+                        "Reflexiona y evalúa la forma, el contenido y el contexto del texto escrito"
+                      ]
+                    },
+                    {
+                      "nombre": "Crea proyectos desde los lenguajes artísticos",
+                      "capacidades": [
+                        "Explora y experimenta los lenguajes del arte",
+                        "Aplica procesos creativos",
+                        "Socializa sus procesos y proyectos"
+                      ]
+                    },
+                    {
+                      "nombre": "Aprecia de manera crítica manifestaciones artístico-culturales",
+                      "capacidades": [
+                        "Percibe manifestaciones artístico-culturales",
+                        "Contextualiza manifestaciones artístico-culturales",
+                        "Reflexiona creativa y críticamente sobre manifestaciones artístico-culturales"
+                      ]
+                    }
+                  ]
+                },
+                "matematica": {
+                  "nombre": "Matemática",
+                  "competencias": [
+                    {
+                      "nombre": "Resuelve problemas de cantidad",
+                      "capacidades": [
+                        "Traduce cantidades a expresiones numéricas",
+                        "Comunica su comprensión sobre los números y las operaciones",
+                        "Usa estrategias y procedimientos de estimación y cálculo",
+                        "Argumenta afirmaciones sobre las relaciones numéricas y las operaciones"
+                      ]
+                    },
+                    {
+                      "nombre": "Resuelve problemas de regularidad, equivalencia y cambio",
+                      "capacidades": [
+                        "Traduce datos y condiciones a expresiones algebraicas y gráficas",
+                        "Comunica su comprensión sobre las relaciones algebraicas",
+                        "Usa estrategias y procedimientos para encontrar equivalencias y reglas generales",
+                        "Argumenta afirmaciones sobre relaciones de cambio y equivalencia"
+                      ]
+                    },
+                    {
+                      "nombre": "Resuelve problemas de forma, movimiento y localización",
+                      "capacidades": [
+                        "Modela objetos con formas geométricas y sus transformaciones",
+                        "Comunica su comprensión sobre las formas y relaciones geométricas",
+                        "Usa estrategias y procedimientos para orientarse en el espacio",
+                        "Argumenta afirmaciones sobre relaciones geométricas"
+                      ]
+                    },
+                    {
+                      "nombre": "Resuelve problemas de gestión de datos e incertidumbre",
+                      "capacidades": [
+                        "Representa datos con gráficos y medidas estadísticas o probabilísticas",
+                        "Comunica su comprensión de los conceptos estadísticos y probabilísticos",
+                        "Usa estrategias y procedimientos para recopilar y procesar datos",
+                        "Sustenta conclusiones o decisiones con base en información obtenida"
+                      ]
+                    }
+                  ]
+                },
+                "cienciaYTecnologia": {
+                  "nombre": "Ciencia y Tecnología",
+                  "competencias": [
+                    {
+                      "nombre": "Indaga mediante métodos científicos para construir conocimientos",
+                      "capacidades": [
+                        "Problematiza situaciones para hacer indagación",
+                        "Diseña estrategias para hacer indagación",
+                        "Genera y registra datos e información",
+                        "Analiza datos e información",
+                        "Evalúa y comunica el proceso y resultados de su indagación"
+                      ]
+                    },
+                    {
+                      "nombre": "Explica el mundo físico basándose en conocimientos sobre los seres vivos, materia y energía, biodiversidad, Tierra y universo",
+                      "capacidades": [
+                        "Comprende y usa conocimientos sobre los seres vivos; materia y energía; biodiversidad, Tierra y universo",
+                        "Evalúa las implicancias del saber y del quehacer científico y tecnológico"
+                      ]
+                    },
+                    {
+                      "nombre": "Diseña y construye soluciones tecnológicas para resolver problemas de su entorno",
+                      "capacidades": [
+                        "Determina una alternativa de solución tecnológica",
+                        "Diseña la alternativa de solución tecnológica",
+                        "Implementa y valida la alternativa de solución tecnológica",
+                        "Evalúa y comunica el funcionamiento y los impactos de su alternativa de solución tecnológica"
+                      ]
+                    }
+                  ]
+                },
+                "religion": {
+                  "nombre": "Religión",
+                  "competencias": [
+                    {
+                      "nombre": "Construye su identidad como persona humana, amada por Dios, digna, libre y trascendente, comprendiendo la doctrina de su propia religión, abierto al diálogo con las que le son cercanas",
+                      "capacidades": [
+                        "Conoce a Dios y la doctrina de su propia religión",
+                        "Cultiva su dimensión espiritual y religiosa en diálogo con los demás"
+                      ]
+                    },
+                    {
+                      "nombre": "Asume la experiencia del encuentro personal y comunitario con Dios en su proyecto de vida en coherencia con su creencia religiosa",
+                      "capacidades": [
+                        "Transforma su entorno desde el encuentro personal y comunitario con Dios y desde la fe que profesa",
+                        "Actúa coherentemente en razón de su fe según los principios de su conciencia moral en situaciones concretas de la vida"
+                      ]
+                    }
+                  ]
+                },
+                "educacionFisica": {
+                  "nombre": "Educación Física",
+                  "competencias": [
+                    {
+                      "nombre": "Se desenvuelve de manera autónoma a través de su motricidad",
+                      "capacidades": [
+                        "Comprende su cuerpo",
+                        "Se expresa corporalmente"
+                      ]
+                    },
+                    {
+                      "nombre": "Asume una vida saludable",
+                      "capacidades": [
+                        "Comprende las relaciones entre la actividad física, alimentación, postura e higiene personal y la salud",
+                        "Incorpora prácticas que mejoran su calidad de vida"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "competenciasTransversales": [
+                {
+                  "nombre": "Gestiona su aprendizaje de manera autónoma",
+                  "capacidades": [
+                    "Define metas de aprendizaje",
+                    "Organiza acciones estratégicas para alcanzar sus metas",
+                    "Monitorea y ajusta su desempeño durante el proceso de aprendizaje"
+                  ]
+                },
+                {
+                  "nombre": "Se desenvuelve en los entornos virtuales generados por las TIC",
+                  "capacidades": [
+                    "Personaliza entornos virtuales",
+                    "Gestiona información del entorno virtual",
+                    "Interactúa en entornos virtuales",
+                    "Crea objetos virtuales en diversos formatos"
+                  ]
+                }
+              ]
+            },
+            "secundaria": {
+                "nombre": "Nivel Secundaria",
+                "ciclos": {
+                    "vi": {
+                        "nombre": "Ciclo VI",
+                        "descripcion": "1.er y 2.do grados de secundaria",
+                        "grados": {
+                            "1": {"nombre": "1er grado"},
+                            "2": {"nombre": "2do grado"}
+                        }
+                    },
+                    "vii": {
+                        "nombre": "Ciclo VII",
+                        "descripcion": "3.er, 4.to y 5.to grados de secundaria",
+                        "grados": {
+                            "3": {"nombre": "3er grado"},
+                            "4": {"nombre": "4to grado"},
+                            "5": {"nombre": "5to grado"}
+                        }
+                    }
+                },
+                "areas": {
+                    "comunicacion": {
+                        "nombre": "Comunicación",
+                        "competencias": [
+                            {
+                                "nombre": "Se comunica oralmente en su lengua materna",
+                                "capacidades": [
+                                    "Obtiene información del texto oral",
+                                    "Infiere e interpreta información del texto oral",
+                                    "Adecúa, organiza y desarrolla las ideas de forma coherente y cohesionada",
+                                    "Utiliza recursos no verbales y paraverbales de forma estratégica",
+                                    "Interactúa estratégicamente con distintos interlocutores",
+                                    "Reflexiona y evalúa la forma, el contenido y el contexto del texto oral"
+                                ]
+                            },
+                            {
+                                "nombre": "Lee diversos tipos de textos en su lengua materna",
+                                "capacidades": [
+                                    "Obtiene información del texto escrito",
+                                    "Infiere e interpreta información del texto escrito",
+                                    "Reflexiona y evalúa la forma, el contenido y el contexto del texto escrito"
+                                ]
+                            },
+                            {
+                                "nombre": "Escribe diversos tipos de textos en su lengua materna",
+                                "capacidades": [
+                                    "Adecúa el texto a la situación comunicativa",
+                                    "Organiza y desarrolla las ideas de forma coherente y cohesionada",
+                                    "Utiliza convenciones del lenguaje escrito de forma pertinente",
+                                    "Reflexiona y evalúa la forma, el contenido y el contexto del texto escrito"
+                                ]
+                            }
+                        ]
+                    },
+                    "matematica": {
+                        "nombre": "Matemática",
+                        "competencias": [
+                            {
+                                "nombre": "Resuelve problemas de cantidad",
+                                "capacidades": [
+                                    "Traduce cantidades a expresiones numéricas",
+                                    "Comunica su comprensión sobre los números y las operaciones",
+                                    "Usa estrategias y procedimientos de estimación y cálculo",
+                                    "Argumenta afirmaciones sobre las relaciones numéricas y las operaciones"
+                                ]
+                            },
+                            {
+                                "nombre": "Resuelve problemas de regularidad, equivalencia y cambio",
+                                "capacidades": [
+                                    "Traduce datos y condiciones a expresiones algebraicas y gráficas",
+                                    "Comunica su comprensión sobre las relaciones algebraicas",
+                                    "Usa estrategias y procedimientos para encontrar equivalencias y reglas generales",
+                                    "Argumenta afirmaciones sobre relaciones de cambio y equivalencia"
+                                ]
+                            },
+                            {
+                                "nombre": "Resuelve problemas de forma, movimiento y localización",
+                                "capacidades": [
+                                    "Modela objetos con formas geométricas y sus transformaciones",
+                                    "Comunica su comprensión sobre las formas y relaciones geométricas",
+                                    "Usa estrategias y procedimientos para orientarse en el espacio",
+                                    "Argumenta afirmaciones sobre relaciones geométricas"
+                                ]
+                            },
+                            {
+                                "nombre": "Resuelve problemas de gestión de datos e incertidumbre",
+                                "capacidades": [
+                                    "Representa datos con gráficos y medidas estadísticas o probabilísticas",
+                                    "Comunica su comprensión de los conceptos estadísticos y probabilísticos",
+                                    "Usa estrategias y procedimientos para recopilar y procesar datos",
+                                    "Sustenta conclusiones o decisiones con base en información obtenida"
+                                ]
+                            }
+                        ]
+                    },
+                    "cienciaYTecnologia": {
+                        "nombre": "Ciencia y Tecnología",
+                        "competencias": [
+                            {
+                                "nombre": "Indaga mediante métodos científicos para construir conocimientos",
+                                "capacidades": [
+                                    "Problematiza situaciones para hacer indagación",
+                                    "Diseña estrategias para hacer indagación",
+                                    "Genera y registra datos e información",
+                                    "Analiza datos e información",
+                                    "Evalúa y comunica el proceso y resultados de su indagación"
+                                ]
+                            },
+                            {
+                                "nombre": "Explica el mundo físico basándose en conocimientos sobre los seres vivos, materia y energía, biodiversidad, Tierra y universo",
+                                "capacidades": [
+                                    "Comprende y usa conocimientos sobre los seres vivos; materia y energía; biodiversidad, Tierra y universo",
+                                    "Evalúa las implicancias del saber y del quehacer científico y tecnológico"
+                                ]
+                            },
+                            {
+                                "nombre": "Diseña y construye soluciones tecnológicas para resolver problemas de su entorno",
+                                "capacidades": [
+                                    "Determina una alternativa de solución tecnológica",
+                                    "Diseña la alternativa de solución tecnológica",
+                                    "Implementa y valida la alternativa de solución tecnológica",
+                                    "Evalúa y comunica el funcionamiento y los impactos de su alternativa de solución tecnológica"
+                                ]
+                            }
+                        ]
+                    },
+                    "cienciasSociales": {
+                        "nombre": "Ciencias Sociales",
+                        "competencias": [
+                            {
+                                "nombre": "Construye interpretaciones históricas",
+                                "capacidades": [
+                                    "Interpreta críticamente fuentes diversas",
+                                    "Comprende el tiempo histórico",
+                                    "Elabora explicaciones sobre procesos históricos"
+                                ]
+                            },
+                            {
+                                "nombre": "Gestiona responsablemente el espacio y el ambiente",
+                                "capacidades": [
+                                    "Comprende las relaciones entre los elementos naturales y sociales",
+                                    "Maneja fuentes de información para comprender el espacio geográfico y el ambiente",
+                                    "Genera acciones para conservar el ambiente local y global"
+                                ]
+                            },
+                            {
+                                "nombre": "Gestiona responsablemente los recursos económicos",
+                                "capacidades": [
+                                    "Comprende las relaciones entre los elementos del sistema económico y financiero",
+                                    "Toma decisiones económicas y financieras"
+                                ]
+                            }
+                        ]
+                    },
+                    "desarrolloPersonalCiudadaniaYCivica": {
+                        "nombre": "Desarrollo Personal, Ciudadanía y Cívica",
+                        "competencias": [
+                            {
+                                "nombre": "Construye su identidad",
+                                "capacidades": [
+                                    "Se valora a sí mismo",
+                                    "Autorregula sus emociones",
+                                    "Reflexiona y argumenta éticamente",
+                                    "Vive su sexualidad de manera integral y responsable"
+                                ]
+                            },
+                            {
+                                "nombre": "Convive y participa democráticamente en la búsqueda del bien común",
+                                "capacidades": [
+                                    "Interactúa con todas las personas",
+                                    "Construye y asume acuerdos y normas",
+                                    "Maneja conflictos de manera constructiva",
+                                    "Delibera sobre asuntos públicos",
+                                    "Participa en acciones que promueven el bienestar común"
+                                ]
+                            }
+                        ]
+                    },
+                    "educacionParaElTrabajo": {
+                        "nombre": "Educación para el Trabajo",
+                        "competencias": [
+                            {
+                                "nombre": "Gestiona proyectos de emprendimiento económico o social",
+                                "capacidades": [
+                                    "Crea propuestas de valor",
+                                    "Aplica habilidades técnicas",
+                                    "Trabaja cooperativamente para lograr objetivos y metas",
+                                    "Evalúa los resultados del proyecto de emprendimiento"
+                                ]
+                            }
+                        ]
+                    },
+                    "educacionReligiosa": {
+                        "nombre": "Educación Religiosa",
+                        "competencias": [
+                            {
+                                "nombre": "Construye su identidad como persona humana, amada por Dios, digna, libre y trascendente, comprendiendo la doctrina de su propia religión, abierto al diálogo con las que le son cercanas",
+                                "capacidades": [
+                                    "Conoce a Dios y la doctrina de su propia religión",
+                                    "Cultiva su dimensión espiritual y religiosa en diálogo con los demás"
+                                ]
+                            },
+                            {
+                                "nombre": "Asume la experiencia del encuentro personal y comunitario con Dios en su proyecto de vida en coherencia con su creencia religiosa",
+                                "capacidades": [
+                                    "Transforma su entorno desde el encuentro personal y comunitario con Dios y desde la fe que profesa",
+                                    "Actúa coherentemente en razón de su fe según los principios de su conciencia moral en situaciones concretas de la vida"
+                                ]
+                            }
+                        ]
+                    },
+                    "arteYCultura": {
+                        "nombre": "Arte y Cultura",
+                        "competencias": [
+                            {
+                                "nombre": "Aprecia de manera crítica manifestaciones artístico-culturales",
+                                "capacidades": [
+                                    "Percibe manifestaciones artístico-culturales",
+                                    "Contextualiza manifestaciones artístico-culturales",
+                                    "Reflexiona creativa y críticamente sobre manifestaciones artístico-culturales"
+                                ]
+                            },
+                            {
+                                "nombre": "Crea proyectos desde los lenguajes artísticos",
+                                "capacidades": [
+                                    "Explora y experimenta los lenguajes del arte",
+                                    "Aplica procesos creativos",
+                                    "Socializa sus procesos y proyectos"
+                                ]
+                            }
+                        ]
+                    },
+                     "educacionFisica": {
+                        "nombre": "Educación Física",
+                        "competencias": [
+                            {
+                                "nombre": "Se desenvuelve de manera autónoma a través de su motricidad",
+                                "capacidades": [
+                                    "Comprende su cuerpo",
+                                    "Se expresa corporalmente"
+                                ]
+                            },
+                            {
+                                "nombre": "Asume una vida saludable",
+                                "capacidades": [
+                                    "Comprende las relaciones entre la actividad física, alimentación, postura e higiene personal y la salud",
+                                    "Incorpora prácticas que mejoran su calidad de vida"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "competenciasTransversales": [
+                    {
+                        "nombre": "Gestiona su aprendizaje de manera autónoma",
+                        "capacidades": [
+                            "Define metas de aprendizaje",
+                            "Organiza acciones estratégicas para alcanzar sus metas",
+                            "Monitorea y ajusta su desempeño durante el proceso de aprendizaje"
+                        ]
+                    },
+                    {
+                        "nombre": "Se desenvuelve en los entornos virtuales generados por las TIC",
+                        "capacidades": [
+                            "Personaliza entornos virtuales",
+                            "Gestiona información del entorno virtual",
+                            "Interactúa en entornos virtuales",
+                            "Crea objetos virtuales en diversos formatos"
+                        ]
+                    }
+                ]
+            }
+          }
+        };
+
+        // Enfoques transversales completos del CNEB
+        const enfoquesTransversalesData = [
+            {
+                enfoque: "DE DERECHOS",
+                valores: "Conciencia de derechos",
+                actitudes: "Actitud de reconocimiento del otro como sujeto de derechos y no como objeto.\\nActitud de disposición a valorar y proteger los derechos individuales y colectivos."
+            },
+            {
+                enfoque: "INCLUSIVO O ATENCIÓN A LA DIVERSIDAD",
+                valores: "Justicia intercultural",
+                actitudes: "Disposición a valorar y proteger las diversas identidades culturales.\\nActitud de disposición a reconocer y valorar a todas las personas por igual, sin distinción."
+            },
+            {
+                enfoque: "INTERCULTURAL",
+                valores: "Respeto a la identidad cultural",
+                actitudes: "Disposición a conversar e intercambiar ideas con diferentes personas para construir una postura común.\\nActitud de respeto a las costumbres y tradiciones de diferentes culturas."
+            },
+            {
+                enfoque: "IGUALDAD DE GÉNERO",
+                valores: "Empatía",
+                actitudes: "Actitud de disposición a ponerse en el lugar de cualquier persona, independientemente de su género.\\nActitud de disposición a no hacer distinciones ni exclusiones por motivos de género."
+            },
+            {
+                enfoque: "AMBIENTAL",
+                valores: "Solidaridad planetaria y equidad intergeneracional",
+                actitudes: "Disposición para colaborar en la protección y recuperación del medio ambiente, asumiendo una vida saludable de manera individual y colectiva.\\nActitud de disposición a promover el desarrollo sostenible y la conservación del ambiente."
+            },
+            {
+                enfoque: "ORIENTACIÓN AL BIEN COMÚN",
+                valores: "Responsabilidad",
+                actitudes: "Actitud de disposición a colaborar con las personas para el bienestar colectivo.\\nActitud de disposición a asumir las responsabilidades propias y compartidas para el bien común."
+            },
+            {
+                enfoque: "BÚSQUEDA DE LA EXCELENCIA",
+                valores: "Flexibilidad y apertura",
+                actitudes: "Disposición para adaptarse a los cambios y superar las dificultades.\\nActitud de disposición a mejorar continuamente y a establecer metas ambiciosas."
+            }
+        ];
+
+
+        // Referencias a los elementos del DOM (Document Object Model)
+        // Se obtienen las referencias a los elementos HTML por su ID para poder interactuar con ellos.
+        const nivelSelect = document.getElementById('nivelSelect');
+        const cicloSelect = document.getElementById('cicloSelect');
+        const gradoSelect = document.getElementById('gradoSelect');
+        const areaSelect = document.getElementById('areaSelect');
+        const competenciaCheckboxesContainer = document.getElementById('competenciaCheckboxesContainer');
+        const capacidadCheckboxesContainer = document.getElementById('capacidadCheckboxesContainer');
+        const enfoquesTransversalesCheckboxesContainer = document.getElementById('enfoquesTransversalesCheckboxesContainer');
+        const generatePromptBtn = document.getElementById('generatePromptBtn');
+        const generatedPromptOutput = document.getElementById('generatedPromptOutput');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const ieNameInput = document.getElementById('ieNameInput');
+        const teacherNameInput = document.getElementById('teacherNameInput');
+        const sessionTopicInput = document.getElementById('sessionTopicInput');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+        const copySessionBtn = document.getElementById('copySessionBtn');
+        const openGeminiBtn = document.getElementById('openGeminiBtn');
+        const openChatGPTBtn = document.getElementById('openChatGPTBtn');
+        const copyConfirmation = document.getElementById('copyConfirmation');
+        const sessionDurationSelect = document.getElementById('sessionDurationSelect');
+
+        // Referencias para los nuevos botones de prompts adicionales
+        const generateRubricBtn = document.getElementById('generateRubricBtn');
+        const generateChecklistBtn = document.getElementById('generateChecklistBtn');
+        const generateEvaluationBtn = document.getElementById('generateEvaluationBtn');
+        const generateContentBtn = document.getElementById('generateContentBtn');
+        const generateInnovativeSessionBtn = document.getElementById('generateInnovativeSessionBtn');
+
+
+        // Referencias para el inicio de sesión
+        const loginContainer = document.getElementById('login-container');
+        const usernameInput = document.getElementById('usernameInput');
+        const pinInput = document.getElementById('pinInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginMessage = document.getElementById('loginMessage');
+        const mainAppContainer = document.getElementById('main-app-container');
+        const logoutBtn = document.getElementById('logoutBtn'); // Nuevo botón de cerrar sesión
+
+        // Credenciales hardcodeadas (¡ADVERTENCIA DE SEGURIDAD!)
+        // Esta es una implementación básica solo para demostración.
+        // En una aplicación real, las credenciales nunca deben estar así.
+        const VALID_USERNAME = 'punkuOpen';
+        const VALID_PIN = '5382';
+
+
+        /**
+         * Resetea y deshabilita un elemento select o un contenedor de checkboxes personalizados.
+         * También resetea el área del prompt y oculta el spinner de carga.
+         * @param {HTMLElement} element - El elemento HTML a resetear/deshabilitar.
+         */
+        const resetSelect = (element) => {
+            if (element.tagName === 'SELECT') {
+                element.innerHTML = '<option value="">Selecciona una opción</option>';
+                element.disabled = true;
+            } else if (element.classList.contains('checkbox-container')) {
+                element.innerHTML = ''; // Limpia los checkboxes
+                element.setAttribute('disabled', 'true'); // Deshabilita el contenedor
+                element.style.opacity = '0.5'; // Opacidad para indicar deshabilitado
+                element.style.pointerEvents = 'none'; // Evita clics
+            }
+            // Asegura que el área del prompt se resetee y el spinner se oculte
+            generatedPromptOutput.textContent = "Completa los campos y selecciona las opciones para generar el prompt.";
+            loadingSpinner.classList.add('hidden'); // Oculta el spinner si estaba visible
+            updateActionButtonsState(false); // Deshabilita los botones de acción
+        };
+
+        /**
+         * Habilita un contenedor de checkboxes personalizado.
+         * @param {HTMLElement} container - El contenedor de checkboxes a habilitar.
+         */
+        const enableCustomSelect = (container) => {
+            container.removeAttribute('disabled');
+            container.style.opacity = '1';
+            container.style.pointerEvents = 'auto';
+        }
+
+        /**
+         * Deshabilita un contenedor de checkboxes personalizado.
+         * @param {HTMLElement} container - El contenedor de checkboxes a deshabilitar.
+         */
+        const disableCustomSelect = (container) => {
+            container.setAttribute('disabled', 'true');
+            container.style.opacity = '0.5';
+            container.style.pointerEvents = 'none';
+        }
+
+        /**
+         * Obtiene los valores de los checkboxes seleccionados dentro de un contenedor.
+         * @param {string} containerId - El ID del contenedor de checkboxes.
+         * @returns {Array<string>} Un array con los valores de los checkboxes marcados.
+         */
+        const getSelectedCheckboxes = (containerId) => {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            return Array.from(container.querySelectorAll('input[type="checkbox"]:checked'))
+                        .map(checkbox => checkbox.value);
+        };
+
+
+        /**
+         * Actualiza el estado del botón de generación de prompt (habilitado/deshabilitado)
+         * según si todos los campos requeridos están llenos y hay selecciones.
+         * También habilita los botones de prompts adicionales.
+         */
+        const updateGenerateButtonState = () => {
+            const selectedCompetenceValues = getSelectedCheckboxes('competenciaCheckboxesContainer');
+            const selectedCapacitiesValues = getSelectedCheckboxes('capacidadCheckboxesContainer');
+            const selectedEnfoquesTransversales = getSelectedCheckboxes('enfoquesTransversalesCheckboxesContainer');
+
+            const isReady = ieNameInput.value.trim() !== '' && teacherNameInput.value.trim() !== '' && sessionTopicInput.value.trim() !== '' &&
+                            nivelSelect.value && cicloSelect.value && gradoSelect.value &&
+                            areaSelect.value && selectedCompetenceValues.length > 0 && selectedCapacitiesValues.length > 0 &&
+                            sessionDurationSelect.value !== '' && selectedEnfoquesTransversales.length > 0;
+            
+            generatePromptBtn.disabled = !isReady;
+            // Habilitar/deshabilitar los botones de prompts adicionales basándose en la misma condición
+            generateRubricBtn.disabled = !isReady;
+            generateChecklistBtn.disabled = !isReady;
+            generateEvaluationBtn.disabled = !isReady;
+            generateContentBtn.disabled = !isReady;
+            generateInnovativeSessionBtn.disabled = !isReady;
+        };
+
+        /**
+         * Habilita o deshabilita los botones de acción (Copiar Prompt, Abrir Gemini, Abrir ChatGPT).
+         * @param {boolean} enable - True para habilitar, False para deshabilitar.
+         */
+        const updateActionButtonsState = (enable) => {
+            copySessionBtn.disabled = !enable;
+            openGeminiBtn.disabled = !enable;
+            openChatGPTBtn.disabled = !enable;
+        };
+
+        // --- Lógica de cambio de tema (Claro/Oscuro) ---
+        /**
+         * Aplica el tema (claro u oscuro) a la página y lo guarda en el almacenamiento local.
+         * @param {string} theme - 'dark' o 'light'.
+         */
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙'; // Icono de luna para tema oscuro
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                themeIcon.textContent = '☀️'; // Icono de sol para tema claro
+                localStorage.setItem('theme', 'light');
+            }
+        };
+
+        // Event Listener para el botón de cambio de tema
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                applyTheme('light');
+            } else {
+                applyTheme('dark');
+            }
+        });
+
+        // Aplicar el tema guardado en el almacenamiento local al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light'; // Tema por defecto si no hay uno guardado
+            applyTheme(savedTheme);
+            // No llamar a populateNiveles o populateEnfoquesTransversales aquí directamente
+            // hasta que el login sea exitoso para evitar errores en elementos ocultos.
+        });
+
+
+        // --- Lógica para poblar los select y checkboxes dinámicamente ---
+
+        /**
+         * Llena el select de "Nivel Educativo" con los datos del CNEB.
+         */
+        const populateNiveles = () => {
+            // Reinicia los selects/checkboxes dependientes
+            resetSelect(cicloSelect);
+            resetSelect(gradoSelect);
+            resetSelect(areaSelect);
+            resetSelect(competenciaCheckboxesContainer);
+            resetSelect(capacidadCheckboxesContainer);
+            
+            // Solo se rellenan las opciones si el select está vacío (excepto la opción por defecto)
+            if (nivelSelect.options.length <= 1) { 
+                for (const key in cnebData.nivelesEducativos) {
+                    const nivel = cnebData.nivelesEducativos[key];
+                    const option = document.createElement('option');
+                    option.value = key; // Guarda la clave interna (ej. "inicial")
+                    option.textContent = nivel.nombre; // Muestra el nombre legible (ej. "Nivel Inicial")
+                    nivelSelect.appendChild(option);
+                }
+            }
+            nivelSelect.disabled = false; // Habilita el select de nivel
+            sessionDurationSelect.disabled = false; // Enable session duration select
+            updateGenerateButtonState(); // Actualiza el estado del botón
+        };
+
+        /**
+         * Llena el select de "Ciclo" basado en el nivel educativo seleccionado.
+         */
+        const populateCiclos = () => {
+            // Reinicia los selects/checkboxes dependientes, lo que también resetea el prompt y el spinner
+            resetSelect(cicloSelect);
+            resetSelect(gradoSelect);
+            resetSelect(areaSelect);
+            resetSelect(competenciaCheckboxesContainer);
+            resetSelect(capacidadCheckboxesContainer);
+            updateActionButtonsState(false);
+
+            const selectedNivelKey = nivelSelect.value;
+            if (selectedNivelKey) {
+                const nivel = cnebData.nivelesEducativos[selectedNivelKey];
+                for (const key in nivel.ciclos) {
+                    const ciclo = nivel.ciclos[key];
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = ciclo.nombre + " (" + ciclo.descripcion + ")";
+                    cicloSelect.appendChild(option);
+                }
+                cicloSelect.disabled = false; // Habilita el select de ciclo
+            }
+            updateGenerateButtonState();
+        };
+
+        /**
+         * Llena el select de "Grado/Edad" basado en el nivel y ciclo seleccionados.
+         */
+        const populateGrados = () => {
+            // Reinicia los selects/checkboxes dependientes, lo que también resetea el prompt y el spinner
+            resetSelect(gradoSelect);
+            resetSelect(areaSelect);
+            resetSelect(competenciaCheckboxesContainer);
+            resetSelect(capacidadCheckboxesContainer);
+            updateActionButtonsState(false);
+
+            const selectedNivelKey = nivelSelect.value;
+            const selectedCicloKey = cicloSelect.value;
+
+            if (selectedNivelKey && selectedCicloKey) {
+                const nivel = cnebData.nivelesEducativos[selectedNivelKey];
+                const ciclo = nivel.ciclos[selectedCicloKey];
+                for (const key in ciclo.grados) {
+                    const grado = ciclo.grados[key];
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = grado.nombre;
+                    gradoSelect.appendChild(option);
+                }
+                gradoSelect.disabled = false; // Habilita el select de grado
+                populateAreas(); // Llama a populateAreas cuando el grado cambia para refrescar las áreas
+            }
+            updateGenerateButtonState();
+        };
+
+        /**
+         * Llena el select de "Área" basado en el nivel educativo seleccionado.
+         * También incluye las "Competencias Transversales" como un área opcional.
+         */
+        const populateAreas = () => {
+            // Reinicia los selects/checkboxes dependientes, lo que también resetea el prompt y el spinner
+            resetSelect(areaSelect);
+            resetSelect(competenciaCheckboxesContainer);
+            resetSelect(capacidadCheckboxesContainer);
+            updateActionButtonsState(false);
+
+            const selectedNivelKey = nivelSelect.value;
+
+            if (selectedNivelKey) {
+                const nivel = cnebData.nivelesEducativos[selectedNivelKey];
+                const allAreas = { ...nivel.areas }; // Copia las áreas específicas del nivel
+
+                // Si existen competencias transversales para el nivel, las añade como un área más
+                if (nivel.competenciasTransversales) {
+                    allAreas['competenciasTransversales'] = {
+                        nombre: "Competencias Transversales",
+                        competencias: nivel.competenciasTransversales
+                    };
+                }
+
+                for (const key in allAreas) {
+                    const area = allAreas[key];
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = area.nombre;
+                    areaSelect.appendChild(option);
+                }
+                areaSelect.disabled = false; // Habilita el select de área
+            }
+            updateGenerateButtonState();
+        };
+
+        /**
+         * Llena el contenedor de checkboxes de "Competencia" basado en el área y nivel seleccionados.
+         */
+        const populateCompetencias = () => {
+            // Reinicia los checkboxes dependientes, lo que también resetea el prompt y el spinner
+            resetSelect(competenciaCheckboxesContainer);
+            resetSelect(capacidadCheckboxesContainer);
+            updateActionButtonsState(false);
+
+            const selectedNivelKey = nivelSelect.value;
+            const selectedAreaKey = areaSelect.value;
+
+            if (selectedNivelKey && selectedAreaKey) {
+                const nivel = cnebData.nivelesEducativos[selectedNivelKey];
+                let competenciesList = [];
+
+                // Obtiene la lista de competencias según si es un área específica o las competencias transversales
+                if (selectedAreaKey === 'competenciasTransversales') {
+                    competenciesList = nivel.competenciasTransversales;
+                } else {
+                    competenciesList = nivel.areas[selectedAreaKey].competencias;
+                }
+
+                // Crea un checkbox para cada competencia
+                competenciesList.forEach((competencia, index) => {
+                    const checkboxItem = document.createElement('div');
+                    checkboxItem.className = 'checkbox-item'; // Clase CSS para estilizar el item
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `comp-${index}`; // ID único para el checkbox
+                    checkbox.value = competencia.nombre; // El valor del checkbox será el nombre de la competencia
+                    checkbox.dataset.index = index; // Guarda el índice para futuras referencias (si es necesario)
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `comp-${index}`; // Asocia la etiqueta con el checkbox
+                    label.textContent = competencia.nombre; // Texto visible de la competencia
+
+                    checkboxItem.appendChild(checkbox);
+                    checkboxItem.appendChild(label);
+                    competenciaCheckboxesContainer.appendChild(checkboxItem);
+
+                    // Agrega event listeners para actualizar las capacidades y el estado del botón cuando cambia la selección
+                    checkbox.addEventListener('change', populateCapacidades); 
+                    checkbox.addEventListener('change', updateGenerateButtonState);
+                });
+                enableCustomSelect(competenciaCheckboxesContainer); // Habilita el contenedor de checkboxes
+            } else {
+                disableCustomSelect(competenciaCheckboxesContainer); // Deshabilita si no hay área seleccionada
+            }
+            updateGenerateButtonState();
+        };
+
+        /**
+         * Llena el contenedor de checkboxes de "Capacidad" basado en las competencias seleccionadas.
+         */
+        const populateCapacidades = () => {
+            // Reinicia los checkboxes de capacidad, lo que también resetea el prompt y el spinner
+            resetSelect(capacidadCheckboxesContainer);
+            updateActionButtonsState(false);
+
+            const selectedNivelKey = nivelSelect.value;
+            const selectedAreaKey = areaSelect.value;
+            const selectedCompetenceNames = getSelectedCheckboxes('competenciaCheckboxesContainer'); // Nombres de las competencias seleccionadas
+
+            if (selectedNivelKey && selectedAreaKey && selectedCompetenceNames.length > 0) {
+                const nivel = cnebData.nivelesEducativos[selectedNivelKey];
+                let uniqueCapacities = new Set(); // Usar un Set para evitar capacidades duplicadas
+
+                let allCompetenciesForArea = [];
+                // Obtiene todas las competencias relevantes para el área seleccionada
+                if (selectedAreaKey === 'competenciasTransversales') {
+                    allCompetenciesForArea = nivel.competenciasTransversales;
+                } else {
+                    allCompetenciesForArea = nivel.areas[selectedAreaKey].competencias;
+                }
+
+                // Itera sobre las competencias seleccionadas y añade sus capacidades únicas al Set
+                selectedCompetenceNames.forEach(compName => {
+                    const competence = allCompetenciesForArea.find(c => c.nombre === compName);
+                    if (competence && competence.capacidades) {
+                        competence.capacidades.forEach(capacidad => {
+                            uniqueCapacities.add(capacidad);
+                        });
+                    }
+                });
+
+                // Crea un checkbox para cada capacidad única
+                Array.from(uniqueCapacities).forEach((capacidad, index) => {
+                    const checkboxItem = document.createElement('div');
+                    checkboxItem.className = 'checkbox-item';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `cap-${index}`;
+                    checkbox.value = capacidad;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `cap-${index}`;
+                    label.textContent = capacidad;
+
+                    checkboxItem.appendChild(checkbox);
+                    checkboxItem.appendChild(label);
+                    capacidadCheckboxesContainer.appendChild(checkboxItem);
+
+                    checkbox.addEventListener('change', updateGenerateButtonState); // Actualiza el estado del botón
+                });
+                enableCustomSelect(capacidadCheckboxesContainer); // Habilita el contenedor
+            } else {
+                disableCustomSelect(capacidadCheckboxesContainer); // Deshabilita si no hay suficientes selecciones
+            }
+            updateGenerateButtonState();
+        };
+
+        /**
+         * Llena el contenedor de checkboxes de "Enfoques Transversales".
+         */
+        const populateEnfoquesTransversales = () => {
+            enfoquesTransversalesCheckboxesContainer.innerHTML = ''; // Limpia el contenedor
+            enfoquesTransversalesData.forEach((enfoque, index) => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `enfoque-${index}`;
+                checkbox.value = enfoque.enfoque; // El valor será el nombre del enfoque
+
+                const label = document.createElement('label');
+                label.htmlFor = `enfoque-${index}`;
+                label.textContent = enfoque.enfoque;
+
+                checkboxItem.appendChild(checkbox);
+                checkboxItem.appendChild(label);
+                enfoquesTransversalesCheckboxesContainer.appendChild(checkboxItem);
+
+                checkbox.addEventListener('change', updateGenerateButtonState); // Actualiza el estado del botón
+            });
+            enableCustomSelect(enfoquesTransversalesCheckboxesContainer); // Habilita el contenedor
+            updateGenerateButtonState();
+        };
+
+        // --- Event Listeners para los elementos de selección y entrada de texto ---
+        nivelSelect.addEventListener('change', populateCiclos);
+        cicloSelect.addEventListener('change', populateGrados);
+        gradoSelect.addEventListener('change', populateAreas);
+        areaSelect.addEventListener('change', populateCompetencias);
+        sessionDurationSelect.addEventListener('change', updateGenerateButtonState); // Add listener for session duration
+        // Los event listeners para los checkboxes personalizados se añaden dentro de populateCompetencias/Capacidades y populateEnfoquesTransversales
+        ieNameInput.addEventListener('input', updateGenerateButtonState);
+        teacherNameInput.addEventListener('input', updateGenerateButtonState);
+        sessionTopicInput.addEventListener('input', updateGenerateButtonState);
+
+        /**
+         * Helper function to get common session parameters.
+         */
+        const getSessionParameters = () => {
+            const ieName = String(ieNameInput.value.trim());
+            const teacherName = String(teacherNameInput.value.trim());
+            const sessionTopic = String(sessionTopicInput.value.trim());
+            const totalDurationMinutes = parseInt(sessionDurationSelect.value);
+
+            const selectedNivelKey = nivelSelect.value;
+            const selectedCicloKey = cicloSelect.value;
+            const selectedGradoKey = gradoSelect.value;
+            const selectedAreaKey = areaSelect.value;
+            const selectedCompetenceNames = getSelectedCheckboxes('competenciaCheckboxesContainer');
+            const selectedCapacitiesTexts = getSelectedCheckboxes('capacidadCheckboxesContainer');
+            const selectedEnfoqueNames = getSelectedCheckboxes('enfoquesTransversalesCheckboxesContainer');
+
+            const nivelNombre = cnebData.nivelesEducativos[selectedNivelKey]?.nombre || '';
+            const cicloNombre = cnebData.nivelesEducativos[selectedNivelKey]?.ciclos[selectedCicloKey]?.nombre || '';
+            const gradoNombre = cnebData.nivelesEducativos[selectedNivelKey]?.ciclos[selectedCicloKey]?.grados[selectedGradoKey]?.nombre || '';
+
+            let areaNombre;
+            if (selectedAreaKey === 'competenciasTransversales') {
+                areaNombre = "Competencias Transversales";
+            } else {
+                areaNombre = cnebData.nivelesEducativos[selectedNivelKey]?.areas[selectedAreaKey]?.nombre || '';
+            }
+
+            const currentDate = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            return {
+                ieName, teacherName, sessionTopic, totalDurationMinutes,
+                selectedNivelKey, selectedCicloKey, selectedGradoKey, selectedAreaKey,
+                selectedCompetenceNames, selectedCapacitiesTexts, selectedEnfoqueNames,
+                nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
+            };
+        };
+
+
+        // Función para escapar backticks en strings para evitar errores de sintaxis en template literals
+        const escapeBackticks = (text) => {
+            return String(text || '').replace(/`/g, '\\`');
+        };
+
+        // --- Lógica para generar el prompt de la Sesión Principal ---
+        generatePromptBtn.addEventListener('click', () => {
+            loadingSpinner.classList.remove('hidden');
+            generatedPromptOutput.textContent = "Generando prompt, por favor espera...";
+            updateActionButtonsState(false);
+
+            try {
+                const {
+                    ieName, teacherName, sessionTopic, totalDurationMinutes,
+                    selectedNivelKey, selectedCicloKey, selectedGradoKey, selectedAreaKey,
+                    selectedCompetenceNames, selectedCapacitiesTexts, selectedEnfoqueNames,
+                    nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
+                } = getSessionParameters();
+
+                // Calculate durations dynamically
+                const inicioDuration = Math.round(totalDurationMinutes * 0.20);
+                const desarrolloDuration = Math.round(totalDurationMinutes * 0.65);
+                const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
+
+                // --- Section contents (placeholders for AI) ---
+                const inicioContenido = `
+- El docente da la bienvenida a los estudiantes y presenta el objetivo de la sesión.
+- Se retoman las normas de convivencia para un ambiente de aprendizaje óptimo.
+- Se realiza una actividad de motivación (ej. una pregunta desafiante, un video corto, una imagen impactante) relacionada con el tema de la sesión.
+- Se recoge los saberes previos de los estudiantes mediante preguntas abiertas o una lluvia de ideas.
+- Se establece el propósito de la sesión de manera clara y concisa.
+`.trim();
+
+                const desarrolloContenido = `
+- El docente presenta la información clave del tema utilizando recursos variados (ej. material didáctico, presentaciones, textos, videos).
+- Se promueve el diálogo y la participación activa de los estudiantes a través de preguntas, debates o actividades colaborativas.
+- Los estudiantes trabajan individualmente o en grupos en actividades que les permitan aplicar los nuevos conocimientos y desarrollar las capacidades seleccionadas.
+- El docente monitorea el proceso de aprendizaje, brindando retroalimentación formativa y resolviendo dudas.
+- Se promueve la reflexión crítica sobre el tema y se conecta con situaciones de la vida real.
+`.trim();
+
+                const cierreContenido = `
+- Se realiza una síntesis de lo aprendido en la sesión, resaltando los puntos clave.
+- Se fomenta la metacognición a través de preguntas como: ¿Qué aprendimos hoy?, ¿Cómo lo aprendimos?, ¿Para qué nos sirve lo aprendido?.
+- Se resuelve dudas finales y se consolida la comprensión del tema.
+- Se asigna una actividad de extensión o tarea relacionada con el tema para la siguiente sesión.
+`.trim();
+
+                // --- Constructing sections in plain text format ---
+
+                // 1. Datos Informativos
+                const datosInformativosContent = `
+---
+### I. DATOS INFORMATIVOS
+Nombre de la I.E.: ${ieName}
+Nombre del Docente: ${teacherName}
+Nivel: ${nivelNombre}
+Grado: ${gradoNombre}
+Área: ${areaNombre}
+Fecha: ${currentDate}
+---
+`.trim();
+
+                // 2. Propósito de Aprendizaje (Competencias, Capacidades, Desempeños, Criterios, Instrumentos)
+                let propositoAprendizajeContent = `
+---
+### II. PROPÓSITO DE APRENDIZAJE
+`.trim();
+
+                selectedCompetenceNames.forEach(compName => {
+                    let competenceObject = null;
+                    if (selectedAreaKey === 'competenciasTransversales') {
+                        competenceObject = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales.find(c => c.nombre === compName);
+                    } else {
+                        competenceObject = cnebData.nivelesEducativos[selectedNivelKey]?.areas[selectedAreaKey]?.competencias.find(c => c.nombre === compName);
+                    }
+
+                    if (competenceObject) {
+                        const relevantCapacities = competenceObject.capacidades ? selectedCapacitiesTexts.filter(capText => competenceObject.capacidades.includes(capText)) : [];
+                        
+                        propositoAprendizajeContent += `\n\n**Competencia:** ${escapeBackticks(competenceObject.nombre)}`;
+                        propositoAprendizajeContent += `\n- **Capacidades:**`;
+                        relevantCapacities.forEach(cap => {
+                            propositoAprendizajeContent += `\n  - ✓ ${escapeBackticks(cap)}`;
+                        });
+                        
+                        const desempenosEjemplo = [
+                            `Desempeños relevantes para la competencia '${escapeBackticks(competenceObject.nombre)}' y sus capacidades seleccionadas.`,
+                            `El estudiante demuestra dominio de '${escapeBackticks(competenceObject.nombre)}' en el contexto de la sesión.`
+                        ];
+                        const criteriosEvaluacionEjemplo = [
+                            `Identifica y aplica los conceptos clave de '${escapeBackticks(competenceObject.nombre)}'.`,
+                            `Analiza situaciones utilizando las capacidades de '${escapeBackticks(competenceObject.nombre)}'.`,
+                            `Produce soluciones o reflexiones basadas en '${escapeBackticks(competenceObject.nombre)}'.`
+                        ];
+                        const instrumentosEvaluacionEjemplo = [
+                            "Lista de cotejo",
+                            "Rúbrica de evaluación"
+                        ];
+
+                        propositoAprendizajeContent += `\n- **Desempeños:**`;
+                        desempenosEjemplo.forEach(desempeno => {
+                            propositoAprendizajeContent += `\n  - ✓ ${desempeno}`;
+                        });
+
+                        propositoAprendizajeContent += `\n- **Criterios de Evaluación:**`;
+                        criteriosEvaluacionEjemplo.forEach(criterio => {
+                            propositoAprendizajeContent += `\n  - ✓ ${criterio}`;
+                        });
+
+                        propositoAprendizajeContent += `\n- **Instrumento de Evaluación:**`;
+                        instrumentosEvaluacionEjemplo.forEach(instrumento => {
+                            propositoAprendizajeContent += `\n  - ✓ ${instrumento}`;
+                        });
+                    }
+                });
+
+                propositoAprendizajeContent += `\n\n**Propósito:**\nEl propósito de la sesión es... *(párrafo de 6 líneas que describa detalladamente la meta del aprendizaje, alineada a la competencia)*`;
+                propositoAprendizajeContent += `\n\n**Evidencia:**\nLa evidencia será... *(párrafo de 6 líneas que detalle lo que el estudiante hará para demostrar lo aprendido en la sesión)*`;
+                propositoAprendizajeContent += `\n---`;
+
+
+                // 3. Competencias Transversales
+                let competenciasTransversalesContent = `
+---
+### COMPETENCIAS TRANSVERSALES
+`.trim();
+                const competenciasTransversales = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales || []; 
+                competenciasTransversales.forEach(ct => {
+                    competenciasTransversalesContent += `\n\n**Competencia Transversal:** ${escapeBackticks(ct.nombre)}`;
+                    competenciasTransversalesContent += `\n- **Capacidades:**`;
+                    ct.capacidades.forEach(cap => {
+                        competenciasTransversalesContent += `\n  - ✓ ${escapeBackticks(cap)}`;
+                    });
+                });
+                competenciasTransversalesContent += `\n---`;
+
+                // 4. Enfoques Transversales
+                let enfoquesTransversalesContent = `
+---
+### ENFOQUES TRANSVERSALES
+`.trim();
+                selectedEnfoqueNames.forEach(enfoqueName => {
+                    const enfoqueObject = enfoquesTransversalesData.find(e => e.enfoque === enfoqueName);
+                    if (enfoqueObject) {
+                        enfoquesTransversalesContent += `\n\n**Enfoque:** ${escapeBackticks(enfoqueObject.enfoque)}`;
+                        enfoquesTransversalesContent += `\n- **Valores:** ${escapeBackticks(enfoqueObject.valores)}`;
+                        enfoquesTransversalesContent += `\n- **Actitudes / Acciones Observables:**`;
+                        escapeBackticks(enfoqueObject.actitudes).split('\\n').forEach(actitud => {
+                            if (actitud.trim() !== '') {
+                                enfoquesTransversalesContent += `\n  - ${actitud.trim()}`;
+                            }
+                        });
+                    }
+                });
+                enfoquesTransversalesContent += `\n---`;
+
+
+                // 5. Secuencia Didáctica (sin tabla)
+                const formattedInicioContent = inicioContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
+                const formattedDesarrolloContent = desarrolloContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
+                const formattedCierreContent = cierreContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').replace(/^  1\) /gm, '  1) ').trim();
+
+                const secuenciaDidacticaContent = `
+---
+### III. SECUENCIA DIDÁCTICA
+
+**MOMENTO: INICIO**
+**Tiempo:** ${inicioDuration} minutos
+**Actividades de Aprendizaje (Procesos Pedagógicos):**
+${formattedInicioContent}
+
+**MOMENTO: DESARROLLO**
+**Tiempo:** ${desarrolloDuration} minutos
+**Actividades de Aprendizaje (Procesos Pedagógicos):**
+${formattedDesarrolloContent}
+
+**MOMENTO: CIERRE**
+**Tiempo:** ${cierreDuration} minutos
+**Actividades de Aprendizaje (Procesos Pedagógicos):**
+${formattedCierreContent}
+---
+`.trim();
+
+                // 6. Bibliografía
+                const bibliografiaContent = `
+### BIBLIOGRAFÍA
+
+Incluye al menos tres fuentes en formato APA (pueden ser ficticias pero verosímiles), relacionadas con educación, el área específica y el CNEB.
+`.trim();
+
+
+                // Construcción final del texto del prompt con las nuevas secciones
+                const promptText = `
+Eres un docente del área de ${areaNombre} de la IE ${ieName}, con muchos años de experiencia y especialista en el área antes mencionada.
+
+Elabora una sesión de aprendizaje para los estudiantes de ${gradoNombre} de ${nivelNombre}, con una duración total aproximada de ${totalDurationMinutes} minutos.
+
+**Título de la Sesión:** [Crea un título creativo y relevante sobre el tema: ${sessionTopic}]
+
+${datosInformativosContent}
+
+${propositoAprendizajeContent}
+
+${competenciasTransversalesContent}
+
+${enfoquesTransversalesContent}
+
+${secuenciaDidacticaContent}
+
+${bibliografiaContent}
+
+**INDICACIONES FINALES PARA LA IA:**
+La sesión debe tener coherencia entre todas sus secciones. Cuida la progresión pedagógica entre inicio, desarrollo y cierre. Evita repetir ideas. Mantén un lenguaje formal, pedagógico y claro. Usa viñetas, subtítulos y saltos de línea correctamente para mantener orden visual.
+`;
+
+                generatedPromptOutput.textContent = promptText;
+            } catch (error) {
+                console.error("Error al generar el prompt de la sesión principal:", error);
+                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de la sesión principal! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                updateActionButtonsState(true);
+            }
+        });
+
+        // --- Lógica para generar el prompt de Rúbrica ---
+        generateRubricBtn.addEventListener('click', () => {
+            loadingSpinner.classList.remove('hidden');
+            generatedPromptOutput.textContent = "Generando prompt de rúbrica, por favor espera...";
+            updateActionButtonsState(false);
+
+            try {
+                const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
+
+                const promptText = `
+Eres un docente del área de ${areaNombre}, elabora una rúbrica sobre el tema '${escapeBackticks(sessionTopic)}' para los estudiantes del ${gradoNombre} de ${nivelNombre}.
+
+La rúbrica debe ser en formato de tabla y tener 5 columnas:
+La primera columna debe ser 'Criterios de Evaluación'.
+Las siguientes cuatro columnas se refieren al nivel de consecución:
+La segunda columna será 'APRENDIZAJE DESTACADO (AD)'.
+La tercera será 'APRENDIZAJE ESPERADO (A)'.
+La cuarta será 'EN PROCESO (B)'.
+La quinta en 'INICIO (C)'.
+
+Considera las siguientes competencias seleccionadas: ${selectedCompetenceNames.join(', ')}.
+Considera las siguientes capacidades seleccionadas: ${selectedCapacitiesTexts.join(', ')}.
+`;
+                generatedPromptOutput.textContent = promptText;
+            } catch (error) {
+                console.error("Error al generar el prompt de rúbrica:", error);
+                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de rúbrica! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                updateActionButtonsState(true);
+            }
+        });
+
+        // --- Lógica para generar el prompt de Lista de Cotejo ---
+        generateChecklistBtn.addEventListener('click', () => {
+            loadingSpinner.classList.remove('hidden');
+            generatedPromptOutput.textContent = "Generando prompt de lista de cotejo, por favor espera...";
+            updateActionButtonsState(false);
+
+            try {
+                const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
+
+                const promptText = `
+Eres un docente especialista del área de ${areaNombre}.
+Crea una lista de cotejo en formato de tabla para evaluar el tema '${escapeBackticks(sessionTopic)}' para los estudiantes del ${gradoNombre} de ${nivelNombre}.
+La tabla debe tener 5 columnas y 4 filas.
+La primera columna debe ser 'Criterio'.
+La segunda columna debe ser 'Descripción'.
+Las siguientes tres columnas deben ser 'Sí', 'No', 'Observaciones'.
+Proporciona una breve descripción de cada criterio y un espacio para brindar una retroalimentación detallada y constructiva a los estudiantes.
+
+Considera las siguientes competencias seleccionadas: ${selectedCompetenceNames.join(', ')}.
+Considera las siguientes capacidades seleccionadas: ${selectedCapacitiesTexts.join(', ')}.
+`;
+                generatedPromptOutput.textContent = promptText;
+            } catch (error) {
+                console.error("Error al generar el prompt de lista de cotejo:", error);
+                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de lista de cotejo! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                updateActionButtonsState(true);
+            }
+        });
+
+        // --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
+        generateEvaluationBtn.addEventListener('click', () => {
+            loadingSpinner.classList.remove('hidden');
+            generatedPromptOutput.textContent = "Generando prompt de evaluación, por favor espera...";
+            updateActionButtonsState(false);
+
+            try {
+                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+
+                const promptText = `
+Eres un docente especialista del área de ${areaNombre} y necesito que elabores en forma crítica, 20 PREGUNTAS sobre el tema '${escapeBackticks(sessionTopic)}' para los estudiantes del ${gradoNombre} de ${nivelNombre}.
+Las preguntas deben ser distribuidas de la siguiente manera:
+- 5 preguntas de desarrollo (tipo 'pregunta abierta').
+- 5 preguntas de opción múltiple (con 4 opciones A, B, C, D).
+- 5 preguntas para completar.
+- 5 preguntas de Verdadero o Falso (V o F), con 4 opciones A, B, C, D donde solo una es la respuesta correcta.
+Al final de todas las preguntas, necesito que escribas las respuestas en forma ordenada, indicando claramente a qué pregunta corresponde cada respuesta.
+`;
+                generatedPromptOutput.textContent = promptText;
+            } catch (error) {
+                console.error("Error al generar el prompt de evaluación:", error);
+                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de evaluación! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                updateActionButtonsState(true);
+            }
+        });
+
+        // --- Lógica para generar el prompt de Contenido del Tema ---
+        generateContentBtn.addEventListener('click', () => {
+            loadingSpinner.classList.remove('hidden');
+            generatedPromptOutput.textContent = "Generando prompt de contenido, por favor espera...";
+            updateActionButtonsState(false);
+
+            try {
+                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+
+                const promptText = `
+Actúa como docente del área de ${areaNombre} y necesito que brindes la información completa referente al tema '${escapeBackticks(sessionTopic)}', que le agregues título y subtítulos, además que pongas en negrita la información más importante y subrayes las ideas más significativas y que me brindes un enlace de ejemplo donde estas sacando la información, es para los estudiantes del ${gradoNombre} de ${nivelNombre}. Esa información me servirá como base para mi sesión y que lo usaré para realizar prácticas y evaluaciones mas adelante.
+`;
+                generatedPromptOutput.textContent = promptText;
+            } catch (error) {
+                console.error("Error al generar el prompt de contenido:", error);
+                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de contenido! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                updateActionButtonsState(true);
+            }
+        });
+
+        // --- Lógica para generar el prompt de Sesión Innovadora ---
+        generateInnovativeSessionBtn.addEventListener('click', () => {
+            loadingSpinner.classList.remove('hidden');
+            generatedPromptOutput.textContent = "Generando prompt de sesión innovadora, por favor espera...";
+            updateActionButtonsState(false);
+
+            try {
+                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+
+                const promptText = `
+Eres un docente especialista del área de ${areaNombre}, genera algunas ideas interesantes o novedosas para empezar mi próxima clase, '${escapeBackticks(sessionTopic)}' del ${gradoNombre} de ${nivelNombre}.
+Me gustaría encontrar algunas formas innovadoras de iniciar la sesión para captar la atención de mis estudiantes y crear un ambiente de aprendizaje más participativo.
+También necesito recibir sugerencias que sean específicas para mi tema de enseñanza principal: '${escapeBackticks(sessionTopic)}' y, como sub-tema específico, 'la importancia de la retroalimentación'.
+`;
+                generatedPromptOutput.textContent = promptText;
+            } catch (error) {
+                console.error("Error al generar el prompt de sesión innovadora:", error);
+                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de sesión innovadora! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                updateActionButtonsState(true);
+            }
+        });
+
+
+        // --- Funcionalidad de copiar al portapapeles ---
+        copySessionBtn.addEventListener('click', () => {
+            const promptText = generatedPromptOutput.textContent;
+            // Usa document.execCommand('copy') ya que navigator.clipboard.writeText() puede tener restricciones en iframes
+            const textarea = document.createElement('textarea');
+            textarea.value = promptText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                // Muestra la confirmación
+                copyConfirmation.classList.add('show');
+                copyConfirmation.classList.remove('hidden');
+                setTimeout(() => {
+                    copyConfirmation.classList.remove('show');
+                    copyConfirmation.classList.add('hidden');
+                }, 2000); // Oculta después de 2 segundos
+            } catch (err) {
+                console.error('Error al copiar el texto: ', err);
+                // Si la copia falla, podría mostrar un mensaje de error o una forma alternativa.
+            } finally {
+                document.body.removeChild(textarea); // Elimina el textarea temporal
+            }
+        });
+
+        // --- Funcionalidad de abrir Gemini y ChatGPT ---
+        openGeminiBtn.addEventListener('click', () => {
+            const promptText = generatedPromptOutput.textContent;
+            const url = `https://gemini.google.com/app/chat?text=${encodeURIComponent(promptText)}`;
+            window.open(url, '_blank');
+        });
+
+        openChatGPTBtn.addEventListener('click', () => {
+            const promptText = generatedPromptOutput.textContent;
+            const url = `https://chat.openai.com/?text=${encodeURIComponent(promptText)}`;
+            window.open(url, '_blank');
+        });
+
+        // --- Lógica de inicio de sesión ---
+        loginBtn.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            const pin = pinInput.value.trim();
+
+            if (username === VALID_USERNAME && pin === VALID_PIN) {
+                loginContainer.classList.add('hidden');
+                mainAppContainer.classList.remove('hidden');
+                populateNiveles(); // Llenar los niveles educativos al cargar la página
+                populateEnfoquesTransversales(); // Llenar los enfoques transversales al cargar la página
+            } else {
+                loginMessage.classList.remove('hidden');
+                setTimeout(() => {
+                    loginMessage.classList.add('hidden');
+                }, 3000); // Ocultar mensaje después de 3 segundos
+            }
+        });
+
+        // Permitir inicio de sesión con Enter en el campo PIN
+        pinInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                loginBtn.click(); // Simular clic en el botón de inicio de sesión
+            }
+        });
+
+        // --- Lógica para cerrar sesión ---
+        logoutBtn.addEventListener('click', () => {
+            // Cambiar el color del botón a verde para indicar cierre de sesión
+            logoutBtn.classList.add('logging-out');
+            logoutBtn.textContent = 'Cerrando...';
+
+            setTimeout(() => {
+                // Limpiar campos de entrada y prompt generado
+                ieNameInput.value = '';
+                teacherNameInput.value = '';
+                sessionTopicInput.value = '';
+                
+                // Resetear todos los selects y checkbox containers
+                // Llamar a resetSelect en cada elemento para asegurar que el prompt se resetea también
+                resetSelect(nivelSelect);
+                resetSelect(cicloSelect);
+                resetSelect(gradoSelect);
+                resetSelect(areaSelect);
+                resetSelect(competenciaCheckboxesContainer);
+                resetSelect(capacidadCheckboxesContainer);
+                resetSelect(enfoquesTransversalesCheckboxesContainer); 
+                sessionDurationSelect.value = ''; // Resetear duración de sesión
+                
+                // Re-poblar los niveles y enfoques para el siguiente inicio de sesión
+                populateNiveles();
+                populateEnfoquesTransversales();
+                
+                // Ocultar la aplicación principal y mostrar el contenedor de inicio de sesión
+                mainAppContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+                
+                // Limpiar campos de login
+                usernameInput.value = '';
+                pinInput.value = '';
+                usernameInput.focus(); // Poner el foco en el campo de usuario
+
+                // Restablecer el botón de cerrar sesión a su estado original
+                logoutBtn.classList.remove('logging-out');
+                logoutBtn.textContent = 'Cerrar Sesión';
+                updateActionButtonsState(false); // Deshabilitar botones de acción después de cerrar sesión
+
+            }, 500); // Retraso de 500ms para la animación del botón
+        });
+
+    </script>
+    <!-- Footer con el aviso de copyright -->
+    <footer class="mt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+        &copy; 2025 Copy Right Milton Ruiz
+    </footer>
+</body>
+</html>
