@@ -62,5 +62,3 @@ Incluye sugerencias de retroalimentación constructiva y oportuna para estudiant
 * Módulo de informes trimestrales y actas.
 
 ---
-
-¿Deseas que prepare también un **modelo real de sesión** generada con PunkuOpen para incluirlo como ejemplo? Puedo hacerlo con el tema o área que prefieras.
