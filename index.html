@@ -1730,47 +1730,53 @@
                     nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
                 } = getSessionParameters();
 
-                // Calculate durations dynamically
-                const inicioDuration = Math.round(totalDurationMinutes * 0.20);
-                const desarrolloDuration = Math.round(totalDurationMinutes * 0.65);
+                // Variables para completar el cuadro informativo oficial
+                const directorName = "____________________";
+                const coordinadorName = "____________________";
+
+                // Distribución de tiempos pedagógicos (Inicio 15%, Desarrollo 70%, Cierre 15%)
+                const inicioDuration = Math.round(totalDurationMinutes * 0.15);
+                const desarrolloDuration = Math.round(totalDurationMinutes * 0.70);
                 const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
 
-                // --- Section contents (placeholders for AI) ---
+                // --- Contenidos de las secciones (Optimización Técnica CNEB) ---
                 const inicioContenido = `
-- El docente da la bienvenida a los estudiantes y presenta el objetivo de la sesión.
-- Se retoman las normas de convivencia para un ambiente de aprendizaje óptimo.
-- Se realiza una actividad de motivación (ej. una pregunta desafiante, un video corto, una imagen impactante) relacionada con el tema de la sesión.
-- Se recoge los saberes previos de los estudiantes mediante preguntas abiertas o una lluvia de ideas.
-- Se establece el propósito de la sesión de manera clara y concisa.
+- Soporte socioemocional y normas de convivencia.
+- Motivación: Presentar una situación significativa o reto real sobre "${sessionTopic}".
+- Saberes previos: Recuperar saberes mediante preguntas mediadoras.
+- Conflicto cognitivo: Plantear una pregunta desafiante que genere necesidad de aprendizaje.
+- Propósito: Comunicar la competencia, el producto y los criterios de evaluación.
 `.trim();
 
                 const desarrolloContenido = `
-- El docente presenta la información clave del tema utilizando recursos variados (ej. material didáctico, presentaciones, textos, videos).
-- Se promueve el diálogo y la participación activa de los estudiantes a través de preguntas, debates o actividades colaborativas.
-- Los estudiantes trabajan individualmente o en grupos en actividades que les permitan aplicar los nuevos conocimientos y desarrollar las capacidades seleccionadas.
-- El docente monitorea el proceso de aprendizaje, brindando retroalimentación formativa y resolviendo dudas.
-- Se promueve la reflexión crítica sobre el tema y se conecta con situaciones de la vida real.
+- Gestión y acompañamiento: Facilitar el procesamiento de la información de "${sessionTopic}".
+- Procesos didácticos: Aplicar la secuencia específica del área de ${areaNombre}.
+- Aplicación: Desarrollar actividades que movilicen las capacidades y generen evidencias.
+- Retroalimentación: Describir cómo el docente guiará el aprendizaje de forma descriptiva.
 `.trim();
 
                 const cierreContenido = `
-- Se realiza una síntesis de lo aprendido en la sesión, resaltando los puntos clave.
-- Se fomenta la metacognición a través de preguntas como: ¿Qué aprendimos hoy?, ¿Cómo lo aprendimos?, ¿Para qué nos sirve lo aprendido?.
-- Se resuelve dudas finales y se consolida la comprensión del tema.
-- Se asigna una actividad de extensión o tarea relacionada con el tema para la siguiente sesión.
+- Evaluación y sistematización: Consolidar los aprendizajes y verificar el logro del propósito.
+- Metacognición: Reflexionar sobre dificultades y logros del proceso de aprendizaje.
+- Transferencia: Aplicar lo aprendido en "${sessionTopic}" a situaciones cotidianas.
 `.trim();
 
                 // --- Constructing sections in plain text format ---
 
-                // 1. Datos Informativos
+                // 1. Datos Informativos (Formato oficial MINEDU)
                 const datosInformativosContent = `
 ---
 ### I. DATOS INFORMATIVOS
-Nombre de la I.E.: ${ieName}
-Nombre del Docente: ${teacherName}
-Nivel: ${nivelNombre}
-Grado: ${gradoNombre}
-Área: ${areaNombre}
-Fecha: ${currentDate}
+- **Institución Educativa:** ${ieName}
+- **Director(a):** ${directorName}
+- **Coordinador(a):** ${coordinadorName}
+- **Docente:** ${teacherName}
+- **Nivel / Ciclo:** ${nivelNombre} / ${cicloNombre}
+- **Grado y Sección:** ${gradoNombre}
+- **Área Curricular:** ${areaNombre}
+- **Fecha:** ${currentDate}
+- **Título de la Sesión:** "${sessionTopic}"
+- **Duración Total:** ${totalDurationMinutes} minutos
 ---
 `.trim();
 
