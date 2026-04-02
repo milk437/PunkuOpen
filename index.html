@@ -1756,22 +1756,39 @@
 - TRANSFERENCIA: Propone una actividad final donde el alumno aplique lo aprendido a un contexto real de su vida diaria en su comunidad, evitando las tareas tradicionales repetitivas.
 `.trim();
 
-                // --- Constructing sections in plain text format ---
+                // --- Lógica para determinar Ciclo según Nivel y Grado (Soporta Inicial, Primaria y Secundaria) ---
+let cicloCalculado = "";
+const g = parseInt(selectedGradoKey);
 
-                // 1. Datos Informativos
-                const datosInformativosContent = `
+if (selectedNivelKey === 'primaria') {
+    if (g <= 2) cicloCalculado = "Ciclo III";
+    else if (g <= 4) cicloCalculado = "Ciclo IV";
+    else cicloCalculado = "Ciclo V";
+} else if (selectedNivelKey === 'secundaria') {
+    if (g <= 2) cicloCalculado = "Ciclo VI";
+    else cicloCalculado = "Ciclo VII";
+} else {
+    cicloCalculado = "Ciclo I/II"; // Inicial
+}
+
+// 1. DATOS INFORMATIVOS (Administrativa Completa)
+const datosInformativosContent = `
 ---
 ### I. DATOS INFORMATIVOS
-* **Nombre de la I.E.:** ${ieName}
-* **Nombre del Docente:** ${teacherName}
+* **Institución Educativa:** ${ieName}
+* **Director(a):** [IA: Espacio para firma o nombre del directivo]
+* **Coordinador(a) Pedagógico(a):** [IA: Espacio para firma o nombre del coordinador]
+* **Docente:** ${teacherName}
 * **Nivel:** ${nivelNombre}
-* **Grado:** ${gradoNombre}
+* **Ciclo:** ${cicloCalculado} 
+* **Grado y Sección:** ${gradoNombre} - "${seccionNombre || 'Única'}"
 * **Área:** ${areaNombre}
+* **Duración:** ${totalDurationMinutes} minutos
 * **Fecha:** ${currentDate}
 ---
 `.trim();
 
-                // 2. Propósito de Aprendizaje (Limpio y Funcional)
+// 2. PROPÓSITO DE APRENDIZAJE (Tabla Limpia sin redundancia genérica)
 let propositoAprendizajeContent = `
 ---
 ### II. PROPÓSITO DE APRENDIZAJE
@@ -1781,186 +1798,97 @@ let propositoAprendizajeContent = `
   * **Competencias:** ${selectedCompetenceNames.join(', ')}
   * **Capacidades:** ${selectedCapacitiesTexts.join(', ')}
 
-- **ACCIÓN TÉCNICA:** Redacta los 'Desempeños Precisados' y 'Criterios de Evaluación' vinculándolos estrictamente al tema '${escapeBackticks(sessionTopic)}'. No uses frases genéricas; sé específico con el contenido pedagógico.
+- **ACCIÓN TÉCNICA:** Redacta los 'Desempeños Precisados' y 'Criterios de Evaluación' vinculándolos estrictamente al tema '${escapeBackticks(sessionTopic)}'. No uses frases genéricas; sé específico.
 
 * **Instrumento de Evaluación sugerido:** [IA: Sugiere Rúbrica Analítica o Lista de Cotejo según la evidencia].
 
 **Propósito de la Sesión:**
-[IA: Redacta un párrafo detallando la meta de aprendizaje, qué lograrán los estudiantes y su utilidad en el contexto real de la región].
+[IA: Redacta un párrafo detallando la meta de aprendizaje y su utilidad en el contexto real de los estudiantes].
 
 **Evidencia de Aprendizaje:**
-[IA: Describe el producto o actuación tangible que el estudiante realizará para demostrar lo aprendido].
+[IA: Describe el producto o actuación tangible que demostrará el aprendizaje].
 ---
 `.trim();
 
-// Mantendremos esta parte vacía de textos genéricos para que la IA no se distraiga,
-// pero conservamos la estructura si necesitas mapear algo más en el futuro.
-selectedCompetenceNames.forEach(compName => {
-    // Aquí podrías añadir lógica interna si fuera necesario, 
-    // pero para el prompt, la tabla superior ya es suficiente y más limpia.
-});
-
-                selectedCompetenceNames.forEach(compName => {
-                    let competenceObject = null;
-                    if (selectedAreaKey === 'competenciasTransversales') {
-                        competenceObject = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales.find(c => c.nombre === compName);
-                    } else {
-                        competenceObject = cnebData.nivelesEducativos[selectedNivelKey]?.areas[selectedAreaKey]?.competencias.find(c => c.nombre === compName);
-                    }
-
-                    if (competenceObject) {
-                        const relevantCapacities = competenceObject.capacidades ? selectedCapacitiesTexts.filter(capText => competenceObject.capacidades.includes(capText)) : [];
-                        
-                        propositoAprendizajeContent += `\n\n**Competencia:** ${escapeBackticks(competenceObject.nombre)}`;
-                        propositoAprendizajeContent += `\n- **Capacidades:**`;
-                        relevantCapacities.forEach(cap => {
-                            propositoAprendizajeContent += `\n  - ✓ ${escapeBackticks(cap)}`;
-                        });
-                        
-                        const desempenosEjemplo = [
-                            `Desempeños relevantes para la competencia '${escapeBackticks(competenceObject.nombre)}' y sus capacidades seleccionadas.`,
-                            `El estudiante demuestra dominio de '${escapeBackticks(competenceObject.nombre)}' en el contexto de la sesión.`
-                        ];
-                        const criteriosEvaluacionEjemplo = [
-                            `Identifica y aplica los conceptos clave de '${escapeBackticks(competenceObject.nombre)}'.`,
-                            `Analiza situaciones utilizando las capacidades de '${escapeBackticks(competenceObject.nombre)}'.`,
-                            `Produce soluciones o reflexiones basadas en '${escapeBackticks(competenceObject.nombre)}'.`
-                        ];
-                        const instrumentosEvaluacionEjemplo = [
-                            "Lista de cotejo",
-                            "Rúbrica de evaluación"
-                        ];
-
-                        propositoAprendizajeContent += `\n- **Desempeños:**`;
-                        desempenosEjemplo.forEach(desempeno => {
-                            propositoAprendizajeContent += `\n  - ✓ ${desempeno}`;
-                        });
-
-                        propositoAprendizajeContent += `\n- **Criterios de Evaluación:**`;
-                        criteriosEvaluacionEjemplo.forEach(criterio => {
-                            propositoAprendizajeContent += `\n  - ✓ ${criterio}`;
-                        });
-
-                        propositoAprendizajeContent += `\n- **Instrumento de Evaluación:**`;
-                        instrumentosEvaluacionEjemplo.forEach(instrumento => {
-                            propositoAprendizajeContent += `\n  - ✓ ${instrumento}`;
-                        });
-                    }
-                });
-
-                propositoAprendizajeContent += `\n\n**Propósito:**\nEl propósito de la sesión es... *(párrafo resumido y conciso líneas que describa detalladamente la meta del aprendizaje, alineada a la competencia)*`;
-                propositoAprendizajeContent += `\n\n**Evidencia:**\nLa evidencia será... *(párrafo breve con líneas que detalle lo que el estudiante hará para demostrar lo aprendido en la sesión)*`;
-                propositoAprendizajeContent += `\n---`;
-
-
-// 3. Competencias Transversales
-                let competenciasTransversalesContent = `
+// 3. COMPETENCIAS TRANSVERSALES
+let competenciasTransversalesContent = `
 ---
 ### COMPETENCIAS TRANSVERSALES
 `.trim();
-                const competenciasTransversales = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales || []; 
-                competenciasTransversales.forEach(ct => {
-                    competenciasTransversalesContent += `\n\n**Competencia Transversal:** ${escapeBackticks(ct.nombre)}`;
-                    competenciasTransversalesContent += `\n- **Capacidades:**`;
-                    ct.capacidades.forEach(cap => {
-                        competenciasTransversalesContent += `\n  - ✓ ${escapeBackticks(cap)}`;
-                    });
-                    // Instrucción para que la IA aplique la competencia al tema
-                    competenciasTransversalesContent += `\n* [IA: Explica cómo el estudiante aplicará esta competencia transversal específicamente durante esta sesión]`;
-                });
-                competenciasTransversalesContent += `\n---`;
+const competenciasTransversales = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales || []; 
+competenciasTransversales.forEach(ct => {
+    competenciasTransversalesContent += `\n\n**Competencia Transversal:** ${escapeBackticks(ct.nombre)}`;
+    competenciasTransversalesContent += `\n- **Capacidades:**`;
+    ct.capacidades.forEach(cap => {
+        competenciasTransversalesContent += `\n  - ✓ ${escapeBackticks(cap)}`;
+    });
+    competenciasTransversalesContent += `\n* [IA: Explica brevemente cómo el estudiante aplicará esta competencia en la sesión]`;
+});
+competenciasTransversalesContent += `\n---`;
 
-                // 4. Enfoques Transversales
-                let enfoquesTransversalesContent = `
+// 4. ENFOQUES TRANSVERSALES
+let enfoquesTransversalesContent = `
 ---
 ### ENFOQUES TRANSVERSALES
 `.trim();
-                selectedEnfoqueNames.forEach(enfoqueName => {
-                    const enfoqueObject = enfoquesTransversalesData.find(e => e.enfoque === enfoqueName);
-                    if (enfoqueObject) {
-                        enfoquesTransversalesContent += `\n\n**Enfoque:** ${escapeBackticks(enfoqueObject.enfoque)}`;
-                        enfoquesTransversalesContent += `\n- **Valores:** ${escapeBackticks(enfoqueObject.valores)}`;
-                        enfoquesTransversalesContent += `\n- **Actitudes / Acciones Observables:**`;
-                        escapeBackticks(enfoqueObject.actitudes).split('\n').forEach(actitud => {
-                            if (actitud.trim() !== '') {
-                                enfoquesTransversalesContent += `\n  - ${actitud.trim()}`;
-                            }
-                        });
-                        // Instrucción para contextualizar el enfoque en el aula
-                        enfoquesTransversalesContent += `\n* [IA: Describe una acción concreta que el docente Milton Ruiz realizará para vivenciar este enfoque en el aula]`;
-                    }
-                });
-                enfoquesTransversalesContent += `\n---`;
+selectedEnfoqueNames.forEach(enfoqueName => {
+    const enfoqueObject = enfoquesTransversalesData.find(e => e.enfoque === enfoqueName);
+    if (enfoqueObject) {
+        enfoquesTransversalesContent += `\n\n**Enfoque:** ${escapeBackticks(enfoqueObject.enfoque)}`;
+        enfoquesTransversalesContent += `\n- **Valores:** ${escapeBackticks(enfoqueObject.valores)}`;
+        enfoquesTransversalesContent += `\n- **Actitudes / Acciones Observables:**`;
+        escapeBackticks(enfoqueObject.actitudes).split('\n').forEach(actitud => {
+            if (actitud.trim() !== '') {
+                enfoquesTransversalesContent += `\n  - ${actitud.trim()}`;
+            }
+        });
+        enfoquesTransversalesContent += `\n* [IA: Describe una acción concreta que el docente Milton Ruiz realizará para vivenciar este enfoque]`;
+    }
+});
+enfoquesTransversalesContent += `\n---`;
 
+// 5. SECUENCIA DIDÁCTICA (Tabla Profesional)
+const formattedInicioContent = inicioContenido.replace(/\n/g, '<br>').trim();
+const formattedDesarrolloContent = desarrolloContenido.replace(/\n/g, '<br>').trim();
+const formattedCierreContent = cierreContenido.replace(/\n/g, '<br>').trim();
 
-                // 5. Secuencia Didáctica (Estructura optimizada para legibilidad)
-                const formattedInicioContent = inicioContenido.replace(/\n\n/g, '\n').replace(/^- /gm, '- ').trim();
-                const formattedDesarrolloContent = desarrolloContenido.replace(/\n\n/g, '\n').replace(/^- /gm, '- ').trim();
-                const formattedCierreContent = cierreContenido.replace(/\n\n/g, '\n').replace(/^- /gm, '- ').trim();
-
-                const secuenciaDidacticaContent = `
+const secuenciaDidacticaContent = `
 ---
 ### III. SECUENCIA DIDÁCTICA
 
 | MOMENTO | PROCESOS PEDAGÓGICOS Y ACTIVIDADES DE APRENDIZAJE | TIEMPO |
 | :--- | :--- | :--- |
-| **INICIO** | ${formattedInicioContent.replace(/\n/g, '<br>')} | ${inicioDuration} min |
-| **DESARROLLO** | ${formattedDesarrolloContent.replace(/\n/g, '<br>')} | ${desarrolloDuration} min |
-| **CIERRE** | ${formattedCierreContent.replace(/\n/g, '<br>')} | ${cierreDuration} min |
+| **INICIO** | ${formattedInicioContent} | ${inicioDuration} min |
+| **DESARROLLO** | ${formattedDesarrolloContent} | ${desarrolloDuration} min |
+| **CIERRE** | ${formattedCierreContent} | ${cierreDuration} min |
 ---
 `.trim();
 
-                // 6. Bibliografía (Instrucción de rigor académico)
-                const bibliografiaContent = `
+// 6. BIBLIOGRAFÍA
+const bibliografiaContent = `
 ---
 ### BIBLIOGRAFÍA
-
-**INSTRUCCIÓN PARA LA IA:** Genera 3 fuentes bibliográficas reales y actualizadas en formato APA 7ma Edición.
-1. Una fuente debe ser el Currículo Nacional vigente (MINEDU).
-2. Una fuente de un autor reconocido sobre didáctica del área de ${areaNombre}.
-3. Una fuente sobre estrategias de aprendizaje o neuroeducación aplicadas a secundaria.
+**INSTRUCCIÓN:** Genera 3 fuentes reales (APA 7) sobre el tema y el área de ${areaNombre}.
 ---
 `.trim();
 
+// CONSTRUCCIÓN FINAL (Muda y Profesional)
+const promptText = `
+[CONTEXTO]: Actúa como Especialista Pedagógico de la IE ${ieName}. Redacción humana, técnica y directa.
 
-                // Construcción final del texto del prompt con las nuevas secciones
-                const promptText = `
-Actúa como un Docente Experto en Comunicación y especialista en el Currículo Nacional (CNEB) del área de ${areaNombre}, con amplia trayectoria en la IE ${ieName}. Tu tono es profesional, pedagógico, inspirador y riguroso.
+[REGLA DE ORO]: PROHIBIDO SALUDAR. No des introducciones como "Claro, aquí tienes...". No des conclusiones al final. Genera el documento directamente, empezando en el título y terminando en la bibliografía.
 
-Tu objetivo es generar una sesión de aprendizaje completa para los estudiantes de ${gradoNombre} de ${nivelNombre}, con una duración total de ${totalDurationMinutes} minutos. La sesión debe ser 100% realizable en un aula real, considerando la realidad sociocultural del estudiante. 
-
-**Título de la Sesión:** [IA: Crea un título creativo, motivador y relevante sobre el tema: ${escapeBackticks(sessionTopic)}]
+**Título de la Sesión:** [IA: Título creativo sobre ${escapeBackticks(sessionTopic)}]
 
 ${datosInformativosContent}
-
 ${propositoAprendizajeContent}
-
 ${competenciasTransversalesContent}
-
 ${enfoquesTransversalesContent}
-
 ${secuenciaDidacticaContent}
-
 ${bibliografiaContent}
 
-**INDICACIONES FINALES PARA LA IA:**
-1. COHERENCIA PEDAGÓGICA TOTAL: Asegura una alineación estricta entre Competencia, Propósito, Evidencia y Criterios de Evaluación. No propongas actividades que no evalúen directamente el desempeño seleccionado.
-2. PROGRESIÓN DIDÁCTICA: Garantiza una transición fluida entre Inicio (conflicto cognitivo), Desarrollo (procesamiento y aplicación) y Cierre (metacognición y transferencia).
-3. NO REDUNDANCIA: Evita la repetición de ideas o frases entre secciones. Cada párrafo debe aportar valor pedagógico nuevo y específico.
-4. RIGOR ACADÉMICO: Mantén un lenguaje formal, técnico (terminología CNEB) y claro. Si incluyes cuestionarios, la distribución de claves de respuesta debe ser COMPLETAMENTE ALEATORIA.
-5. DISEÑO VISUAL Y LEGIBILIDAD: Utiliza Markdown, negritas para conceptos clave, tablas para datos técnicos, viñetas y saltos de línea dobles para evitar bloques de texto densos y facilitar la lectura inmediata al docente.
-6. IDIOMA: Generar el contenido estrictamente en castellano.
+[FIN DEL DOCUMENTO]
 `;
-
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt de la sesión principal:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de la sesión principal! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
 
 // --- Lógica para generar el prompt de Rúbrica ---
         generateRubricBtn.addEventListener('click', () => {
