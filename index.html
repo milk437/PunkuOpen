@@ -1716,221 +1716,102 @@
             return String(text || '').replace(/`/g, '\\`');
         };
 
-       // --- Lógica para generar el prompt de la Sesión Principal ---
-        generatePromptBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt, por favor espera...";
-            updateActionButtonsState(false);
+       // --- Lógica para generar el prompt de la Sesión Principal (VERSIÓN PROFESIONAL) ---
+generatePromptBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando estructura pedagógica profesional...";
+    updateActionButtonsState(false);
 
-            try {
-                const {
-                    ieName, teacherName, sessionTopic, totalDurationMinutes,
-                    selectedNivelKey, selectedCicloKey, selectedGradoKey, selectedAreaKey,
-                    selectedCompetenceNames, selectedCapacitiesTexts, selectedEnfoqueNames,
-                    nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
-                } = getSessionParameters();
+    try {
+        const {
+            ieName, teacherName, sessionTopic, totalDurationMinutes,
+            selectedNivelKey, selectedCicloKey, selectedGradoKey, selectedAreaKey,
+            selectedCompetenceNames, selectedCapacitiesTexts, selectedEnfoqueNames,
+            nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
+        } = getSessionParameters();
 
-                // Variables institucionales oficiales
-                const directorName = "____________________";
-                const coordinadorName = "____________________";
+        const inicioDuration = Math.round(totalDurationMinutes * 0.15);
+        const desarrolloDuration = Math.round(totalDurationMinutes * 0.70);
+        const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
 
-                // Distribución de tiempos pedagógicos (Ajuste técnico 15-70-15)
-                const inicioDuration = Math.round(totalDurationMinutes * 0.15);
-                const desarrolloDuration = Math.round(totalDurationMinutes * 0.70);
-                const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
+        // Construcción del Prompt con Rigor de Especialista CNEB
+        const promptText = `
+Actúa como un Especialista Pedagógico de la UGEL con amplia trayectoria. Tu objetivo es redactar una SESIÓN DE APRENDIZAJE ROBUSTA y TÉCNICA para el área de ${areaNombre}.
 
-                // --- Contenidos de las secciones (Instrucciones de alto rigor pedagógico) ---
-                const inicioContenido = `
-- Soporte socioemocional y acuerdos de convivencia.
-- Motivación: Diseñar una situación significativa o reto real contextualizado sobre "${sessionTopic}".
-- Saberes previos: Recuperar saberes mediante preguntas mediadoras y dinámicas.
-- Conflicto cognitivo: Plantear una pregunta desafiante que genere necesidad de aprendizaje.
-- Propósito: Comunicar la competencia, el producto/evidencia y los criterios de evaluación.
-`.trim();
+**IMPORTANTE: Prohibido incluir saludos, introducciones o comentarios al final. Entrega directamente el documento técnico.**
 
-                const desarrolloContenido = `
-- Gestión y acompañamiento: Facilitar el procesamiento de la información nueva sobre "${sessionTopic}".
-- Procesos didácticos: Aplicar la secuencia específica del área de ${areaNombre} según el CNEB.
-- Aplicación: Desarrollar actividades de alta demanda cognitiva que movilicen las capacidades.
-- Retroalimentación: Describir intervenciones del docente para realizar retroalimentación descriptiva.
-`.trim();
-
-                const cierreContenido = `
-- Evaluación y sistematización: Consolidar los aprendizajes clave y verificar el logro del propósito.
-- Metacognición: Reflexionar sobre el proceso (¿Qué aprendimos? ¿Qué dificultades tuvimos?).
-- Transferencia: Sugerir cómo aplicar lo aprendido en "${sessionTopic}" en la vida cotidiana.
-`.trim();
-
-                // --- 1. Datos Informativos (Formato oficial MINEDU) ---
-                const datosInformativosContent = `
 ---
+# SESIÓN DE APRENDIZAJE: "[IA: Título creativo y técnico sobre ${sessionTopic}]"
+
 ### I. DATOS INFORMATIVOS
-- **Institución Educativa:** ${ieName}
-- **Director(a):** ${directorName}
-- **Coordinador(a):** ${coordinadorName}
-- **Docente:** ${teacherName}
-- **Nivel / Ciclo:** ${nivelNombre} / ${cicloNombre}
-- **Grado y Sección:** ${gradoNombre}
-- **Área Curricular:** ${areaNombre}
-- **Fecha:** ${currentDate}
-- **Título de la Sesión:** "${sessionTopic}"
-- **Duración Total:** ${totalDurationMinutes} minutos
+- **I.E.:** ${ieName}
+- **DOCENTE:** ${teacherName}
+- **GRADO Y SECCIÓN:** ${gradoNombre} - ${cicloNombre}
+- **ÁREA:** ${areaNombre}
+- **DURACIÓN:** ${totalDurationMinutes} min
+- **FECHA:** ${currentDate}
+
+### II. PROPÓSITOS DE APRENDIZAJE
+[IA: Genera una TABLA con las columnas: Competencia/Capacidades | Desempeños Precisados | Criterios de Evaluación | Evidencia de Aprendizaje | Inst. de Evaluación].
+*Usa las competencias: ${selectedCompetenceNames.join(', ')}.*
+*Usa las capacidades: ${selectedCapacitiesTexts.join(', ')}.*
+
+**Propósito de la sesión:** [IA: Redacta un párrafo técnico y humano sobre la meta de aprendizaje de ${sessionTopic}].
+
+### III. ENFOQUES TRANSVERSALES
+- **Enfoque:** ${selectedEnfoqueNames.join(', ')}
+- **Valores/Actitudes:** [IA: Describe brevemente cómo se vivencia en la sesión].
+
+### IV. SECUENCIA DIDÁCTICA
+[IA: Presenta esta sección obligatoriamente en una TABLA con: MOMENTOS | ACTIVIDADES Y ESTRATEGIAS (Procesos Pedagógicos/Didácticos) | TIEMPO].
+
+**Dentro de la tabla, detalla:**
+- **INICIO (${inicioDuration} min):**
+  * Motivación: Plantea una situación significativa real y retadora sobre ${sessionTopic}.
+  * Saberes previos y Conflicto cognitivo: Preguntas de alta demanda cognitiva.
+  * Comunicación del propósito y criterios.
+
+- **DESARROLLO (${desarrolloDuration} min):**
+  * Aplicación de procesos didácticos de ${areaNombre}.
+  * Gestión y Acompañamiento: Describe cómo el docente media el aprendizaje y monitorea.
+  * Actividades: Tareas de análisis o creación.
+  * Retroalimentación: Detalla cómo se realizará la mediación durante la práctica.
+
+- **CIERRE (${cierreDuration} min):**
+  * Sistematización de ideas fuerza.
+  * Metacognición: Preguntas de reflexión profunda.
+  * Transferencia: Aplicación en la vida real.
+
+### V. RECURSOS Y BIBLIOGRAFÍA
+[IA: Cita al MINEDU, CNEB y un autor relevante de ${areaNombre} en APA].
+
 ---
+**PAUTAS DE REDACCIÓN:**
+1. No uses "Yo haré"; usa "Se propicia el diálogo", "Se acompaña el proceso", "Los estudiantes confrontan".
+2. Estilo docente: Técnico pero aplicable.
+3. Formato: Markdown limpio con tablas de fácil lectura.
 `.trim();
 
-                // --- 2. Propósito de Aprendizaje (Generación dinámica de Desempeños y Criterios) ---
-                let propositoAprendizajeContent = `
----
-### II. PROPÓSITO DE APRENDIZAJE
-`.trim();
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error al generar el prompt:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-                selectedCompetenceNames.forEach(compName => {
-                    let competenceObject = null;
-                    if (selectedAreaKey === 'competenciasTransversales') {
-                        competenceObject = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales.find(c => c.nombre === compName);
-                    } else {
-                        competenceObject = cnebData.nivelesEducativos[selectedNivelKey]?.areas[selectedAreaKey]?.competencias.find(c => c.nombre === compName);
-                    }
+// --- Lógica para generar el prompt de Rúbrica ---
+generateRubricBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de rúbrica, por favor espera...";
+    updateActionButtonsState(false);
 
-                    if (competenceObject) {
-                        const relevantCapacities = competenceObject.capacidades ? selectedCapacitiesTexts.filter(capText => competenceObject.capacidades.includes(capText)) : [];
-                        
-                        propositoAprendizajeContent += `\n\n**Competencia:** ${escapeBackticks(competenceObject.nombre)}`;
-                        propositoAprendizajeContent += `\n- **Capacidades:**`;
-                        relevantCapacities.forEach(cap => {
-                            propositoAprendizajeContent += `\n  - ✓ ${escapeBackticks(cap)}`;
-                        });
-                        
-                        propositoAprendizajeContent += `\n- **Desempeños:**`;
-                        propositoAprendizajeContent += `\n  - ✓ [IA: Redacta desempeños precisos para el tema "${sessionTopic}" basados en el estándar del ciclo ${cicloNombre}].`;
-                        propositoAprendizajeContent += `\n  - ✓ [IA: Describe la actuación del estudiante que demuestre dominio de esta competencia].`;
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
-                        propositoAprendizajeContent += `\n- **Criterios de Evaluación:**`;
-                        propositoAprendizajeContent += `\n  - ✓ [IA: Crea criterios específicos que evalúen cómo el alumno aplica "${sessionTopic}" en la sesión].`;
-                        propositoAprendizajeContent += `\n  - ✓ [IA: Asegura que el criterio evalúe la capacidad y el contenido temático de forma coherente].`;
-
-                        propositoAprendizajeContent += `\n- **Instrumento de Evaluación:**`;
-                        propositoAprendizajeContent += `\n  - ✓ Lista de cotejo / Rúbrica de evaluación detallada.`;
-                    }
-                });
-
-                propositoAprendizajeContent += `\n\n**Propósito de la Sesión:**\n[IA: Redacta un párrafo de 6 líneas sobre la meta de aprendizaje de "${sessionTopic}"].`;
-                propositoAprendizajeContent += `\n\n**Evidencia de Aprendizaje:**\n[IA: Detalla qué producto o actuación tangible entregará el estudiante].`;
-                propositoAprendizajeContent += `\n---`;
-
-                // --- 3. Competencias Transversales ---
-                let competenciasTransversalesContent = `
----
-### COMPETENCIAS TRANSVERSALES
-`.trim();
-                const competenciasTransversales = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales || []; 
-                competenciasTransversales.forEach(ct => {
-                    competenciasTransversalesContent += `\n\n**Competencia Transversal:** ${escapeBackticks(ct.nombre)}`;
-                    competenciasTransversalesContent += `\n- **Capacidades:**`;
-                    ct.capacidades.forEach(cap => {
-                        competenciasTransversalesContent += `\n  - ✓ ${escapeBackticks(cap)}`;
-                    });
-                });
-                competenciasTransversalesContent += `\n---`;
-
-                // --- 4. Enfoques Transversales ---
-                let enfoquesTransversalesContent = `
----
-### ENFOQUES TRANSVERSALES
-`.trim();
-                selectedEnfoqueNames.forEach(enfoqueName => {
-                    const enfoqueObject = enfoquesTransversalesData.find(e => e.enfoque === enfoqueName);
-                    if (enfoqueObject) {
-                        enfoquesTransversalesContent += `\n\n**Enfoque:** ${escapeBackticks(enfoqueObject.enfoque)}`;
-                        enfoquesTransversalesContent += `\n- **Valores:** ${escapeBackticks(enfoqueObject.valores)}`;
-                        enfoquesTransversalesContent += `\n- **Actitudes / Acciones Observables:**`;
-                        escapeBackticks(enfoqueObject.actitudes).split('\\n').forEach(actitud => {
-                            if (actitud.trim() !== '') {
-                                enfoquesTransversalesContent += `\n  - ${actitud.trim()}`;
-                            }
-                        });
-                    }
-                });
-                enfoquesTransversalesContent += `\n---`;
-
-                // --- 5. Secuencia Didáctica ---
-                const formattedInicioContent = inicioContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
-                const formattedDesarrolloContent = desarrolloContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
-                const formattedCierreContent = cierreContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
-
-                const secuenciaDidacticaContent = `
----
-### III. SECUENCIA DIDÁCTICA
-
-**MOMENTO: INICIO**
-**Tiempo:** ${inicioDuration} minutos
-**Actividades de Aprendizaje (Procesos Pedagógicos):**
-${formattedInicioContent}
-
-**MOMENTO: DESARROLLO**
-**Tiempo:** ${desarrolloDuration} minutos
-**Actividades de Aprendizaje (Procesos Pedagógicos):**
-${formattedDesarrolloContent}
-
-**MOMENTO: CIERRE**
-**Tiempo:** ${cierreDuration} minutos
-**Actividades de Aprendizaje (Procesos Pedagógicos):**
-${formattedCierreContent}
----
-`.trim();
-
-                // --- 6. Bibliografía ---
-                const bibliografiaContent = `
-### BIBLIOGRAFÍA
-Sugerir al menos tres fuentes (MINEDU, CNEB y autores especialistas) relacionadas con ${areaNombre} en formato APA.
-`.trim();
-
-                // --- Construcción Final del Prompt ---
-                const promptText = `
-Eres un docente experto del área de ${areaNombre} en la IE ${ieName}, especialista en el CNEB del Perú.
-
-Elabora una sesión de aprendizaje detallada para estudiantes de ${gradoNombre} de ${nivelNombre}, con una duración de ${totalDurationMinutes} minutos.
-
-**Título de la Sesión:** [IA: Crea un título creativo y relevante para el tema: ${sessionTopic}]
-
-${datosInformativosContent}
-
-${propositoAprendizajeContent}
-
-${competenciasTransversalesContent}
-
-${enfoquesTransversalesContent}
-
-${secuenciaDidacticaContent}
-
-${bibliografiaContent}
-
-**INSTRUCCIONES FINALES:**
-1. **Rigor CNEB:** Asegura la coherencia entre competencia, capacidad, desempeño y criterio.
-2. **Contextualización:** No generes respuestas genéricas; todo el contenido debe centrarse en "${sessionTopic}".
-3. **Didáctica Real:** Propon actividades prácticas que un docente pueda aplicar en un aula real.
-4. **Formato:** Usa Markdown limpio (negritas y viñetas) para facilitar la lectura.
-`;
-
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt:", error);
-                generatedPromptOutput.textContent = `Error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
-        // --- Lógica para generar el prompt de Rúbrica ---
-        generateRubricBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de rúbrica, por favor espera...";
-            updateActionButtonsState(false);
-
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
-
-                const promptText = `
+        const promptText = `
 Actúa como especialista en evaluación formativa del CNEB. Elabora una rúbrica analítica detallada sobre el tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre} (${areaNombre}).
 
 La rúbrica debe presentarse en una tabla con 5 columnas:
@@ -1945,26 +1826,26 @@ La rúbrica debe presentarse en una tabla con 5 columnas:
 - Capacidades: ${selectedCapacitiesTexts.join(', ')}.
 - Asegura que los descriptores sean graduales y reflejen niveles de complejidad creciente según el estándar del ciclo.
 `.trim();
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error en rúbrica:", error);
-                generatedPromptOutput.textContent = `Error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en rúbrica:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-        // --- Lógica para generar el prompt de Lista de Cotejo ---
-        generateChecklistBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de lista de cotejo...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Lista de Cotejo ---
+generateChecklistBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de lista de cotejo...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
-                const promptText = `
+        const promptText = `
 Eres un docente experto en ${areaNombre}. Crea una lista de cotejo para evaluar el tema '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
 La tabla debe tener 5 columnas:
 1. Criterio (Basado en el desempeño esperado).
@@ -1978,26 +1859,26 @@ Considera:
 - Capacidades: ${selectedCapacitiesTexts.join(', ')}.
 - Proporciona una fila final para una retroalimentación detallada y constructiva.
 `.trim();
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error en lista de cotejo:", error);
-                generatedPromptOutput.textContent = `Error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en lista de cotejo:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-        // --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
-        generateEvaluationBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de evaluación...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
+generateEvaluationBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de evaluación...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
-                const promptText = `
+        const promptText = `
 Eres un docente especialista de ${areaNombre}. Elabora una evaluación de 20 PREGUNTAS CRÍTICAS sobre '${escapeBackticks(sessionTopic)}' para ${gradoNombre} de ${nivelNombre}.
 
 Distribución obligatoria:
@@ -2010,26 +1891,26 @@ Distribución obligatoria:
 - Las respuestas correctas de las opciones múltiples deben estar distribuidas de forma ALEATORIA y NO REPETITIVA. Evita patrones donde la mayoría sea 'A' o 'B'.
 - Al final, incluye la clave de respuestas numerada.
 `.trim();
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error en evaluación:", error);
-                generatedPromptOutput.textContent = `Error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en evaluación:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-        // --- Lógica para generar el prompt de Contenido del Tema ---
-        generateContentBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de contenido...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Contenido del Tema ---
+generateContentBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de contenido...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
-                const promptText = `
+        const promptText = `
 Actúa como docente experto de ${areaNombre}. Proporciona el marco teórico completo del tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre}.
 
 **Estructura requerida:**
@@ -2039,26 +1920,26 @@ Actúa como docente experto de ${areaNombre}. Proporciona el marco teórico comp
 - Finaliza sugiriendo un enlace o fuente bibliográfica confiable (Minedu, Educared o similar).
 - La información debe ser suficiente para realizar prácticas posteriores.
 `.trim();
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error en contenido:", error);
-                generatedPromptOutput.textContent = `Error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en contenido:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-        // --- Lógica para generar el prompt de Sesión Innovadora ---
-        generateInnovativeSessionBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de sesión innovadora...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Sesión Innovadora ---
+generateInnovativeSessionBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de sesión innovadora...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
-                const promptText = `
+        const promptText = `
 Eres un docente innovador de ${areaNombre}. Genera 3 ideas disruptivas para iniciar la clase sobre '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
 
 Objetivo: Captar la atención inmediata (Ganchos cognitivos).
@@ -2068,16 +1949,15 @@ Objetivo: Captar la atención inmediata (Ganchos cognitivos).
 
 Incluye una breve sugerencia sobre cómo integrar la retroalimentación desde el primer minuto de la sesión.
 `.trim();
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error en sesión innovadora:", error);
-                generatedPromptOutput.textContent = `Error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
-
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en sesión innovadora:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
         // --- Funcionalidad de copiar al portapapeles ---
         copySessionBtn.addEventListener('click', () => {
