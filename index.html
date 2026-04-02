@@ -1771,26 +1771,34 @@
 ---
 `.trim();
 
-                // 2. Propósito de Aprendizaje (Competencias, Capacidades, Desempeños, Criterios, Instrumentos)
-                let propositoAprendizajeContent = `
+                // 2. Propósito de Aprendizaje (Limpio y Funcional)
+let propositoAprendizajeContent = `
 ---
 ### II. PROPÓSITO DE APRENDIZAJE
 
 **INSTRUCCIÓN PARA LA IA:** Construye una tabla en formato Markdown con 4 columnas: 'Competencias', 'Capacidades', 'Desempeños Precisados' y 'Criterios de Evaluación'. 
-- Completa las dos primeras columnas estrictamente con estos datos seleccionados:
-  * Competencias: ${selectedCompetenceNames.join(', ')}.
-  * Capacidades: ${selectedCapacitiesTexts.join(', ')}.
-- Redacta los 'Desempeños Precisados' y 'Criterios de Evaluación' adaptándolos al tema '${escapeBackticks(sessionTopic)}'.
+- **DATOS SELECCIONADOS:**
+  * **Competencias:** ${selectedCompetenceNames.join(', ')}
+  * **Capacidades:** ${selectedCapacitiesTexts.join(', ')}
 
-* **Instrumento de Evaluación sugerido:** [IA: Sugiere Rúbrica Analítica o Lista de Cotejo según corresponda a la evidencia].
+- **ACCIÓN TÉCNICA:** Redacta los 'Desempeños Precisados' y 'Criterios de Evaluación' vinculándolos estrictamente al tema '${escapeBackticks(sessionTopic)}'. No uses frases genéricas; sé específico con el contenido pedagógico.
+
+* **Instrumento de Evaluación sugerido:** [IA: Sugiere Rúbrica Analítica o Lista de Cotejo según la evidencia].
 
 **Propósito de la Sesión:**
-[IA: Redacta un párrafo conciso detallando la meta de aprendizaje, qué lograrán los estudiantes y para qué les servirá en su contexto].
+[IA: Redacta un párrafo detallando la meta de aprendizaje, qué lograrán los estudiantes y su utilidad en el contexto real de la región].
 
 **Evidencia de Aprendizaje:**
-[IA: Redacta un párrafo detallando el producto o actuación tangible que demostrará el aprendizaje. Debe ser realizable dentro del tiempo asignado].
+[IA: Describe el producto o actuación tangible que el estudiante realizará para demostrar lo aprendido].
 ---
 `.trim();
+
+// Mantendremos esta parte vacía de textos genéricos para que la IA no se distraiga,
+// pero conservamos la estructura si necesitas mapear algo más en el futuro.
+selectedCompetenceNames.forEach(compName => {
+    // Aquí podrías añadir lógica interna si fuera necesario, 
+    // pero para el prompt, la tabla superior ya es suficiente y más limpia.
+});
 
                 selectedCompetenceNames.forEach(compName => {
                     let competenceObject = null;
