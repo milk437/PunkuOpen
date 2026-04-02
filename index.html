@@ -1716,7 +1716,7 @@
             return String(text || '').replace(/`/g, '\\`');
         };
 
-        // --- Lógica para generar el prompt de la Sesión Principal ---
+       // --- Lógica para generar el prompt de la Sesión Principal ---
         generatePromptBtn.addEventListener('click', () => {
             loadingSpinner.classList.remove('hidden');
             generatedPromptOutput.textContent = "Generando prompt, por favor espera...";
@@ -1730,40 +1730,38 @@
                     nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
                 } = getSessionParameters();
 
-                // Variables para completar el cuadro informativo oficial
+                // Variables institucionales oficiales
                 const directorName = "____________________";
                 const coordinadorName = "____________________";
 
-                // Distribución de tiempos pedagógicos (Inicio 15%, Desarrollo 70%, Cierre 15%)
+                // Distribución de tiempos pedagógicos (Ajuste técnico 15-70-15)
                 const inicioDuration = Math.round(totalDurationMinutes * 0.15);
                 const desarrolloDuration = Math.round(totalDurationMinutes * 0.70);
                 const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
 
-                // --- Contenidos de las secciones (Optimización Técnica CNEB) ---
+                // --- Contenidos de las secciones (Instrucciones de alto rigor pedagógico) ---
                 const inicioContenido = `
-- Soporte socioemocional y normas de convivencia.
-- Motivación: Presentar una situación significativa o reto real sobre "${sessionTopic}".
-- Saberes previos: Recuperar saberes mediante preguntas mediadoras.
+- Soporte socioemocional y acuerdos de convivencia.
+- Motivación: Diseñar una situación significativa o reto real contextualizado sobre "${sessionTopic}".
+- Saberes previos: Recuperar saberes mediante preguntas mediadoras y dinámicas.
 - Conflicto cognitivo: Plantear una pregunta desafiante que genere necesidad de aprendizaje.
-- Propósito: Comunicar la competencia, el producto y los criterios de evaluación.
+- Propósito: Comunicar la competencia, el producto/evidencia y los criterios de evaluación.
 `.trim();
 
                 const desarrolloContenido = `
-- Gestión y acompañamiento: Facilitar el procesamiento de la información de "${sessionTopic}".
-- Procesos didácticos: Aplicar la secuencia específica del área de ${areaNombre}.
-- Aplicación: Desarrollar actividades que movilicen las capacidades y generen evidencias.
-- Retroalimentación: Describir cómo el docente guiará el aprendizaje de forma descriptiva.
+- Gestión y acompañamiento: Facilitar el procesamiento de la información nueva sobre "${sessionTopic}".
+- Procesos didácticos: Aplicar la secuencia específica del área de ${areaNombre} según el CNEB.
+- Aplicación: Desarrollar actividades de alta demanda cognitiva que movilicen las capacidades.
+- Retroalimentación: Describir intervenciones del docente para realizar retroalimentación descriptiva.
 `.trim();
 
                 const cierreContenido = `
-- Evaluación y sistematización: Consolidar los aprendizajes y verificar el logro del propósito.
-- Metacognición: Reflexionar sobre dificultades y logros del proceso de aprendizaje.
-- Transferencia: Aplicar lo aprendido en "${sessionTopic}" a situaciones cotidianas.
+- Evaluación y sistematización: Consolidar los aprendizajes clave y verificar el logro del propósito.
+- Metacognición: Reflexionar sobre el proceso (¿Qué aprendimos? ¿Qué dificultades tuvimos?).
+- Transferencia: Sugerir cómo aplicar lo aprendido en "${sessionTopic}" en la vida cotidiana.
 `.trim();
 
-                // --- Constructing sections in plain text format ---
-
-                // 1. Datos Informativos (Formato oficial MINEDU)
+                // --- 1. Datos Informativos (Formato oficial MINEDU) ---
                 const datosInformativosContent = `
 ---
 ### I. DATOS INFORMATIVOS
@@ -1780,7 +1778,7 @@
 ---
 `.trim();
 
-                // 2. Propósito de Aprendizaje (Competencias, Capacidades, Desempeños, Criterios, Instrumentos)
+                // --- 2. Propósito de Aprendizaje (Generación dinámica de Desempeños y Criterios) ---
                 let propositoAprendizajeContent = `
 ---
 ### II. PROPÓSITO DE APRENDIZAJE
@@ -1803,43 +1801,24 @@
                             propositoAprendizajeContent += `\n  - ✓ ${escapeBackticks(cap)}`;
                         });
                         
-                        const desempenosEjemplo = [
-                            `Desempeños relevantes para la competencia '${escapeBackticks(competenceObject.nombre)}' y sus capacidades seleccionadas.`,
-                            `El estudiante demuestra dominio de '${escapeBackticks(competenceObject.nombre)}' en el contexto de la sesión.`
-                        ];
-                        const criteriosEvaluacionEjemplo = [
-                            `Identifica y aplica los conceptos clave de '${escapeBackticks(competenceObject.nombre)}'.`,
-                            `Analiza situaciones utilizando las capacidades de '${escapeBackticks(competenceObject.nombre)}'.`,
-                            `Produce soluciones o reflexiones basadas en '${escapeBackticks(competenceObject.nombre)}'.`
-                        ];
-                        const instrumentosEvaluacionEjemplo = [
-                            "Lista de cotejo",
-                            "Rúbrica de evaluación"
-                        ];
-
                         propositoAprendizajeContent += `\n- **Desempeños:**`;
-                        desempenosEjemplo.forEach(desempeno => {
-                            propositoAprendizajeContent += `\n  - ✓ ${desempeno}`;
-                        });
+                        propositoAprendizajeContent += `\n  - ✓ [IA: Redacta desempeños precisos para el tema "${sessionTopic}" basados en el estándar del ciclo ${cicloNombre}].`;
+                        propositoAprendizajeContent += `\n  - ✓ [IA: Describe la actuación del estudiante que demuestre dominio de esta competencia].`;
 
                         propositoAprendizajeContent += `\n- **Criterios de Evaluación:**`;
-                        criteriosEvaluacionEjemplo.forEach(criterio => {
-                            propositoAprendizajeContent += `\n  - ✓ ${criterio}`;
-                        });
+                        propositoAprendizajeContent += `\n  - ✓ [IA: Crea criterios específicos que evalúen cómo el alumno aplica "${sessionTopic}" en la sesión].`;
+                        propositoAprendizajeContent += `\n  - ✓ [IA: Asegura que el criterio evalúe la capacidad y el contenido temático de forma coherente].`;
 
                         propositoAprendizajeContent += `\n- **Instrumento de Evaluación:**`;
-                        instrumentosEvaluacionEjemplo.forEach(instrumento => {
-                            propositoAprendizajeContent += `\n  - ✓ ${instrumento}`;
-                        });
+                        propositoAprendizajeContent += `\n  - ✓ Lista de cotejo / Rúbrica de evaluación detallada.`;
                     }
                 });
 
-                propositoAprendizajeContent += `\n\n**Propósito:**\nEl propósito de la sesión es... *(párrafo de 6 líneas que describa detalladamente la meta del aprendizaje, alineada a la competencia)*`;
-                propositoAprendizajeContent += `\n\n**Evidencia:**\nLa evidencia será... *(párrafo de 6 líneas que detalle lo que el estudiante hará para demostrar lo aprendido en la sesión)*`;
+                propositoAprendizajeContent += `\n\n**Propósito de la Sesión:**\n[IA: Redacta un párrafo de 6 líneas sobre la meta de aprendizaje de "${sessionTopic}"].`;
+                propositoAprendizajeContent += `\n\n**Evidencia de Aprendizaje:**\n[IA: Detalla qué producto o actuación tangible entregará el estudiante].`;
                 propositoAprendizajeContent += `\n---`;
 
-
-                // 3. Competencias Transversales
+                // --- 3. Competencias Transversales ---
                 let competenciasTransversalesContent = `
 ---
 ### COMPETENCIAS TRANSVERSALES
@@ -1854,7 +1833,7 @@
                 });
                 competenciasTransversalesContent += `\n---`;
 
-                // 4. Enfoques Transversales
+                // --- 4. Enfoques Transversales ---
                 let enfoquesTransversalesContent = `
 ---
 ### ENFOQUES TRANSVERSALES
@@ -1874,11 +1853,10 @@
                 });
                 enfoquesTransversalesContent += `\n---`;
 
-
-                // 5. Secuencia Didáctica (sin tabla)
+                // --- 5. Secuencia Didáctica ---
                 const formattedInicioContent = inicioContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
                 const formattedDesarrolloContent = desarrolloContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
-                const formattedCierreContent = cierreContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').replace(/^  1\) /gm, '  1) ').trim();
+                const formattedCierreContent = cierreContenido.replace(/\\n\\n/g, '\n').replace(/^- /gm, '- ').trim();
 
                 const secuenciaDidacticaContent = `
 ---
@@ -1901,21 +1879,19 @@ ${formattedCierreContent}
 ---
 `.trim();
 
-                // 6. Bibliografía
+                // --- 6. Bibliografía ---
                 const bibliografiaContent = `
 ### BIBLIOGRAFÍA
-
-Incluye al menos tres fuentes en formato APA (pueden ser ficticias pero verosímiles), relacionadas con educación, el área específica y el CNEB.
+Sugerir al menos tres fuentes (MINEDU, CNEB y autores especialistas) relacionadas con ${areaNombre} en formato APA.
 `.trim();
 
-
-                // Construcción final del texto del prompt con las nuevas secciones
+                // --- Construcción Final del Prompt ---
                 const promptText = `
-Eres un docente del área de ${areaNombre} de la IE ${ieName}, con muchos años de experiencia y especialista en el área antes mencionada.
+Eres un docente experto del área de ${areaNombre} en la IE ${ieName}, especialista en el CNEB del Perú.
 
-Elabora una sesión de aprendizaje para los estudiantes de ${gradoNombre} de ${nivelNombre}, con una duración total aproximada de ${totalDurationMinutes} minutos.
+Elabora una sesión de aprendizaje detallada para estudiantes de ${gradoNombre} de ${nivelNombre}, con una duración de ${totalDurationMinutes} minutos.
 
-**Título de la Sesión:** [Crea un título creativo y relevante sobre el tema: ${sessionTopic}]
+**Título de la Sesión:** [IA: Crea un título creativo y relevante para el tema: ${sessionTopic}]
 
 ${datosInformativosContent}
 
@@ -1929,20 +1905,22 @@ ${secuenciaDidacticaContent}
 
 ${bibliografiaContent}
 
-**INDICACIONES FINALES PARA LA IA:**
-La sesión debe tener coherencia entre todas sus secciones. Cuida la progresión pedagógica entre inicio, desarrollo y cierre. Evita repetir ideas. Mantén un lenguaje formal, pedagógico y claro. Usa viñetas, subtítulos y saltos de línea correctamente para mantener orden visual.
+**INSTRUCCIONES FINALES:**
+1. **Rigor CNEB:** Asegura la coherencia entre competencia, capacidad, desempeño y criterio.
+2. **Contextualización:** No generes respuestas genéricas; todo el contenido debe centrarse en "${sessionTopic}".
+3. **Didáctica Real:** Propon actividades prácticas que un docente pueda aplicar en un aula real.
+4. **Formato:** Usa Markdown limpio (negritas y viñetas) para facilitar la lectura.
 `;
 
                 generatedPromptOutput.textContent = promptText;
             } catch (error) {
-                console.error("Error al generar el prompt de la sesión principal:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de la sesión principal! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+                console.error("Error al generar el prompt:", error);
+                generatedPromptOutput.textContent = `Error: ${error.message}`;
             } finally {
                 loadingSpinner.classList.add('hidden');
                 updateActionButtonsState(true);
             }
         });
-
         // --- Lógica para generar el prompt de Rúbrica ---
         generateRubricBtn.addEventListener('click', () => {
             loadingSpinner.classList.remove('hidden');
