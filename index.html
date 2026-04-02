@@ -1931,23 +1931,24 @@ ${bibliografiaContent}
                 const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
                 const promptText = `
-Eres un docente del área de ${areaNombre}, elabora una rúbrica sobre el tema '${escapeBackticks(sessionTopic)}' para los estudiantes del ${gradoNombre} de ${nivelNombre}.
+Actúa como especialista en evaluación formativa del CNEB. Elabora una rúbrica analítica detallada sobre el tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre} (${areaNombre}).
 
-La rúbrica debe ser en formato de tabla y tener 5 columnas:
-La primera columna debe ser 'Criterios de Evaluación'.
-Las siguientes cuatro columnas se refieren al nivel de consecución:
-La segunda columna será 'APRENDIZAJE DESTACADO (AD)'.
-La tercera será 'APRENDIZAJE ESPERADO (A)'.
-La cuarta será 'EN PROCESO (B)'.
-La quinta en 'INICIO (C)'.
+La rúbrica debe presentarse en una tabla con 5 columnas:
+1. Criterios de Evaluación (Basados en las capacidades seleccionadas).
+2. AD - Logro Destacado.
+3. A - Logro Esperado.
+4. B - En Proceso.
+5. C - En Inicio.
 
-Considera las siguientes competencias seleccionadas: ${selectedCompetenceNames.join(', ')}.
-Considera las siguientes capacidades seleccionadas: ${selectedCapacitiesTexts.join(', ')}.
-`;
+**Requisitos Técnicos:**
+- Competencias: ${selectedCompetenceNames.join(', ')}.
+- Capacidades: ${selectedCapacitiesTexts.join(', ')}.
+- Asegura que los descriptores sean graduales y reflejen niveles de complejidad creciente según el estándar del ciclo.
+`.trim();
                 generatedPromptOutput.textContent = promptText;
             } catch (error) {
-                console.error("Error al generar el prompt de rúbrica:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de rúbrica! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+                console.error("Error en rúbrica:", error);
+                generatedPromptOutput.textContent = `Error: ${error.message}`;
             } finally {
                 loadingSpinner.classList.add('hidden');
                 updateActionButtonsState(true);
@@ -1957,28 +1958,30 @@ Considera las siguientes capacidades seleccionadas: ${selectedCapacitiesTexts.jo
         // --- Lógica para generar el prompt de Lista de Cotejo ---
         generateChecklistBtn.addEventListener('click', () => {
             loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de lista de cotejo, por favor espera...";
+            generatedPromptOutput.textContent = "Generando prompt de lista de cotejo...";
             updateActionButtonsState(false);
 
             try {
                 const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
                 const promptText = `
-Eres un docente especialista del área de ${areaNombre}.
-Crea una lista de cotejo en formato de tabla para evaluar el tema '${escapeBackticks(sessionTopic)}' para los estudiantes del ${gradoNombre} de ${nivelNombre}.
-La tabla debe tener 5 columnas y 4 filas.
-La primera columna debe ser 'Criterio'.
-La segunda columna debe ser 'Descripción'.
-Las siguientes tres columnas deben ser 'Sí', 'No', 'Observaciones'.
-Proporciona una breve descripción de cada criterio y un espacio para brindar una retroalimentación detallada y constructiva a los estudiantes.
+Eres un docente experto en ${areaNombre}. Crea una lista de cotejo para evaluar el tema '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
+La tabla debe tener 5 columnas:
+1. Criterio (Basado en el desempeño esperado).
+2. Descripción (Qué debe hacer el estudiante específicamente).
+3. Sí.
+4. No.
+5. Observaciones / Retroalimentación formativa.
 
-Considera las siguientes competencias seleccionadas: ${selectedCompetenceNames.join(', ')}.
-Considera las siguientes capacidades seleccionadas: ${selectedCapacitiesTexts.join(', ')}.
-`;
+Considera:
+- Competencias: ${selectedCompetenceNames.join(', ')}.
+- Capacidades: ${selectedCapacitiesTexts.join(', ')}.
+- Proporciona una fila final para una retroalimentación detallada y constructiva.
+`.trim();
                 generatedPromptOutput.textContent = promptText;
             } catch (error) {
-                console.error("Error al generar el prompt de lista de cotejo:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de lista de cotejo! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+                console.error("Error en lista de cotejo:", error);
+                generatedPromptOutput.textContent = `Error: ${error.message}`;
             } finally {
                 loadingSpinner.classList.add('hidden');
                 updateActionButtonsState(true);
@@ -1988,25 +1991,29 @@ Considera las siguientes capacidades seleccionadas: ${selectedCapacitiesTexts.jo
         // --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
         generateEvaluationBtn.addEventListener('click', () => {
             loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de evaluación, por favor espera...";
+            generatedPromptOutput.textContent = "Generando prompt de evaluación...";
             updateActionButtonsState(false);
 
             try {
                 const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
                 const promptText = `
-Eres un docente especialista del área de ${areaNombre} y necesito que elabores en forma crítica, 20 PREGUNTAS sobre el tema '${escapeBackticks(sessionTopic)}' para los estudiantes del ${gradoNombre} de ${nivelNombre}.
-Las preguntas deben ser distribuidas de la siguiente manera:
-- 5 preguntas de desarrollo (tipo 'pregunta abierta').
-- 5 preguntas de opción múltiple (con 4 opciones A, B, C, D).
-- 5 preguntas para completar.
-- 5 preguntas de Verdadero o Falso (V o F), con 4 opciones A, B, C, D donde solo una es la respuesta correcta.
-Al final de todas las preguntas, necesito que escribas las respuestas en forma ordenada, indicando claramente a qué pregunta corresponde cada respuesta.
-`;
+Eres un docente especialista de ${areaNombre}. Elabora una evaluación de 20 PREGUNTAS CRÍTICAS sobre '${escapeBackticks(sessionTopic)}' para ${gradoNombre} de ${nivelNombre}.
+
+Distribución obligatoria:
+- 5 preguntas de desarrollo (demanda cognitiva alta).
+- 5 preguntas de opción múltiple (4 opciones).
+- 5 preguntas de completar (contextualizadas).
+- 5 preguntas de Verdadero/Falso (con justificación breve).
+
+**INSTRUCCIÓN CRÍTICA DE SEGURIDAD:**
+- Las respuestas correctas de las opciones múltiples deben estar distribuidas de forma ALEATORIA y NO REPETITIVA. Evita patrones donde la mayoría sea 'A' o 'B'.
+- Al final, incluye la clave de respuestas numerada.
+`.trim();
                 generatedPromptOutput.textContent = promptText;
             } catch (error) {
-                console.error("Error al generar el prompt de evaluación:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de evaluación! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+                console.error("Error en evaluación:", error);
+                generatedPromptOutput.textContent = `Error: ${error.message}`;
             } finally {
                 loadingSpinner.classList.add('hidden');
                 updateActionButtonsState(true);
@@ -2016,19 +2023,26 @@ Al final de todas las preguntas, necesito que escribas las respuestas en forma o
         // --- Lógica para generar el prompt de Contenido del Tema ---
         generateContentBtn.addEventListener('click', () => {
             loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de contenido, por favor espera...";
+            generatedPromptOutput.textContent = "Generando prompt de contenido...";
             updateActionButtonsState(false);
 
             try {
                 const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
                 const promptText = `
-Actúa como docente del área de ${areaNombre} y necesito que brindes la información completa referente al tema '${escapeBackticks(sessionTopic)}', que le agregues título y subtítulos, además que pongas en negrita la información más importante y subrayes las ideas más significativas y que me brindes un enlace de ejemplo donde estas sacando la información, es para los estudiantes del ${gradoNombre} de ${nivelNombre}. Esa información me servirá como base para mi sesión y que lo usaré para realizar prácticas y evaluaciones mas adelante.
-`;
+Actúa como docente experto de ${areaNombre}. Proporciona el marco teórico completo del tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre}.
+
+**Estructura requerida:**
+- Título creativo y subtítulos técnicos.
+- Usa **negrita** para conceptos clave y _cursiva_ para ideas significativas.
+- Incluye ejemplos prácticos y cotidianos para el estudiante.
+- Finaliza sugiriendo un enlace o fuente bibliográfica confiable (Minedu, Educared o similar).
+- La información debe ser suficiente para realizar prácticas posteriores.
+`.trim();
                 generatedPromptOutput.textContent = promptText;
             } catch (error) {
-                console.error("Error al generar el prompt de contenido:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de contenido! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+                console.error("Error en contenido:", error);
+                generatedPromptOutput.textContent = `Error: ${error.message}`;
             } finally {
                 loadingSpinner.classList.add('hidden');
                 updateActionButtonsState(true);
@@ -2038,21 +2052,26 @@ Actúa como docente del área de ${areaNombre} y necesito que brindes la informa
         // --- Lógica para generar el prompt de Sesión Innovadora ---
         generateInnovativeSessionBtn.addEventListener('click', () => {
             loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de sesión innovadora, por favor espera...";
+            generatedPromptOutput.textContent = "Generando prompt de sesión innovadora...";
             updateActionButtonsState(false);
 
             try {
                 const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
                 const promptText = `
-Eres un docente especialista del área de ${areaNombre}, genera algunas ideas interesantes o novedosas para empezar mi próxima clase, '${escapeBackticks(sessionTopic)}' del ${gradoNombre} de ${nivelNombre}.
-Me gustaría encontrar algunas formas innovadoras de iniciar la sesión para captar la atención de mis estudiantes y crear un ambiente de aprendizaje más participativo.
-También necesito recibir sugerencias que sean específicas para mi tema de enseñanza principal: '${escapeBackticks(sessionTopic)}' y, como sub-tema específico, 'la importancia de la retroalimentación'.
-`;
+Eres un docente innovador de ${areaNombre}. Genera 3 ideas disruptivas para iniciar la clase sobre '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
+
+Objetivo: Captar la atención inmediata (Ganchos cognitivos).
+- Opción 1: Basada en un reto o juego.
+- Opción 2: Basada en una situación real o noticia impactante.
+- Opción 3: Basada en el uso de una herramienta digital o recurso visual.
+
+Incluye una breve sugerencia sobre cómo integrar la retroalimentación desde el primer minuto de la sesión.
+`.trim();
                 generatedPromptOutput.textContent = promptText;
             } catch (error) {
-                console.error("Error al generar el prompt de sesión innovadora:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de sesión innovadora! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
+                console.error("Error en sesión innovadora:", error);
+                generatedPromptOutput.textContent = `Error: ${error.message}`;
             } finally {
                 loadingSpinner.classList.add('hidden');
                 updateActionButtonsState(true);
