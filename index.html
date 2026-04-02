@@ -1717,62 +1717,62 @@
         };
 
 // --- Lógica para generar el prompt de la Sesión Principal ---
-        generatePromptBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt, por favor espera...";
-            updateActionButtonsState(false);
+generatePromptBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt, por favor espera...";
+    updateActionButtonsState(false);
 
-            try {
-                const {
-                    ieName, teacherName, sessionTopic, totalDurationMinutes,
-                    selectedNivelKey, selectedCicloKey, selectedGradoKey, selectedAreaKey,
-                    selectedCompetenceNames, selectedCapacitiesTexts, selectedEnfoqueNames,
-                    nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate
-                } = getSessionParameters();
+    try {
+        const {
+            ieName, teacherName, sessionTopic, totalDurationMinutes,
+            selectedNivelKey, selectedCicloKey, selectedGradoKey, selectedAreaKey,
+            selectedCompetenceNames, selectedCapacitiesTexts, selectedEnfoqueNames,
+            nivelNombre, cicloNombre, gradoNombre, areaNombre, currentDate, seccionNombre
+        } = getSessionParameters();
 
-                // Calculate durations dynamically
-                const inicioDuration = Math.round(totalDurationMinutes * 0.20);
-                const desarrolloDuration = Math.round(totalDurationMinutes * 0.65);
-                const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
+        // Calcular duraciones dinámicamente
+        const inicioDuration = Math.round(totalDurationMinutes * 0.20);
+        const desarrolloDuration = Math.round(totalDurationMinutes * 0.65);
+        const cierreDuration = totalDurationMinutes - (inicioDuration + desarrolloDuration);
 
-                // --- Section contents (Instrucciones precisas para la IA) ---
-                const inicioContenido = `
-- MOTIVACIÓN (Enganche): Diseña una actividad inicial disruptiva (un caso breve, un dilema local o un reto rápido) vinculada a la realidad de la región o a los intereses de los estudiantes. Evita saludos genéricos.
+        // --- Section contents (Instrucciones precisas para la IA) ---
+        const inicioContenido = `
+- MOTIVACIÓN (Enganche): Diseña una actividad inicial disruptiva (un caso breve, un dilema local de La Jalca o un reto rápido) vinculada a la realidad de la región Amazonas o a los intereses de los estudiantes. Evita saludos genéricos.
 - SABERES PREVIOS: Propón 2 preguntas específicas y abiertas para extraer lo que ya saben.
 - CONFLICTO COGNITIVO: Plantea un problema o contradicción que el estudiante no pueda resolver con sus conocimientos actuales, generando la necesidad de aprender el tema de hoy.
 - PROPÓSITO Y ACUERDOS: Explica cómo el docente comunica la meta y los criterios de evaluación en un lenguaje comprensible para los estudiantes.
 `.trim();
 
-                const desarrolloContenido = `
+        const desarrolloContenido = `
 - GESTIÓN Y ACOMPAÑAMIENTO (Paso a paso detallado): Describe explícitamente las acciones del docente y las acciones del estudiante. No permitas actividades pasivas.
 - PROCESAMIENTO DE INFORMACIÓN: ¿Qué técnica usará el docente para explicar el tema sin caer en la clase magistral tradicional? (ej. descubrimiento guiado, organizadores visuales).
 - APLICACIÓN PRÁCTICA: Diseña una actividad central (individual o grupal) de alta demanda cognitiva donde construyan la 'Evidencia de Aprendizaje'.
 - RETROALIMENTACIÓN FORMATIVA: Describe qué preguntas reflexivas hará el docente al monitorear los grupos para ayudar a los estudiantes a encontrar sus propios errores (retroalimentación por descubrimiento).
 `.trim();
 
-                const cierreContenido = `
+        const cierreContenido = `
 - CONSOLIDACIÓN: Describe cómo los estudiantes socializan o demuestran rápidamente lo que aprendieron.
 - METACOGNICIÓN CRÍTICA: Formula 3 preguntas profundas enfocadas en el proceso de aprendizaje (ej. ¿Qué estrategia me fue más útil?, ¿Cómo superé la dificultad de hoy?).
-- TRANSFERENCIA: Propone una actividad final donde el alumno aplique lo aprendido a un contexto real de su vida diaria en su comunidad, evitando las tareas tradicionales repetitivas.
+- TRANSFERENCIA: Propone una actividad final donde el alumno aplique lo aprendido a un contexto real de su vida diaria en su comunidad de Amazonas, evitando las tareas tradicionales repetitivas.
 `.trim();
 
-                // --- Lógica para determinar Ciclo según Nivel y Grado (Soporta Inicial, Primaria y Secundaria) ---
-let cicloCalculado = "";
-const g = parseInt(selectedGradoKey);
+        // --- Lógica para determinar Ciclo según Nivel y Grado ---
+        let cicloCalculado = "";
+        const g = parseInt(selectedGradoKey);
 
-if (selectedNivelKey === 'primaria') {
-    if (g <= 2) cicloCalculado = "Ciclo III";
-    else if (g <= 4) cicloCalculado = "Ciclo IV";
-    else cicloCalculado = "Ciclo V";
-} else if (selectedNivelKey === 'secundaria') {
-    if (g <= 2) cicloCalculado = "Ciclo VI";
-    else cicloCalculado = "Ciclo VII";
-} else {
-    cicloCalculado = "Ciclo I/II"; // Inicial
-}
+        if (selectedNivelKey === 'primaria') {
+            if (g <= 2) cicloCalculado = "Ciclo III";
+            else if (g <= 4) cicloCalculado = "Ciclo IV";
+            else cicloCalculado = "Ciclo V";
+        } else if (selectedNivelKey === 'secundaria') {
+            if (g <= 2) cicloCalculado = "Ciclo VI";
+            else cicloCalculado = "Ciclo VII";
+        } else {
+            cicloCalculado = "Ciclo I/II"; // Inicial
+        }
 
-// 1. DATOS INFORMATIVOS (Administrativa Completa)
-const datosInformativosContent = `
+        // 1. DATOS INFORMATIVOS
+        const datosInformativosContent = `
 ---
 ### I. DATOS INFORMATIVOS
 * **Institución Educativa:** ${ieName}
@@ -1788,8 +1788,8 @@ const datosInformativosContent = `
 ---
 `.trim();
 
-// 2. PROPÓSITO DE APRENDIZAJE (Tabla Limpia sin redundancia genérica)
-let propositoAprendizajeContent = `
+        // 2. PROPÓSITO DE APRENDIZAJE
+        let propositoAprendizajeContent = `
 ---
 ### II. PROPÓSITO DE APRENDIZAJE
 
@@ -1810,49 +1810,49 @@ let propositoAprendizajeContent = `
 ---
 `.trim();
 
-// 3. COMPETENCIAS TRANSVERSALES
-let competenciasTransversalesContent = `
+        // 3. COMPETENCIAS TRANSVERSALES
+        let competenciasTransversalesContent = `
 ---
 ### COMPETENCIAS TRANSVERSALES
 `.trim();
-const competenciasTransversales = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales || []; 
-competenciasTransversales.forEach(ct => {
-    competenciasTransversalesContent += `\n\n**Competencia Transversal:** ${escapeBackticks(ct.nombre)}`;
-    competenciasTransversalesContent += `\n- **Capacidades:**`;
-    ct.capacidades.forEach(cap => {
-        competenciasTransversalesContent += `\n  - ✓ ${escapeBackticks(cap)}`;
-    });
-    competenciasTransversalesContent += `\n* [IA: Explica brevemente cómo el estudiante aplicará esta competencia en la sesión]`;
-});
-competenciasTransversalesContent += `\n---`;
+        const competenciasTransversales = cnebData.nivelesEducativos[selectedNivelKey]?.competenciasTransversales || []; 
+        competenciasTransversales.forEach(ct => {
+            competenciasTransversalesContent += `\n\n**Competencia Transversal:** ${escapeBackticks(ct.nombre)}`;
+            competenciasTransversalesContent += `\n- **Capacidades:**`;
+            ct.capacidades.forEach(cap => {
+                competenciasTransversalesContent += `\n  - ✓ ${escapeBackticks(cap)}`;
+            });
+            competenciasTransversalesContent += `\n* [IA: Explica brevemente cómo el estudiante aplicará esta competencia en la sesión]`;
+        });
+        competenciasTransversalesContent += `\n---`;
 
-// 4. ENFOQUES TRANSVERSALES
-let enfoquesTransversalesContent = `
+        // 4. ENFOQUES TRANSVERSALES
+        let enfoquesTransversalesContent = `
 ---
 ### ENFOQUES TRANSVERSALES
 `.trim();
-selectedEnfoqueNames.forEach(enfoqueName => {
-    const enfoqueObject = enfoquesTransversalesData.find(e => e.enfoque === enfoqueName);
-    if (enfoqueObject) {
-        enfoquesTransversalesContent += `\n\n**Enfoque:** ${escapeBackticks(enfoqueObject.enfoque)}`;
-        enfoquesTransversalesContent += `\n- **Valores:** ${escapeBackticks(enfoqueObject.valores)}`;
-        enfoquesTransversalesContent += `\n- **Actitudes / Acciones Observables:**`;
-        escapeBackticks(enfoqueObject.actitudes).split('\n').forEach(actitud => {
-            if (actitud.trim() !== '') {
-                enfoquesTransversalesContent += `\n  - ${actitud.trim()}`;
+        selectedEnfoqueNames.forEach(enfoqueName => {
+            const enfoqueObject = enfoquesTransversalesData.find(e => e.enfoque === enfoqueName);
+            if (enfoqueObject) {
+                enfoquesTransversalesContent += `\n\n**Enfoque:** ${escapeBackticks(enfoqueObject.enfoque)}`;
+                enfoquesTransversalesContent += `\n- **Valores:** ${escapeBackticks(enfoqueObject.valores)}`;
+                enfoquesTransversalesContent += `\n- **Actitudes / Acciones Observables:**`;
+                escapeBackticks(enfoqueObject.actitudes).split('\n').forEach(actitud => {
+                    if (actitud.trim() !== '') {
+                        enfoquesTransversalesContent += `\n  - ${actitud.trim()}`;
+                    }
+                });
+                enfoquesTransversalesContent += `\n* [IA: Describe una acción concreta que el docente Milton Ruiz realizará para vivenciar este enfoque]`;
             }
         });
-        enfoquesTransversalesContent += `\n* [IA: Describe una acción concreta que el docente Milton Ruiz realizará para vivenciar este enfoque]`;
-    }
-});
-enfoquesTransversalesContent += `\n---`;
+        enfoquesTransversalesContent += `\n---`;
 
-// 5. SECUENCIA DIDÁCTICA (Tabla Profesional)
-const formattedInicioContent = inicioContenido.replace(/\n/g, '<br>').trim();
-const formattedDesarrolloContent = desarrolloContenido.replace(/\n/g, '<br>').trim();
-const formattedCierreContent = cierreContenido.replace(/\n/g, '<br>').trim();
+        // 5. SECUENCIA DIDÁCTICA
+        const formattedInicioContent = inicioContenido.replace(/\n/g, '<br>').trim();
+        const formattedDesarrolloContent = desarrolloContenido.replace(/\n/g, '<br>').trim();
+        const formattedCierreContent = cierreContenido.replace(/\n/g, '<br>').trim();
 
-const secuenciaDidacticaContent = `
+        const secuenciaDidacticaContent = `
 ---
 ### III. SECUENCIA DIDÁCTICA
 
@@ -1864,16 +1864,16 @@ const secuenciaDidacticaContent = `
 ---
 `.trim();
 
-// 6. BIBLIOGRAFÍA
-const bibliografiaContent = `
+        // 6. BIBLIOGRAFÍA
+        const bibliografiaContent = `
 ---
 ### BIBLIOGRAFÍA
-**INSTRUCCIÓN:** Genera 3 fuentes reales (APA 7) sobre el tema y el área de ${areaNombre}.
+**INSTRUCCIÓN:** Genera 3 fuentes reales (APA 7) académicas (MINEDU, Google Scholar o Redalyc) sobre el tema y el área de ${areaNombre}.
 ---
 `.trim();
 
-// CONSTRUCCIÓN FINAL (Muda y Profesional)
-const promptText = `
+        // CONSTRUCCIÓN FINAL
+        const promptText = `
 [CONTEXTO]: Actúa como Especialista Pedagógico de la IE ${ieName}. Redacción humana, técnica y directa.
 
 [REGLA DE ORO]: PROHIBIDO SALUDAR. No des introducciones como "Claro, aquí tienes...". No des conclusiones al final. Genera el documento directamente, empezando en el título y terminando en la bibliografía.
@@ -1889,201 +1889,163 @@ ${bibliografiaContent}
 
 [FIN DEL DOCUMENTO]
 `;
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error al generar el prompt de la sesión:", error);
+        generatedPromptOutput.textContent = `¡Error!: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
 // --- Lógica para generar el prompt de Rúbrica ---
-        generateRubricBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de rúbrica, por favor espera...";
-            updateActionButtonsState(false);
+generateRubricBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de rúbrica, por favor espera...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
-                const promptText = `
+        const promptText = `
 Actúa como un Especialista en Evaluación Formativa del MINEDU. Elabora una Rúbrica Analítica de alta precisión para el tema '${escapeBackticks(sessionTopic)}', dirigida a estudiantes de ${gradoNombre} de ${nivelNombre} en el área de ${areaNombre}.
 
-**REQUISITOS TÉCNICOS DE LA RÚBRICA:
-1. ESTRUCTURA: Formato de tabla con 5 columnas obligatorias:
-   - Columna 1: 'Criterios de Evaluación' (Deben derivarse directamente de las capacidades seleccionadas).
-   - Columna 2: 'LOGRO DESTACADO (AD)' (Evidencia un manejo autónomo y complejo que supera el estándar).
-   - Columna 3: 'LOGRO ESPERADO (A)' (Cumple con el estándar previsto para el grado).
-   - Columna 4: 'EN PROCESO (B)' (Presenta dificultades próximas a ser superadas).
-   - Columna 5: 'EN INICIO (C)' (Muestra un desempeño mínimo o incipiente).
+**REQUISITOS TÉCNICOS:
+1. ESTRUCTURA: Tabla Markdown con 5 columnas: 'Criterios de Evaluación', 'LOGRO DESTACADO (AD)', 'LOGRO ESPERADO (A)', 'EN PROCESO (B)' y 'EN INICIO (C)'.
+2. ALINEAMIENTO: Competencias: ${selectedCompetenceNames.join(', ')} | Capacidades: ${selectedCapacitiesTexts.join(', ')}.
+3. CALIDAD: Descriptores claros y observables. Evita solo usar adverbios; describe acciones concretas.
+4. RETROALIMENTACIÓN: Agrega un breve párrafo final con sugerencias para el nivel 'En Proceso'.
 
-2. ALINEAMIENTO CURRICULAR:
-   - Competencias: ${selectedCompetenceNames.join(', ')}.
-   - Capacidades: ${selectedCapacitiesTexts.join(', ')}.
-
-3. CALIDAD DE REDACCIÓN:
-   - Los descriptores de cada nivel deben ser claros, observables y diferenciables entre sí.
-   - Evita usar solo adverbios (ej. "hace bien", "hace regular"). Describe acciones concretas y evidencias de aprendizaje.
-   - Asegura que los criterios evalúen tanto el fondo (contenido técnico) como la forma (competencia comunicativa).
-
-4. FORMATO DE SALIDA:
-   - Genera la rúbrica en formato Tabla Markdown limpia.
-   - Agrega un breve párrafo final con sugerencias de retroalimentación para el nivel 'En Proceso'.
-
-**INDICACIONES FINALES PARA LA IA:**
-Mantén un lenguaje formal y pedagógico. Asegura que la rúbrica sea una herramienta útil para el docente del área, grado, e Institución Educativa.
+Mantén un lenguaje formal y pedagógico.
 `;
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt de rúbrica:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de rúbrica! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en rúbrica:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-       // --- Lógica para generar el prompt de Lista de Cotejo ---
-        generateChecklistBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de lista de cotejo, por favor espera...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Lista de Cotejo ---
+generateChecklistBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de lista de cotejo...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
-                const promptText = `
-Actúa como un docente experto en evaluación formativa del área de ${areaNombre} en la IE Juan Velasco Alvarado. 
-Crea una Lista de Cotejo técnica y funcional para evaluar el tema '${escapeBackticks(sessionTopic)}' en el ${gradoNombre} de ${nivelNombre}.
+        const promptText = `
+Actúa como experto en evaluación de la IE Juan Velasco Alvarado. Crea una Lista de Cotejo técnica para el tema '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
 
-**REQUISITOS DE LA LISTA DE COTEJO:
-1. ESTRUCTURA DE TABLA: La tabla debe contener exactamente estas 5 columnas:
-   - Columna 1: 'Criterio' (Debe ser un enunciado corto y directo).
-   - Columna 2: 'Descripción del Desempeño' (Explicación clara de qué debe observar el docente).
-   - Columna 3: 'Sí'.
-   - Columna 4: 'No'.
-   - Columna 5: 'Observaciones / Sugerencias'.
-
-2. CONTENIDO PEDAGÓGICO:
-   - Los criterios deben nacer de estas Competencias: ${selectedCompetenceNames.join(', ')}.
-   - Los criterios deben operacionalizar estas Capacidades: ${selectedCapacitiesTexts.join(', ')}.
-   - Asegura que los enunciados sean medibles y redactados en tercera persona del presente indicativo (Ej: "Identifica...", "Explica...", "Utiliza...").
-
-3. CALIDAD DE EVALUACIÓN:
-   - Incluye al menos 5 criterios de evaluación que cubran tanto el proceso como el producto final de la sesión.
-   - Al final de la tabla, genera un apartado titulado 'Recomendaciones Generales para la Retroalimentación' con 3 consejos específicos para que el docente del área de la sesión de aprendizaje pueda orientar a los estudiantes que marquen 'No' en los criterios críticos.
-
-4. FORMATO: 
-   - Salida en Markdown estrictamente.
-   - Usa negritas para los títulos de los criterios.
-
-**INDICACIONES FINALES PARA LA IA:**
-Mantén un lenguaje profesional, formal y alineado a las directrices vigentes del MINEDU. Evita ambigüedades.
+**ESTRUCTURA (Tabla Markdown):** 'Criterio', 'Descripción del Desempeño', 'Sí', 'No', 'Observaciones'.
+**CONTENIDO:** Mínimo 5 criterios medibles basados en Competencias: ${selectedCompetenceNames.join(', ')} y Capacidades: ${selectedCapacitiesTexts.join(', ')}.
+**ADICIONAL:** Incluye 3 consejos de retroalimentación para quienes marquen 'No'.
 `;
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt de lista de cotejo:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de lista de cotejo! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en checklist:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-       // --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
-        generateEvaluationBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de evaluación, por favor espera...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
+generateEvaluationBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de evaluación...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
-                const promptText = `
-Actúa como un Especialista en Elaboración de Reactivos y Evaluación del área de ${areaNombre}. Diseña una evaluación de 20 preguntas de alta demanda cognitiva sobre el tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre}.
+        const promptText = `
+Actúa como Especialista en Reactivos. Diseña una evaluación de 20 preguntas sobre '${escapeBackticks(sessionTopic)}' para ${gradoNombre} de ${nivelNombre} (${areaNombre}).
 
-### ESTRUCTURA DE LA EVALUACIÓN (20 PREGUNTAS):
-1. 5 PREGUNTAS DE DESARROLLO: Deben ser situaciones de análisis crítico o casos prácticos donde el estudiante deba argumentar su respuesta.
-2. 5 PREGUNTAS DE OPCIÓN MÚLTIPLE: Cada una con 5 opciones (A, B, C, D y E). Las opciones deben ser distractores plausibles (que parezcan correctos pero no lo sean).
-3. 5 PREGUNTAS DE COMPLETAR: Oraciones que requieran términos técnicos precisos para recuperar el sentido lógico.
-4. 5 PREGUNTAS DE VERDADERO O FALSO: Presenta una afirmación compleja y pide marcar V o F. 
+### ESTRUCTURA:
+1. 5 de Desarrollo (Casos críticos).
+2. 5 de Opción Múltiple (5 alternativas cada una).
+3. 5 de Completar.
+4. 5 de Verdadero o Falso.
 
-### REGLAS CRÍTICAS PARA LA IA:
-- ALEATORIEDAD: En las preguntas de opción múltiple y V/F, la distribución de la respuesta correcta (A, B, C, D o E) debe ser COMPLETAMENTE ALEATORIA. Evita patrones repetitivos como "todas son B" o "A, B, A, B".
-- CONTEXTUALIZACIÓN: Siempre que sea posible, plantea las preguntas dentro de situaciones del entorno real de los estudiantes de la región o contextos de la I.E..
-- CLAVE DE RESPUESTAS: Al finalizar las 20 preguntas, proporciona un solucionario ordenado y detallado, explicando brevemente el porqué de la respuesta correcta en las opciones múltiples.
+### REGLAS CRÍTICAS DE ALEATORIEDAD:
+- LA RESPUESTA CORRECTA EN OPCIÓN MÚLTIPLE Y V/F DEBE SER TOTALMENTE ALEATORIA.
+- PROHIBIDO REPETIR LA MISMA LETRA MÁS DE 2 VECES SEGUIDAS. 
+- BALANCE: Asegura que no haya predominancia de letras (ej. que no todas sean B o C).
 
-**INDICACIONES FINALES:**
-Usa un lenguaje formal y académico. Asegura que el formato sea limpio, con numeración clara y espacios suficientes entre bloques para facilitar la impresión o lectura digital en la plataforma Punku Open.
+### CONTEXTUALIZACIÓN:
+Plantea situaciones reales de la región Amazonas o de la Institución Educativa. Incluye solucionario detallado al final.
 `;
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt de evaluación:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de evaluación! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en evaluación:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-        // --- Lógica para generar el prompt de Contenido del Tema ---
-        generateContentBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de contenido, por favor espera...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Contenido del Tema ---
+generateContentBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de contenido...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
-                const promptText = `
-Actúa como docente del área de ${areaNombre} y necesito que brindes la información completa referente al tema '${escapeBackticks(sessionTopic)}', que le agregues título y subtítulos, además que pongas en negrita la información más importante y subrayes las ideas más significativas y que me brindes un enlace de ejemplo donde estas sacando la información, es para los estudiantes del ${gradoNombre} de ${nivelNombre}. Esa información me servirá como base para mi sesión y que lo usaré para realizar prácticas y evaluaciones mas adelante.
+        const promptText = `
+Actúa como docente de ${areaNombre}. Brinda información completa sobre '${escapeBackticks(sessionTopic)}' para ${gradoNombre} de ${nivelNombre}.
+
+REQUISITOS:
+1. Títulos y subtítulos claros.
+2. **Negrita** para lo más importante, _cursiva_ para ideas significativas.
+3. Incluye un enlace real de fuente confiable (Google Scholar, Redalyc o MINEDU).
+4. Lenguaje académico pero accesible.
 `;
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt de contenido:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de contenido! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en contenido:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
 
-        // --- Lógica para generar el prompt de Sesión Innovadora ---
-        generateInnovativeSessionBtn.addEventListener('click', () => {
-            loadingSpinner.classList.remove('hidden');
-            generatedPromptOutput.textContent = "Generando prompt de sesión innovadora, por favor espera...";
-            updateActionButtonsState(false);
+// --- Lógica para generar el prompt de Sesión Innovadora ---
+generateInnovativeSessionBtn.addEventListener('click', () => {
+    loadingSpinner.classList.remove('hidden');
+    generatedPromptOutput.textContent = "Generando prompt de sesión innovadora...";
+    updateActionButtonsState(false);
 
-            try {
-                const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
+    try {
+        const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
-                const promptText = `
-Actúa como un Neuroeducador y Especialista en Metodologías Activas para el área de ${areaNombre}. Genera una propuesta de inicio de sesión altamente disruptiva e innovadora sobre el tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre}.
+        const promptText = `
+Actúa como Neuroeducador. Genera una propuesta de inicio disruptiva para '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
 
-### REQUISITOS DE INNOVACIÓN:
-1. ESTRATEGIAS DE APERTURA: Propon 3 opciones diferentes para los primeros 15 minutos:
-   - Opción A (Gamificada): Un reto rápido o dinámica de grupo que use elementos de juego.
-   - Opción B (Tecnológica/Visual): Uso de una herramienta digital o un disparador visual potente (aunque sea offline).
-   - Opción C (Basada en Casos): Un dilema ético o situación real de la región Amazonas que conecte con el tema.
-
-2. FOCO EN EL SUB-TEMA: Integra de manera transversal la 'importancia de la retroalimentación reflexiva' como una herramienta para que el estudiante sea consciente de su propio progreso (Metacognición).
-
-3. CONTEXTUALIZACIÓN LOCAL: Asegura que las ideas sean realizables en la IE., considerando recursos locales y la cultura.
-
-4. PARTICIPACIÓN ACTIVA: Cada sugerencia debe indicar claramente qué debe hacer el estudiante (no solo escuchar) para romper la pasividad desde el minuto uno.
-
-### INDICACIONES DE FORMATO PARA LA IA:
-- Usa un tono entusiasta, creativo y profesional.
-- Estructura las ideas con subtítulos claros y viñetas.
-- Incluye una sección de "Tips de Oro" para que el docente Milton Ruiz pueda gestionar mejor la participación de los estudiantes más tímidos.
-
-**INDICACIONES FINALES:**
-La propuesta debe ser breve, directa y lista para aplicar. Evita teorías largas; prioriza la ejecución práctica en el aula.
+### REQUISITOS:
+1. 3 opciones de apertura (15 min): Gamificada, Tecnológica/Visual y Basada en casos reales de Amazonas.
+2. Foco en la retroalimentación reflexiva y metacognición.
+3. "Tips de Oro" para que el docente gestione a estudiantes tímidos.
+4. Tono entusiasta y profesional.
 `;
-                generatedPromptOutput.textContent = promptText;
-            } catch (error) {
-                console.error("Error al generar el prompt de sesión innovadora:", error);
-                generatedPromptOutput.textContent = `¡Ocurrió un error al generar el prompt de sesión innovadora! Por favor, verifica tus selecciones y vuelve a intentarlo. Detalles del error: ${error.message}`;
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                updateActionButtonsState(true);
-            }
-        });
-
-
+        generatedPromptOutput.textContent = promptText;
+    } catch (error) {
+        console.error("Error en sesión innovadora:", error);
+        generatedPromptOutput.textContent = `Error: ${error.message}`;
+    } finally {
+        loadingSpinner.classList.add('hidden');
+        updateActionButtonsState(true);
+    }
+});
         // --- Funcionalidad de copiar al portapapeles ---
         copySessionBtn.addEventListener('click', () => {
             const promptText = generatedPromptOutput.textContent;
