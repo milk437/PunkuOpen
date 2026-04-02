@@ -1805,26 +1805,21 @@ Actúa como un Especialista Pedagógico de la UGEL con amplia trayectoria. Tu ob
 // --- Lógica para generar el prompt de Rúbrica ---
 generateRubricBtn.addEventListener('click', () => {
     loadingSpinner.classList.remove('hidden');
-    generatedPromptOutput.textContent = "Generando prompt de rúbrica, por favor espera...";
+    generatedPromptOutput.textContent = "Generando estructura de rúbrica analítica...";
     updateActionButtonsState(false);
 
     try {
         const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
         const promptText = `
-Actúa como especialista en evaluación formativa del CNEB. Elabora una rúbrica analítica detallada sobre el tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre} (${areaNombre}).
+Actúa como Especialista en Evaluación Formativa. Elabora una RÚBRICA ANALÍTICA profesional para el tema '${escapeBackticks(sessionTopic)}' dirigida a ${gradoNombre} de ${nivelNombre} (${areaNombre}).
 
-La rúbrica debe presentarse en una tabla con 5 columnas:
-1. Criterios de Evaluación (Basados en las capacidades seleccionadas).
-2. AD - Logro Destacado.
-3. A - Logro Esperado.
-4. B - En Proceso.
-5. C - En Inicio.
-
-**Requisitos Técnicos:**
-- Competencias: ${selectedCompetenceNames.join(', ')}.
-- Capacidades: ${selectedCapacitiesTexts.join(', ')}.
-- Asegura que los descriptores sean graduales y reflejen niveles de complejidad creciente según el estándar del ciclo.
+**DIRECTRICES:**
+- No incluyas saludos ni despedidas.
+- Presenta la rúbrica en una **TABLA** de 5 columnas: Criterios de Evaluación | Logro Destacado (AD) | Logro Esperado (A) | En Proceso (B) | En Inicio (C).
+- Los criterios deben nacer de estas capacidades: ${selectedCapacitiesTexts.join(', ')}.
+- Los descriptores deben ser técnicos, observables y mostrar una progresión clara de complejidad según el Ciclo VII.
+- Asegura que se evalúe la competencia: ${selectedCompetenceNames.join(', ')}.
 `.trim();
         generatedPromptOutput.textContent = promptText;
     } catch (error) {
@@ -1839,25 +1834,20 @@ La rúbrica debe presentarse en una tabla con 5 columnas:
 // --- Lógica para generar el prompt de Lista de Cotejo ---
 generateChecklistBtn.addEventListener('click', () => {
     loadingSpinner.classList.remove('hidden');
-    generatedPromptOutput.textContent = "Generando prompt de lista de cotejo...";
+    generatedPromptOutput.textContent = "Generando lista de cotejo técnica...";
     updateActionButtonsState(false);
 
     try {
         const { areaNombre, sessionTopic, gradoNombre, nivelNombre, selectedCompetenceNames, selectedCapacitiesTexts } = getSessionParameters();
 
         const promptText = `
-Eres un docente experto en ${areaNombre}. Crea una lista de cotejo para evaluar el tema '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
-La tabla debe tener 5 columnas:
-1. Criterio (Basado en el desempeño esperado).
-2. Descripción (Qué debe hacer el estudiante específicamente).
-3. Sí.
-4. No.
-5. Observaciones / Retroalimentación formativa.
+Actúa como docente experto en ${areaNombre}. Diseña una LISTA DE COTEJO profesional para evaluar el desempeño en el tema '${escapeBackticks(sessionTopic)}' (${gradoNombre} de ${nivelNombre}).
 
-Considera:
-- Competencias: ${selectedCompetenceNames.join(', ')}.
-- Capacidades: ${selectedCapacitiesTexts.join(', ')}.
-- Proporciona una fila final para una retroalimentación detallada y constructiva.
+**DIRECTRICES:**
+- Presenta el instrumento en una **TABLA** con: N° | Criterio de Evaluación (Basado en desempeños) | Descripción del indicador observable | Logrado (Sí) | No Logrado (No) | Observaciones.
+- Los criterios deben movilizar las capacidades: ${selectedCapacitiesTexts.join(', ')}.
+- Incluye al final un apartado técnico para "Sugerencias de Retroalimentación Descriptiva".
+- Sin textos introductorios, entrega directamente el instrumento.
 `.trim();
         generatedPromptOutput.textContent = promptText;
     } catch (error) {
@@ -1872,24 +1862,25 @@ Considera:
 // --- Lógica para generar el prompt de Evaluación (20 Preguntas) ---
 generateEvaluationBtn.addEventListener('click', () => {
     loadingSpinner.classList.remove('hidden');
-    generatedPromptOutput.textContent = "Generando prompt de evaluación...";
+    generatedPromptOutput.textContent = "Generando evaluación de alta demanda cognitiva...";
     updateActionButtonsState(false);
 
     try {
         const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
         const promptText = `
-Eres un docente especialista de ${areaNombre}. Elabora una evaluación de 20 PREGUNTAS CRÍTICAS sobre '${escapeBackticks(sessionTopic)}' para ${gradoNombre} de ${nivelNombre}.
+Eres un docente especialista de ${areaNombre}. Elabora una EVALUACIÓN ESCRITA DE ALTA DEMANDA COGNITIVA con 20 reactivos sobre '${escapeBackticks(sessionTopic)}' para ${gradoNombre} de ${nivelNombre}.
 
-Distribución obligatoria:
-- 5 preguntas de desarrollo (demanda cognitiva alta).
-- 5 preguntas de opción múltiple (4 opciones).
-- 5 preguntas de completar (contextualizadas).
-- 5 preguntas de Verdadero/Falso (con justificación breve).
+**ESTRUCTURA TÉCNICA:**
+- 5 Preguntas de análisis/desarrollo (casos prácticos).
+- 5 Preguntas de opción múltiple (4 alternativas). **INSTRUCCIÓN: Distribuye las respuestas correctas de forma aleatoria (evita patrones A-B-C).**
+- 5 Preguntas de completar enunciados técnicos.
+- 5 Preguntas de juicio crítico (Verdadero/Falso con justificación obligatoria).
 
-**INSTRUCCIÓN CRÍTICA DE SEGURIDAD:**
-- Las respuestas correctas de las opciones múltiples deben estar distribuidas de forma ALEATORIA y NO REPETITIVA. Evita patrones donde la mayoría sea 'A' o 'B'.
-- Al final, incluye la clave de respuestas numerada.
+**REQUISITOS:**
+- Sin saludos ni introducciones.
+- Lenguaje formal académico.
+- Incluye el solucionario detallado al final.
 `.trim();
         generatedPromptOutput.textContent = promptText;
     } catch (error) {
@@ -1904,21 +1895,21 @@ Distribución obligatoria:
 // --- Lógica para generar el prompt de Contenido del Tema ---
 generateContentBtn.addEventListener('click', () => {
     loadingSpinner.classList.remove('hidden');
-    generatedPromptOutput.textContent = "Generando prompt de contenido...";
+    generatedPromptOutput.textContent = "Generando marco teórico especializado...";
     updateActionButtonsState(false);
 
     try {
         const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
         const promptText = `
-Actúa como docente experto de ${areaNombre}. Proporciona el marco teórico completo del tema '${escapeBackticks(sessionTopic)}' para estudiantes de ${gradoNombre} de ${nivelNombre}.
+Actúa como Especialista Académico. Proporciona el MARCO TEÓRICO CIENTÍFICO para el tema '${escapeBackticks(sessionTopic)}' adaptado para ${gradoNombre} de ${nivelNombre} (${areaNombre}).
 
-**Estructura requerida:**
-- Título creativo y subtítulos técnicos.
-- Usa **negrita** para conceptos clave y _cursiva_ para ideas significativas.
-- Incluye ejemplos prácticos y cotidianos para el estudiante.
-- Finaliza sugiriendo un enlace o fuente bibliográfica confiable (Minedu, Educared o similar).
-- La información debe ser suficiente para realizar prácticas posteriores.
+**REQUISITOS DE FORMATO:**
+- No uses frases de relleno iniciales.
+- Usa una estructura jerárquica: Título principal, Subtítulos técnicos.
+- Aplica **negritas** para terminología científica y _cursivas_ para énfasis pedagógico.
+- Incluye un apartado de "Ejemplos de Aplicación en el Contexto Real".
+- Cita al final dos fuentes bibliográficas de autoridad (ej. RAE, MINEDU o autores del área).
 `.trim();
         generatedPromptOutput.textContent = promptText;
     } catch (error) {
@@ -1933,21 +1924,21 @@ Actúa como docente experto de ${areaNombre}. Proporciona el marco teórico comp
 // --- Lógica para generar el prompt de Sesión Innovadora ---
 generateInnovativeSessionBtn.addEventListener('click', () => {
     loadingSpinner.classList.remove('hidden');
-    generatedPromptOutput.textContent = "Generando prompt de sesión innovadora...";
+    generatedPromptOutput.textContent = "Generando estrategias de innovación pedagógica...";
     updateActionButtonsState(false);
 
     try {
         const { areaNombre, sessionTopic, gradoNombre, nivelNombre } = getSessionParameters();
 
         const promptText = `
-Eres un docente innovador de ${areaNombre}. Genera 3 ideas disruptivas para iniciar la clase sobre '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
+Eres un Mentor en Innovación Educativa. Propón 3 ESTRATEGIAS DISRUPTIVAS para el inicio y desarrollo de la sesión sobre '${escapeBackticks(sessionTopic)}' en ${gradoNombre} de ${nivelNombre}.
 
-Objetivo: Captar la atención inmediata (Ganchos cognitivos).
-- Opción 1: Basada en un reto o juego.
-- Opción 2: Basada en una situación real o noticia impactante.
-- Opción 3: Basada en el uso de una herramienta digital o recurso visual.
+**ESTRUCTURA:**
+1. **Estrategia Gamificada:** Un reto o mecánica de juego.
+2. **Estrategia Basada en Evidencia:** Uso de una noticia o caso real impactante.
+3. **Estrategia Tecnológica:** Uso de herramientas digitales o recursos visuales potentes.
 
-Incluye una breve sugerencia sobre cómo integrar la retroalimentación desde el primer minuto de la sesión.
+**REQUISITO:** Cada estrategia debe explicar brevemente el "Impacto Pedagógico" esperado y cómo realizar retroalimentación inmediata. Entrega directamente las propuestas sin comentarios adicionales.
 `.trim();
         generatedPromptOutput.textContent = promptText;
     } catch (error) {
