@@ -12,13 +12,19 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
             color: #d4af37;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
 
-        /* Login Container */
+        body.light {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #333;
+        }
+
+        /* Login */
         .login-container {
             max-width: 450px;
             margin: 100px auto;
@@ -28,6 +34,10 @@
             padding: 40px;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        body.light .login-container {
+            background: #fff;
         }
 
         .login-container h1 {
@@ -46,12 +56,11 @@
             border: 1px solid #333;
             border-radius: 8px;
             color: #fff;
-            font-size: 1em;
         }
 
-        .login-container input:focus {
-            outline: none;
-            border-color: #d4af37;
+        body.light .login-container input {
+            background: #f0f0f0;
+            color: #333;
         }
 
         .login-container button {
@@ -66,17 +75,13 @@
             margin-top: 10px;
         }
 
-        .login-container button:hover {
-            transform: translateY(-2px);
-        }
-
         .login-error {
             color: #ff4444;
             margin-top: 10px;
             display: none;
         }
 
-        /* Main App Container */
+        /* App Container */
         .app-container {
             display: none;
             max-width: 1600px;
@@ -91,6 +96,11 @@
             text-align: center;
             border-bottom: 2px solid #d4af37;
             margin-bottom: 30px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        body.light .header {
+            background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
         }
 
         .header h1 {
@@ -106,7 +116,7 @@
             margin-top: 5px;
         }
 
-        /* Grid Layout */
+        /* Grid */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -121,6 +131,11 @@
             padding: 25px;
         }
 
+        body.light .panel {
+            background: #fff;
+            border-color: #ddd;
+        }
+
         .panel h3 {
             color: #d4af37;
             border-left: 4px solid #d4af37;
@@ -130,7 +145,6 @@
             text-transform: uppercase;
         }
 
-        /* Formulario */
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -150,6 +164,10 @@
             text-transform: uppercase;
         }
 
+        body.light label {
+            color: #666;
+        }
+
         input, select, textarea {
             width: 100%;
             padding: 10px;
@@ -160,12 +178,17 @@
             font-size: 0.85em;
         }
 
+        body.light input, body.light select, body.light textarea {
+            background: #f9f9f9;
+            color: #333;
+            border-color: #ddd;
+        }
+
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #d4af37;
         }
 
-        /* Botones */
         .btn-gold {
             background: linear-gradient(45deg, #d4af37, #b8860b);
             color: #000;
@@ -200,7 +223,6 @@
             margin-top: 0;
         }
 
-        /* Prompt Area */
         #promptArea {
             background: #050505;
             color: #00ff41;
@@ -213,12 +235,11 @@
             border-radius: 8px;
         }
 
-        /* Resultado */
         .result-area {
             background: #fff;
             border-radius: 12px;
             padding: 15px;
-            min-height: 300px;
+            min-height: 350px;
             margin-top: 15px;
             display: none;
         }
@@ -226,11 +247,10 @@
         .result-area iframe {
             width: 100%;
             height: 100%;
-            min-height: 300px;
+            min-height: 350px;
             border: none;
         }
 
-        /* Status */
         .status {
             margin-top: 15px;
             padding: 10px;
@@ -251,14 +271,17 @@
             color: #ff3b30;
         }
 
-        /* Checkboxes */
         .checkbox-container {
             background: #1a1a1a;
             border: 1px solid #333;
             border-radius: 8px;
             padding: 10px;
-            max-height: 120px;
+            max-height: 150px;
             overflow-y: auto;
+        }
+
+        body.light .checkbox-container {
+            background: #f0f0f0;
         }
 
         .checkbox-item {
@@ -270,6 +293,10 @@
 
         .checkbox-item:hover {
             background: #2a2a2a;
+        }
+
+        body.light .checkbox-item:hover {
+            background: #e0e0e0;
         }
 
         .checkbox-item input {
@@ -284,6 +311,11 @@
             text-transform: none;
             font-size: 0.8em;
             cursor: pointer;
+            color: #fff;
+        }
+
+        body.light .checkbox-item label {
+            color: #333;
         }
 
         .hint {
@@ -292,356 +324,383 @@
             margin-top: 4px;
         }
 
-        /* Footer */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #222;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.8em;
+            z-index: 1000;
+        }
+
+        body.light .theme-toggle {
+            background: #fff;
+            color: #333;
+        }
+
         footer {
             text-align: center;
             padding: 20px;
             color: #666;
             font-size: 0.7em;
+            margin-top: 20px;
         }
 
         @media (max-width: 1000px) {
             .main-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 1.5em; }
         }
-
-        /* Tema toggle */
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #222;
-            border: 1px solid #d4af37;
-            border-radius: 30px;
-            padding: 5px 12px;
-            cursor: pointer;
-            font-size: 0.8em;
-        }
     </style>
 </head>
 <body>
 
-<!-- LOGIN CONTAINER -->
 <div id="loginContainer" class="login-container">
     <h1><span>Punku</span><span>Open</span></h1>
     <p style="color: #aaa; margin-bottom: 20px;">Sesiones de Aprendizaje CNEB</p>
-    <input type="text" id="loginUser" placeholder="Usuario">
-    <input type="password" id="loginPin" placeholder="PIN">
+    <input type="text" id="loginUser" placeholder="Usuario" value="admin">
+    <input type="password" id="loginPin" placeholder="PIN" value="1234">
     <button id="loginBtn">INGRESAR</button>
     <div id="loginError" class="login-error">❌ Usuario o PIN incorrecto</div>
 </div>
 
-<!-- MAIN APP CONTAINER -->
 <div id="appContainer" class="app-container">
-    <div class="theme-toggle" id="themeToggle">🌙 Tema</div>
+    <div class="theme-toggle" id="themeToggle">🌙 Tema Oscuro</div>
     
     <div class="header">
         <h1><span>Punku</span><span>Open</span></h1>
-        <p>SISTEMA DE SESIONES DE APRENDIZAJE - CNEB 2026</p>
+        <p>SESIONES DE APRENDIZAJE - CNEB 2026</p>
     </div>
 
     <div class="main-grid">
-        <!-- Panel Izquierdo: Formulario -->
         <div class="panel">
             <h3>📌 I. DATOS INSTITUCIONALES</h3>
             <div class="form-row">
-                <div>
-                    <label>UGEL</label>
-                    <input type="text" id="ugel" placeholder="Chachapoyas">
-                </div>
-                <div>
-                    <label>I.E.</label>
-                    <input type="text" id="ie" placeholder="Juan Velasco Alvarado">
-                </div>
+                <div><label>UGEL</label><input type="text" id="ugel" placeholder="Ej: Chachapoyas" value="Chachapoyas"></div>
+                <div><label>I.E.</label><input type="text" id="ie" placeholder="Ej: Juan Velasco Alvarado" value="Juan Velasco Alvarado"></div>
             </div>
             <div class="form-row">
-                <div>
-                    <label>Nivel</label>
-                    <select id="nivel">
-                        <option value="">Seleccione</option>
-                        <option value="Secundaria">Secundaria</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Área</label>
-                    <select id="area">
-                        <option value="">Seleccione</option>
-                        <option value="Comunicación">Comunicación</option>
-                        <option value="DPCC">Desarrollo Personal, Ciudadanía y Cívica</option>
-                        <option value="Matemática">Matemática</option>
-                        <option value="Ciencias Sociales">Ciencias Sociales</option>
-                    </select>
-                </div>
+                <div><label>Nivel</label><select id="nivel"><option value="">Seleccione</option></select></div>
+                <div><label>Ciclo</label><select id="ciclo" disabled><option value="">Primero seleccione nivel</option></select></div>
             </div>
             <div class="form-row">
-                <div>
-                    <label>Grado</label>
-                    <select id="grado">
-                        <option value="">Seleccione</option>
-                        <option value="1°">1er grado</option>
-                        <option value="2°">2do grado</option>
-                        <option value="3°">3er grado</option>
-                        <option value="4°">4to grado</option>
-                        <option value="5°">5to grado</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Docente</label>
-                    <input type="text" id="docente" placeholder="Nombre del docente">
-                </div>
+                <div><label>Grado</label><select id="grado" disabled><option value="">Primero seleccione ciclo</option></select></div>
+                <div><label>Área</label><select id="area" disabled><option value="">Primero seleccione grado</option></select></div>
+            </div>
+            <div class="form-row">
+                <div><label>Docente</label><input type="text" id="docente" placeholder="Nombre del docente"></div>
+                <div><label>Fecha</label><input type="text" id="fecha" placeholder="Ej: junio de 2026"></div>
             </div>
 
             <h3>📅 II. DATOS DE LA SESIÓN</h3>
             <div class="form-row">
-                <div>
-                    <label>N° Sesión / Unidad</label>
-                    <input type="text" id="numSesion" placeholder="Ej: Sesión 04 - U3">
-                </div>
-                <div>
-                    <label>Título</label>
-                    <input type="text" id="titulo" placeholder="Ej: Las conjunciones">
-                </div>
+                <div><label>N° Sesión / Unidad</label><input type="text" id="numSesion" placeholder="Ej: Sesión 04 - U3"></div>
+                <div><label>Título</label><input type="text" id="titulo" placeholder="Ej: Las conjunciones"></div>
             </div>
             <div class="form-row">
-                <div>
-                    <label>Duración (minutos)</label>
-                    <select id="duracion">
-                        <option value="45">45 min</option>
-                        <option value="90" selected>90 min (2h)</option>
-                        <option value="135">135 min (3h)</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Fecha</label>
-                    <input type="text" id="fecha" placeholder="Ej: junio de 2026">
-                </div>
-            </div>
-
-            <h3>🎯 III. PROPÓSITO Y EVIDENCIA</h3>
-            <div class="form-row-full">
-                <label>Propósito</label>
-                <textarea id="proposito" rows="2" placeholder="Ej: Conocer las conjunciones y resolver ejercicios"></textarea>
+                <div><label>Duración (min)</label><select id="duracion"><option value="45">45 min</option><option value="90" selected>90 min (2h)</option><option value="135">135 min</option></select></div>
+                <div><label>Propósito</label><input type="text" id="proposito" placeholder="Ej: Conocer las conjunciones"></div>
             </div>
             <div class="form-row">
-                <div>
-                    <label>Evidencia</label>
-                    <input type="text" id="evidencia" placeholder="Ej: Ficha de trabajo">
-                </div>
-                <div>
-                    <label>Instrumento</label>
-                    <input type="text" id="instrumento" placeholder="Ej: Lista de cotejo">
-                </div>
+                <div><label>Evidencia</label><input type="text" id="evidencia" placeholder="Ej: Ficha de trabajo"></div>
+                <div><label>Instrumento</label><input type="text" id="instrumento" placeholder="Ej: Lista de cotejo"></div>
             </div>
 
-            <h3>📖 IV. COMPETENCIAS</h3>
+            <h3>📋 III. COMPETENCIAS</h3>
             <div class="form-row">
-                <div>
-                    <label>Competencia(s)</label>
-                    <div id="competenciasContainer" class="checkbox-container">
-                        <div class="checkbox-item"><input type="checkbox" value="Lee diversos tipos de textos"> <label>Lee diversos tipos de textos</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Se comunica oralmente"> <label>Se comunica oralmente</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Escribe diversos tipos de textos"> <label>Escribe diversos tipos de textos</label></div>
-                    </div>
-                </div>
-                <div>
-                    <label>Capacidad(es)</label>
-                    <div id="capacidadesContainer" class="checkbox-container">
-                        <div class="checkbox-item"><input type="checkbox" value="Obtiene información"> <label>Obtiene información</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Infiere e interpreta"> <label>Infiere e interpreta</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Reflexiona y evalúa"> <label>Reflexiona y evalúa</label></div>
-                    </div>
-                </div>
+                <div><label>Competencia(s)</label><div id="competenciasContainer" class="checkbox-container"></div></div>
+                <div><label>Capacidad(es)</label><div id="capacidadesContainer" class="checkbox-container"></div></div>
             </div>
 
-            <h3>📋 V. ENFOQUE TRANSVERSAL</h3>
-            <div class="form-row">
-                <div>
-                    <label>Enfoque</label>
-                    <select id="enfoque">
-                        <option value="Derechos">Enfoque de Derechos</option>
-                        <option value="Ambiental">Enfoque Ambiental</option>
-                        <option value="Intercultural">Enfoque Intercultural</option>
-                        <option value="Igualdad de Género">Enfoque de Igualdad de Género</option>
-                        <option value="Excelencia">Enfoque de Búsqueda de la Excelencia</option>
-                        <option value="Bien Común">Enfoque de Orientación al Bien Común</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Valor</label>
-                    <input type="text" id="valor" placeholder="Ej: Libertad y responsabilidad">
-                </div>
-            </div>
+            <h3>🎯 IV. ENFOQUES TRANSVERSALES (Múltiple)</h3>
+            <div class="form-row-full"><div id="enfoquesContainer" class="checkbox-container"></div></div>
 
-            <h3>🖥️ VI. RECURSOS Y MATERIALES</h3>
-            <div class="form-row-full">
-                <textarea id="recursos" rows="3" placeholder="Ej: PPT, PC, multimedia, plumones, cuaderno, fichas"></textarea>
-            </div>
+            <h3>🖥️ V. RECURSOS Y MATERIALES</h3>
+            <div class="form-row-full"><textarea id="recursos" rows="3" placeholder="Ej: PPT, PC, multimedia, plumones, cuaderno, fichas"></textarea></div>
 
-            <h3>📝 VII. CRITERIOS DE EVALUACIÓN</h3>
-            <div class="form-row-full">
-                <textarea id="criterios" rows="4" placeholder="Ej:
-- Integra información explícita del texto
-- Explica el tema y propósito comunicativo
-- Opina sobre el contenido y organización textual"></textarea>
-            </div>
+            <h3>📝 VI. CRITERIOS DE EVALUACIÓN</h3>
+            <div class="form-row-full"><textarea id="criterios" rows="4" placeholder="Ej: - Integra información explícita\n- Explica el tema y propósito\n- Opina sobre el contenido"></textarea></div>
 
-            <h3>📖 VIII. TEMAS PERSONALIZADOS (Opcional)</h3>
-            <div class="form-row-full">
-                <textarea id="temasLibres" rows="3" placeholder="Ingrese temas específicos (uno por línea)..."></textarea>
-                <span class="hint">Si lo deja vacío, la IA propondrá temas según el área y grado.</span>
-            </div>
-
-            <button id="generateBtn" class="btn-gold">✨ GENERAR PROMPT PARA SESIÓN</button>
+            <button id="generateBtn" class="btn-gold">🔮 GENERAR PROMPT DE INGENIERÍA</button>
         </div>
 
-        <!-- Panel Derecho: Resultado -->
         <div class="panel">
-            <h3>⚡ PROMPT GENERADO</h3>
+            <h3>⚡ PROMPT DE INGENIERÍA (COPIA Y PEGA EN IA)</h3>
             <textarea id="promptArea" readonly placeholder="Complete el formulario y presione 'GENERAR PROMPT'..."></textarea>
             <div class="btn-group">
                 <button id="copyPromptBtn" class="btn-gold btn-outline">📋 COPIAR PROMPT</button>
-                <button id="exportPromptBtn" class="btn-gold">💾 EXPORTAR .TXT</button>
+                <button id="exportPromptBtn" class="btn-gold">💾 EXPORTAR PROMPT</button>
             </div>
-
-            <p style="font-size: 0.7em; color: #666; margin: 15px 0; text-align: center;">
-                💡 Copie el prompt, péguelo en ChatGPT/Gemini/Claude y pegue el HTML resultante abajo.
-            </p>
+            <p style="font-size: 0.7em; color: #666; margin: 15px 0; text-align: center;">💡 Copie el prompt, péguelo en ChatGPT/Gemini/Claude y pegue el HTML resultante abajo.</p>
 
             <h3>📄 HTML GENERADO POR IA</h3>
             <textarea id="iaHtmlInput" rows="6" placeholder="Pegue aquí el HTML que le devolvió la IA..."></textarea>
-            
             <div class="btn-group">
                 <button id="previewBtn" class="btn-gold btn-outline">🖥️ VISTA PREVIA</button>
                 <button id="downloadWordBtn" class="btn-gold">📥 EXPORTAR A WORD</button>
             </div>
-            
             <div id="previewArea" class="result-area"></div>
             <div id="statusMsg" class="status"></div>
         </div>
     </div>
-
-    <footer>
-        &copy; 2026 Punku Open - Sistema de Sesiones de Aprendizaje CNEB
-    </footer>
+    <footer>© 2026 Punku Open - Sesiones de Aprendizaje CNEB | admin / 1234</footer>
 </div>
 
 <script>
-    // ==================== CREDENCIALES ====================
-    const VALID_USER = "admin";
-    const VALID_PIN = "1234";
+    // ==================== DATOS CNEB OFICIALES ====================
+    const nivelesData = {
+        "inicial": { "nombre": "Nivel Inicial", "ciclos": {
+            "i": { "nombre": "Ciclo I", "grados": { "0-2": "0-2 años" }, "estandar": "Explora su entorno, regula emociones básicas, se comunica gestualmente." },
+            "ii": { "nombre": "Ciclo II", "grados": { "3": "3 años", "4": "4 años", "5": "5 años" }, "estandar": "Se expresa oralmente, comprende textos sencillos, escribe su nombre." }
+        }, "areas": {
+            "comunicacion": { "nombre": "Comunicación", "competencias": [
+                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
+                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
+                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
+            ] },
+            "personalSocial": { "nombre": "Personal Social", "competencias": [
+                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula emociones"] }
+            ] }
+        } },
+        "primaria": { "nombre": "Nivel Primaria", "ciclos": {
+            "iii": { "nombre": "Ciclo III", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee textos sencillos, escribe oraciones, resuelve problemas básicos." },
+            "iv": { "nombre": "Ciclo IV", "grados": { "3": "3er grado", "4": "4to grado" }, "estandar": "Comprende textos continuos, produce textos narrativos, aplica operaciones matemáticas." },
+            "v": { "nombre": "Ciclo V", "grados": { "5": "5to grado", "6": "6to grado" }, "estandar": "Analiza textos complejos, argumenta, resuelve problemas con fracciones y decimales." }
+        }, "areas": {
+            "comunicacion": { "nombre": "Comunicación", "competencias": [
+                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
+                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
+                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
+            ] },
+            "matematica": { "nombre": "Matemática", "competencias": [
+                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
+            ] }
+        } },
+        "secundaria": { "nombre": "Nivel Secundaria", "ciclos": {
+            "vi": { "nombre": "Ciclo VI", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee críticamente, produce textos argumentativos, resuelve problemas algebraicos." },
+            "vii": { "nombre": "Ciclo VII", "grados": { "3": "3er grado", "4": "4to grado", "5": "5to grado" }, "estandar": "Evalúa textos complejos, produce ensayos, resuelve problemas estadísticos." }
+        }, "areas": {
+            "comunicacion": { "nombre": "Comunicación", "competencias": [
+                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
+                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
+                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
+            ] },
+            "dpcc": { "nombre": "Desarrollo Personal, Ciudadanía y Cívica", "competencias": [
+                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula", "Reflexiona éticamente", "Vive su sexualidad"] },
+                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Construye acuerdos", "Maneja conflictos", "Delibera", "Participa"] }
+            ] },
+            "matematica": { "nombre": "Matemática", "competencias": [
+                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
+            ] },
+            "cienciasSociales": { "nombre": "Ciencias Sociales", "competencias": [
+                { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta fuentes", "Comprende tiempo", "Elabora explicaciones"] }
+            ] }
+        } }
+    };
 
-    // ==================== ELEMENTOS DOM ====================
-    const loginContainer = document.getElementById('loginContainer');
-    const appContainer = document.getElementById('appContainer');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginUser = document.getElementById('loginUser');
-    const loginPin = document.getElementById('loginPin');
-    const loginError = document.getElementById('loginError');
-    const themeToggle = document.getElementById('themeToggle');
+    const enfoquesData = [
+        { nombre: "Derechos", valores: "Conciencia de derechos, Libertad y responsabilidad", actitudes: "Actitud de reconocimiento del otro como sujeto de derechos." },
+        { nombre: "Inclusivo", valores: "Respeto por las diferencias, Equidad", actitudes: "Disposición a valorar y proteger las diversas identidades." },
+        { nombre: "Intercultural", valores: "Respeto a la identidad cultural", actitudes: "Disposición a conversar e intercambiar ideas." },
+        { nombre: "Igualdad de Género", valores: "Igualdad y Dignidad", actitudes: "Actitud de no hacer distinciones por género." },
+        { nombre: "Ambiental", valores: "Solidaridad planetaria", actitudes: "Disposición a colaborar en la protección del ambiente." },
+        { nombre: "Orientación al Bien Común", valores: "Equidad, Solidaridad", actitudes: "Colaboración para el bienestar colectivo." },
+        { nombre: "Búsqueda de la Excelencia", valores: "Flexibilidad, Superación", actitudes: "Disposición a mejorar continuamente." }
+    ];
+
+    // DOM elements
+    const nivelSelect = document.getElementById('nivel');
+    const cicloSelect = document.getElementById('ciclo');
+    const gradoSelect = document.getElementById('grado');
+    const areaSelect = document.getElementById('area');
+    const competenciasContainer = document.getElementById('competenciasContainer');
+    const capacidadesContainer = document.getElementById('capacidadesContainer');
+    const enfoquesContainer = document.getElementById('enfoquesContainer');
     const generateBtn = document.getElementById('generateBtn');
+    const promptArea = document.getElementById('promptArea');
     const copyPromptBtn = document.getElementById('copyPromptBtn');
     const exportPromptBtn = document.getElementById('exportPromptBtn');
     const previewBtn = document.getElementById('previewBtn');
     const downloadWordBtn = document.getElementById('downloadWordBtn');
-    const promptArea = document.getElementById('promptArea');
     const iaHtmlInput = document.getElementById('iaHtmlInput');
     const previewArea = document.getElementById('previewArea');
     const statusMsg = document.getElementById('statusMsg');
 
-    // ==================== LOGIN ====================
-    loginBtn.addEventListener('click', () => {
-        const user = loginUser.value.trim();
-        const pin = loginPin.value.trim();
-        
-        if (user === VALID_USER && pin === VALID_PIN) {
-            loginContainer.style.display = 'none';
-            appContainer.style.display = 'block';
+    // Poblar niveles
+    function populateNiveles() {
+        nivelSelect.innerHTML = '<option value="">Seleccione Nivel</option>';
+        for (const [key, val] of Object.entries(nivelesData)) {
+            nivelSelect.innerHTML += `<option value="${key}">${val.nombre}</option>`;
+        }
+    }
+
+    // Al cambiar nivel
+    nivelSelect.addEventListener('change', function() {
+        const nivelKey = this.value;
+        cicloSelect.innerHTML = '<option value="">Seleccione Ciclo</option>';
+        gradoSelect.innerHTML = '<option value="">Primero seleccione ciclo</option>';
+        areaSelect.innerHTML = '<option value="">Primero seleccione grado</option>';
+        competenciasContainer.innerHTML = '';
+        capacidadesContainer.innerHTML = '';
+
+        if (nivelKey && nivelesData[nivelKey]) {
+            for (const [cKey, cVal] of Object.entries(nivelesData[nivelKey].ciclos)) {
+                cicloSelect.innerHTML += `<option value="${cKey}" data-estandar="${cVal.estandar}">${cVal.nombre}</option>`;
+            }
+            cicloSelect.disabled = false;
         } else {
-            loginError.style.display = 'block';
-            setTimeout(() => {
-                loginError.style.display = 'none';
-            }, 3000);
+            cicloSelect.disabled = true;
+            gradoSelect.disabled = true;
+            areaSelect.disabled = true;
         }
     });
 
-    // Enter en login
-    loginPin.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') loginBtn.click();
-    });
+    // Al cambiar ciclo
+    cicloSelect.addEventListener('change', function() {
+        const nivelKey = nivelSelect.value;
+        const cicloKey = this.value;
+        gradoSelect.innerHTML = '<option value="">Seleccione Grado</option>';
+        areaSelect.innerHTML = '<option value="">Primero seleccione grado</option>';
+        competenciasContainer.innerHTML = '';
+        capacidadesContainer.innerHTML = '';
 
-    // ==================== TEMA OSCURO/CLARO ====================
-    let isDark = true;
-    themeToggle.addEventListener('click', () => {
-        isDark = !isDark;
-        if (isDark) {
-            document.body.style.background = "linear-gradient(135deg, #0a0a0a 0%, #050505 100%)";
-            document.body.style.color = "#d4af37";
-            themeToggle.textContent = "🌙 Tema";
+        if (nivelKey && cicloKey && nivelesData[nivelKey].ciclos[cicloKey]) {
+            for (const [gKey, gVal] of Object.entries(nivelesData[nivelKey].ciclos[cicloKey].grados)) {
+                gradoSelect.innerHTML += `<option value="${gKey}">${gVal}</option>`;
+            }
+            gradoSelect.disabled = false;
         } else {
-            document.body.style.background = "linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)";
-            document.body.style.color = "#333";
-            themeToggle.textContent = "☀️ Tema";
+            gradoSelect.disabled = true;
+            areaSelect.disabled = true;
         }
     });
 
-    // ==================== FUNCIONES AUXILIARES ====================
-    function getSelectedCheckboxes(containerId) {
-        const container = document.getElementById(containerId);
-        if (!container) return [];
-        const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
-        return Array.from(checkboxes).map(cb => cb.value);
+    // Al cambiar grado
+    gradoSelect.addEventListener('change', function() {
+        const nivelKey = nivelSelect.value;
+        areaSelect.innerHTML = '<option value="">Seleccione Área</option>';
+        competenciasContainer.innerHTML = '';
+        capacidadesContainer.innerHTML = '';
+
+        if (nivelKey && nivelesData[nivelKey].areas) {
+            for (const [aKey, aVal] of Object.entries(nivelesData[nivelKey].areas)) {
+                areaSelect.innerHTML += `<option value="${aKey}">${aVal.nombre}</option>`;
+            }
+            areaSelect.disabled = false;
+        } else {
+            areaSelect.disabled = true;
+        }
+    });
+
+    // Al cambiar área
+    areaSelect.addEventListener('change', function() {
+        const nivelKey = nivelSelect.value;
+        const areaKey = this.value;
+        competenciasContainer.innerHTML = '';
+
+        if (nivelKey && areaKey && nivelesData[nivelKey].areas[areaKey]) {
+            const competencias = nivelesData[nivelKey].areas[areaKey].competencias;
+            competencias.forEach((comp, idx) => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.id = `comp_${idx}`;
+                cb.value = comp.nombre;
+                cb.dataset.capacidades = JSON.stringify(comp.capacidades);
+                cb.addEventListener('change', updateCapacidades);
+                const label = document.createElement('label');
+                label.htmlFor = `comp_${idx}`;
+                label.textContent = comp.nombre;
+                div.appendChild(cb);
+                div.appendChild(label);
+                competenciasContainer.appendChild(div);
+            });
+        }
+    });
+
+    function updateCapacidades() {
+        capacidadesContainer.innerHTML = '';
+        const selectedComps = Array.from(competenciasContainer.querySelectorAll('input:checked'));
+        const todasCapacidades = [];
+        selectedComps.forEach(cb => {
+            const capacidades = JSON.parse(cb.dataset.capacidades || '[]');
+            capacidades.forEach(cap => { if (!todasCapacidades.includes(cap)) todasCapacidades.push(cap); });
+        });
+        todasCapacidades.forEach((cap, idx) => {
+            const div = document.createElement('div');
+            div.className = 'checkbox-item';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.id = `cap_${idx}`;
+            cb.value = cap;
+            const label = document.createElement('label');
+            label.htmlFor = `cap_${idx}`;
+            label.textContent = cap;
+            div.appendChild(cb);
+            div.appendChild(label);
+            capacidadesContainer.appendChild(div);
+        });
     }
 
-    function showStatus(msg, type) {
-        statusMsg.textContent = msg;
-        statusMsg.className = `status status-${type}`;
-        statusMsg.style.display = 'block';
-        setTimeout(() => {
-            statusMsg.style.display = 'none';
-        }, 4000);
+    // Poblar enfoques
+    function populateEnfoques() {
+        enfoquesContainer.innerHTML = '';
+        enfoquesData.forEach((enf, idx) => {
+            const div = document.createElement('div');
+            div.className = 'checkbox-item';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.id = `enf_${idx}`;
+            cb.value = enf.nombre;
+            cb.dataset.valores = enf.valores;
+            cb.dataset.actitudes = enf.actitudes;
+            const label = document.createElement('label');
+            label.htmlFor = `enf_${idx}`;
+            label.textContent = `${enf.nombre} - ${enf.valores}`;
+            div.appendChild(cb);
+            div.appendChild(label);
+            enfoquesContainer.appendChild(div);
+        });
     }
 
-    function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;')
-                  .replace(/</g, '&lt;')
-                  .replace(/>/g, '&gt;')
-                  .replace(/"/g, '&quot;')
-                  .replace(/'/g, '&#39;');
-    }
-
-    // ==================== GENERAR PROMPT ====================
+    // Generar prompt
     generateBtn.addEventListener('click', () => {
-        const ugel = document.getElementById('ugel').value || 'Chachapoyas';
-        const ie = document.getElementById('ie').value || 'Juan Velasco Alvarado';
-        const nivel = document.getElementById('nivel').value;
-        const area = document.getElementById('area').value;
-        const grado = document.getElementById('grado').value;
+        const nivelKey = nivelSelect.value;
+        const cicloKey = cicloSelect.value;
+        const gradoKey = gradoSelect.value;
+        const areaKey = areaSelect.value;
+        const cicloNombre = cicloSelect.options[cicloSelect.selectedIndex]?.text || '';
+        const gradoNombre = gradoSelect.options[gradoSelect.selectedIndex]?.text || '';
+        const areaNombre = areaSelect.options[areaSelect.selectedIndex]?.text || '';
+        const estandar = cicloSelect.options[cicloSelect.selectedIndex]?.dataset.estandar || 'Estándar del ciclo';
+
+        const competenciasSeleccionadas = Array.from(competenciasContainer.querySelectorAll('input:checked')).map(cb => cb.value);
+        const capacidadesSeleccionadas = Array.from(capacidadesContainer.querySelectorAll('input:checked')).map(cb => cb.value);
+        const enfoquesSeleccionados = Array.from(enfoquesContainer.querySelectorAll('input:checked')).map(cb => ({ nombre: cb.value, valores: cb.dataset.valores, actitudes: cb.dataset.actitudes }));
+
+        const ugel = document.getElementById('ugel').value;
+        const ie = document.getElementById('ie').value;
         const docente = document.getElementById('docente').value || 'Docente';
         const numSesion = document.getElementById('numSesion').value || 'Sesión';
         const titulo = document.getElementById('titulo').value || 'Sesión de Aprendizaje';
         const duracion = document.getElementById('duracion').value;
         const fecha = document.getElementById('fecha').value || 'junio de 2026';
-        const proposito = document.getElementById('proposito').value || 'Desarrollar competencias comunicativas.';
+        const proposito = document.getElementById('proposito').value || 'Desarrollar competencias comunicativas';
         const evidencia = document.getElementById('evidencia').value || 'Ficha de trabajo';
         const instrumento = document.getElementById('instrumento').value || 'Lista de cotejo';
-        const competencias = getSelectedCheckboxes('competenciasContainer');
-        const capacidades = getSelectedCheckboxes('capacidadesContainer');
-        const enfoque = document.getElementById('enfoque').value;
-        const valor = document.getElementById('valor').value || 'Libertad y responsabilidad';
         const recursos = document.getElementById('recursos').value || 'PPT, PC, cuaderno, fichas';
-        const criterios = document.getElementById('criterios').value;
-        const temasLibres = document.getElementById('temasLibres').value;
-
-        let temasText = '';
-        if (temasLibres.trim()) {
-            const lista = temasLibres.split('\n').filter(l => l.trim()).map((l, i) => `${i+1}. ${l.trim()}`).join('\n');
-            temasText = `\n=== TEMAS PERSONALIZADOS ===\n${lista}\nINSTRUCCIÓN: NO OMITAS NINGUNO de estos temas en la sesión.\n`;
-        }
+        const criterios = document.getElementById('criterios').value || 'Integra información explícita, Explica el tema y propósito';
 
         const minutos = parseInt(duracion);
-        const inicioMin = Math.round(minutos * 0.17);
-        const desarrolloMin = Math.round(minutos * 0.66);
-        const cierreMin = minutos - inicioMin - desarrolloMin;
+        const inicio = Math.round(minutos * 0.17);
+        const desarrollo = Math.round(minutos * 0.66);
+        const cierre = minutos - inicio - desarrollo;
+
+        const enfoquesText = enfoquesSeleccionados.map(e => `- **${e.nombre}**: ${e.valores} (${e.actitudes})`).join('\n');
 
         const prompt = `💎 PUNKU OPEN - SESIÓN DE APRENDIZAJE CNEB 2026
 ROL: Especialista Senior en Currículo Nacional del Perú.
@@ -655,9 +714,10 @@ INSTRUCCIÓN EXPRESA:
 DATOS INSTITUCIONALES:
 - UGEL: ${ugel}
 - I.E.: ${ie}
-- Nivel: ${nivel}
-- Área: ${area}
-- Grado: ${grado}
+- Nivel: ${nivelSelect.options[nivelSelect.selectedIndex]?.text}
+- Ciclo: ${cicloNombre}
+- Grado: ${gradoNombre}
+- Área: ${areaNombre}
 - Docente: ${docente}
 - N° Sesión: ${numSesion}
 - Título: ${titulo}
@@ -669,125 +729,80 @@ EVIDENCIA: ${evidencia}
 INSTRUMENTO: ${instrumento}
 
 COMPETENCIAS:
-${competencias.map(c => `- ${c}`).join('\n')}
+${competenciasSeleccionadas.map(c => `- ${c}`).join('\n')}
 
 CAPACIDADES:
-${capacidades.map(c => `- ${c}`).join('\n')}
+${capacidadesSeleccionadas.map(c => `- ${c}`).join('\n')}
 
-ENFOQUE TRANSVERSAL: ${enfoque}
-VALOR: ${valor}
+ESTÁNDAR DEL ${cicloNombre}:
+${estandar}
+
+ENFOQUES TRANSVERSALES:
+${enfoquesText}
 
 RECURSOS Y MATERIALES:
 ${recursos}
 
-CRITERIOS DE EVALUACIÓN:
+CRITERIOS DE EVALUACIÓN (para ${instrumento}):
 ${criterios}
-${temasText}
 
-ESTRUCTURA OBLIGATORIA DEL HTML (7 SECCIONES):
-
-1. TÍTULO: "${titulo}" y mención de la Unidad de Aprendizaje
-
-2. I. DATOS INFORMATIVOS (tabla: UGEL, I.E., Nivel, Área, Grado, Docente, Fecha, Duración)
-
-3. II. PROPÓSITOS DE APRENDIZAJE (tabla: Propósito | Evidencia | Competencia | Capacidades)
-
-4. III. SECUENCIA DIDÁCTICA (tabla: Momentos | Procesos Pedagógicos | Tiempo)
-   - INICIO (${inicioMin} min): Motivación, saberes previos, conflicto cognitivo, propósito
-   - DESARROLLO (${desarrolloMin} min): Actividades, estrategias, retroalimentación
-   - CIERRE (${cierreMin} min): Metacognición, autoevaluación, transferencia
-
-5. IV. EVALUACIÓN (tabla: Criterios | Instrumento | Evidencia)
-
-6. V. RECURSOS (lista de materiales utilizados)
-
-7. VI. BIBLIOGRAFÍA (formato APA 7ª)
+ESTRUCTURA OBLIGATORIA DEL HTML:
+1. TÍTULO PRINCIPAL: "${titulo}"
+2. I. DATOS INFORMATIVOS (tabla: Indicador | Descripción)
+3. II. PROPÓSITOS DE APRENDIZAJE (tabla: Competencia | Capacidades | Desempeños | Criterios | Evidencia)
+4. III. ENFOQUES TRANSVERSALES (tabla: Enfoque | Valores | Actitudes)
+5. IV. SECUENCIA DIDÁCTICA (tabla: Momentos | Procesos Pedagógicos | Tiempo)
+   - INICIO (${inicio} min): Motivación, saberes previos, conflicto cognitivo
+   - DESARROLLO (${desarrollo} min): Actividades, estrategias, retroalimentación
+   - CIERRE (${cierre} min): Metacognición, autoevaluación
+6. V. EVALUACIÓN (${instrumento} - incluir tabla con criterios y niveles)
+7. VI. RECURSOS Y MATERIALES
+8. VII. BIBLIOGRAFÍA
 
 CRITERIOS DE CALIDAD:
-- Incluir preguntas de metacognición (¿Qué aprendí? ¿Cómo lo aprendí? ¿Para qué me sirve?)
-- Incluir autoevaluación con escala (Lo logré / En proceso / Necesito mejorar)
+- Incluir preguntas de metacognición (¿Qué aprendí? ¿Cómo? ¿Para qué sirve?)
+- Incluir autoevaluación con escala: Lo logré / En proceso / Necesito mejorar
 - Tablas con border="1" cellpadding="8" style="border-collapse:collapse; width:100%"
-- Indicadores de primera columna con <strong> y dos puntos (:)
 
 GENERA AHORA EL HTML COMPLETO.`;
 
         promptArea.value = prompt;
-        showStatus("✅ Prompt generado correctamente", "success");
+        showStatus("✅ Prompt de ingeniería generado", "success");
     });
 
-    // ==================== COPIAR PROMPT ====================
-    copyPromptBtn.addEventListener('click', () => {
-        promptArea.select();
-        document.execCommand('copy');
-        showStatus("✅ Prompt copiado al portapapeles", "success");
+    function copyPrompt() { promptArea.select(); document.execCommand('copy'); showStatus("✅ Prompt copiado", "success"); }
+    function exportPrompt() { const blob = new Blob([promptArea.value], {type:'text/plain'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`prompt_${Date.now()}.txt`; link.click(); showStatus("✅ Prompt exportado","success"); }
+    function previewHTML() { const html=iaHtmlInput.value; if(!html.trim()){showStatus("❌ Pegue HTML primero","error");return;} previewArea.style.display='block'; previewArea.innerHTML=`<iframe srcdoc="${escapeHtml(html)}" style="width:100%; min-height:350px; border:none;"></iframe>`; showStatus("✅ Vista previa","success"); }
+    function downloadWord() { const html=iaHtmlInput.value; if(!html.trim()){showStatus("❌ Pegue HTML primero","error");return;} let titulo="Sesion_Aprendizaje"; const match=html.match(/<h1[^>]*>([^<]+)<\/h1>/i); if(match) titulo=match[1].replace(/[^a-z0-9]/gi,'_').substring(0,50); const fullHtml=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:'Times New Roman',Arial,sans-serif;margin:40px;}table{border-collapse:collapse;width:100%;margin:15px 0;}th,td{border:1px solid #000;padding:8px;}th{background:#d4af37;color:#000;}h1,h2,h3{color:#d4af37;}</style></head><body>${html}</body></html>`; const blob=new Blob([fullHtml],{type:'application/msword'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`${titulo}.doc`; link.click(); showStatus("✅ Word descargado","success"); }
+    function showStatus(msg,type){ statusMsg.textContent=msg; statusMsg.className=`status status-${type}`; statusMsg.style.display='block'; setTimeout(()=>{statusMsg.style.display='none';},4000); }
+    function escapeHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+    copyPromptBtn.addEventListener('click', copyPrompt);
+    exportPromptBtn.addEventListener('click', exportPrompt);
+    previewBtn.addEventListener('click', previewHTML);
+    downloadWordBtn.addEventListener('click', downloadWord);
+
+    // Login
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const user = document.getElementById('loginUser').value.trim();
+        const pin = document.getElementById('loginPin').value.trim();
+        if (user === 'admin' && pin === '1234') {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            populateNiveles();
+            populateEnfoques();
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+            setTimeout(() => { document.getElementById('loginError').style.display = 'none'; }, 3000);
+        }
     });
 
-    // ==================== EXPORTAR PROMPT ====================
-    exportPromptBtn.addEventListener('click', () => {
-        const prompt = promptArea.value;
-        if (!prompt || prompt.includes("Complete el formulario")) {
-            showStatus("❌ Genere un prompt primero", "error");
-            return;
-        }
-        const blob = new Blob([prompt], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `prompt_sesion_${Date.now()}.txt`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-        showStatus("✅ Prompt descargado", "success");
-    });
-
-    // ==================== VISTA PREVIA ====================
-    previewBtn.addEventListener('click', () => {
-        const html = iaHtmlInput.value;
-        if (!html.trim()) {
-            showStatus("❌ Pegue el HTML generado por la IA primero", "error");
-            return;
-        }
-        previewArea.style.display = 'block';
-        previewArea.innerHTML = `<iframe srcdoc="${escapeHtml(html)}" style="width:100%; min-height:350px; border:none;"></iframe>`;
-        showStatus("✅ Vista previa cargada", "success");
-    });
-
-    // ==================== EXPORTAR A WORD ====================
-    downloadWordBtn.addEventListener('click', () => {
-        const html = iaHtmlInput.value;
-        if (!html.trim()) {
-            showStatus("❌ Pegue el HTML generado por la IA primero", "error");
-            return;
-        }
-
-        let tituloDoc = "Sesion_Aprendizaje";
-        const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-        if (titleMatch) {
-            tituloDoc = titleMatch[1].replace(/[^a-z0-9]/gi, '_').substring(0, 50);
-        }
-
-        const fullHtml = `<!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>${tituloDoc}</title>
-            <style>
-                body { font-family: 'Times New Roman', Arial, sans-serif; margin: 40px; }
-                table { border-collapse: collapse; width: 100%; margin: 15px 0; }
-                th, td { border: 1px solid #000; padding: 8px; vertical-align: top; }
-                th { background: #d4af37; color: #000; }
-                h1, h2, h3 { color: #d4af37; }
-                .sesion-aprendizaje { max-width: 1200px; margin: 0 auto; }
-            </style>
-        </head>
-        <body>${html}</body>
-        </html>`;
-
-        const blob = new Blob([fullHtml], { type: 'application/msword' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${tituloDoc}.doc`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-        showStatus("✅ Word descargado correctamente", "success");
+    // Theme toggle
+    let isDark = true;
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        isDark = !isDark;
+        if (isDark) { document.body.classList.remove('light'); document.getElementById('themeToggle').textContent = '🌙 Tema Oscuro'; }
+        else { document.body.classList.add('light'); document.getElementById('themeToggle').textContent = '☀️ Tema Claro'; }
     });
 </script>
 </body>
