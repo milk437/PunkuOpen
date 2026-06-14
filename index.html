@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Punku Open | Sesiones de Aprendizaje CNEB</title>
+    <title>Punku Open | Generador de Sesiones de Aprendizaje CNEB</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
@@ -18,12 +13,10 @@
             min-height: 100vh;
             transition: all 0.3s ease;
         }
-
         body.light {
             background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
             color: #333;
         }
-
         /* Login */
         .login-container {
             max-width: 450px;
@@ -35,19 +28,10 @@
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
-
-        body.light .login-container {
-            background: #fff;
-        }
-
-        .login-container h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
+        body.light .login-container { background: #fff; }
+        .login-container h1 { font-size: 2em; margin-bottom: 10px; }
         .login-container h1 span:first-child { color: #d4af37; }
         .login-container h1 span:last-child { color: #ff4444; }
-
         .login-container input {
             width: 100%;
             padding: 12px;
@@ -57,12 +41,7 @@
             border-radius: 8px;
             color: #fff;
         }
-
-        body.light .login-container input {
-            background: #f0f0f0;
-            color: #333;
-        }
-
+        body.light .login-container input { background: #f0f0f0; color: #333; }
         .login-container button {
             width: 100%;
             padding: 12px;
@@ -74,21 +53,9 @@
             cursor: pointer;
             margin-top: 10px;
         }
-
-        .login-error {
-            color: #ff4444;
-            margin-top: 10px;
-            display: none;
-        }
-
+        .login-error { color: #ff4444; margin-top: 10px; display: none; }
         /* App Container */
-        .app-container {
-            display: none;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        .app-container { display: none; max-width: 1600px; margin: 0 auto; padding: 20px; }
         /* Header */
         .header {
             background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
@@ -98,31 +65,13 @@
             margin-bottom: 30px;
             border-radius: 16px 16px 0 0;
         }
-
-        body.light .header {
-            background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
-        }
-
-        .header h1 {
-            font-size: 2.2em;
-            letter-spacing: 4px;
-        }
-
+        body.light .header { background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%); }
+        .header h1 { font-size: 2.2em; letter-spacing: 4px; }
         .header h1 span:first-child { color: #d4af37; }
         .header h1 span:last-child { color: #ff4444; }
-
-        .header p {
-            color: #888;
-            margin-top: 5px;
-        }
-
+        .header p { color: #888; margin-top: 5px; }
         /* Grid */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         /* Paneles */
         .panel {
             background: #111;
@@ -130,12 +79,7 @@
             border-radius: 16px;
             padding: 25px;
         }
-
-        body.light .panel {
-            background: #fff;
-            border-color: #ddd;
-        }
-
+        body.light .panel { background: #fff; border-color: #ddd; }
         .panel h3 {
             color: #d4af37;
             border-left: 4px solid #d4af37;
@@ -144,30 +88,10 @@
             font-size: 0.9em;
             text-transform: uppercase;
         }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .form-row-full {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.7em;
-            color: #aaa;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        body.light label {
-            color: #666;
-        }
-
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-row-full { margin-bottom: 15px; }
+        label { display: block; font-size: 0.7em; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
+        body.light label { color: #666; }
         input, select, textarea {
             width: 100%;
             padding: 10px;
@@ -177,18 +101,9 @@
             color: #fff;
             font-size: 0.85em;
         }
-
-        body.light input, body.light select, body.light textarea {
-            background: #f9f9f9;
-            color: #333;
-            border-color: #ddd;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #d4af37;
-        }
-
+        body.light input, body.light select, body.light textarea { background: #f9f9f9; color: #333; border-color: #ddd; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #d4af37; }
+        /* Botones */
         .btn-gold {
             background: linear-gradient(45deg, #d4af37, #b8860b);
             color: #000;
@@ -201,28 +116,10 @@
             margin-top: 15px;
             transition: transform 0.2s;
         }
-
-        .btn-gold:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #d4af37;
-            color: #d4af37;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-group .btn-gold {
-            flex: 1;
-            margin-top: 0;
-        }
-
+        .btn-gold:hover { transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 2px solid #d4af37; color: #d4af37; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-group .btn-gold { flex: 1; margin-top: 0; }
         #promptArea {
             background: #050505;
             color: #00ff41;
@@ -234,7 +131,6 @@
             resize: vertical;
             border-radius: 8px;
         }
-
         .result-area {
             background: #fff;
             border-radius: 12px;
@@ -243,34 +139,10 @@
             margin-top: 15px;
             display: none;
         }
-
-        .result-area iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 350px;
-            border: none;
-        }
-
-        .status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            display: none;
-        }
-
-        .status-success {
-            background: rgba(0, 200, 83, 0.2);
-            border: 1px solid #00c853;
-            color: #00c853;
-        }
-
-        .status-error {
-            background: rgba(255, 59, 48, 0.2);
-            border: 1px solid #ff3b30;
-            color: #ff3b30;
-        }
-
+        .result-area iframe { width: 100%; height: 100%; min-height: 350px; border: none; }
+        .status { margin-top: 15px; padding: 10px; border-radius: 8px; text-align: center; display: none; }
+        .status-success { background: rgba(0, 200, 83, 0.2); border: 1px solid #00c853; color: #00c853; }
+        .status-error { background: rgba(255, 59, 48, 0.2); border: 1px solid #ff3b30; color: #ff3b30; }
         .checkbox-container {
             background: #1a1a1a;
             border: 1px solid #333;
@@ -279,51 +151,14 @@
             max-height: 150px;
             overflow-y: auto;
         }
-
-        body.light .checkbox-container {
-            background: #f0f0f0;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .checkbox-item:hover {
-            background: #2a2a2a;
-        }
-
-        body.light .checkbox-item:hover {
-            background: #e0e0e0;
-        }
-
-        .checkbox-item input {
-            width: 16px;
-            height: 16px;
-            margin-right: 10px;
-            accent-color: #d4af37;
-        }
-
-        .checkbox-item label {
-            margin: 0;
-            text-transform: none;
-            font-size: 0.8em;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        body.light .checkbox-item label {
-            color: #333;
-        }
-
-        .hint {
-            font-size: 0.65em;
-            color: #d4af37;
-            margin-top: 4px;
-        }
-
+        body.light .checkbox-container { background: #f0f0f0; }
+        .checkbox-item { display: flex; align-items: center; padding: 5px; cursor: pointer; }
+        .checkbox-item:hover { background: #2a2a2a; }
+        body.light .checkbox-item:hover { background: #e0e0e0; }
+        .checkbox-item input { width: 16px; height: 16px; margin-right: 10px; accent-color: #d4af37; }
+        .checkbox-item label { margin: 0; text-transform: none; font-size: 0.8em; cursor: pointer; color: #fff; }
+        body.light .checkbox-item label { color: #333; }
+        .hint { font-size: 0.65em; color: #d4af37; margin-top: 4px; }
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -336,24 +171,9 @@
             font-size: 0.8em;
             z-index: 1000;
         }
-
-        body.light .theme-toggle {
-            background: #fff;
-            color: #333;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 0.7em;
-            margin-top: 20px;
-        }
-
-        @media (max-width: 1000px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 1.5em; }
-        }
+        body.light .theme-toggle { background: #fff; color: #333; }
+        footer { text-align: center; padding: 20px; color: #666; font-size: 0.7em; margin-top: 20px; }
+        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.5em; } }
     </style>
 </head>
 <body>
@@ -369,12 +189,10 @@
 
 <div id="appContainer" class="app-container">
     <div class="theme-toggle" id="themeToggle">🌙 Tema Oscuro</div>
-    
     <div class="header">
         <h1><span>Punku</span><span>Open</span></h1>
         <p>SESIONES DE APRENDIZAJE - CNEB 2026</p>
     </div>
-
     <div class="main-grid">
         <div class="panel">
             <h3>📌 I. DATOS INSTITUCIONALES</h3>
@@ -383,7 +201,7 @@
                 <div><label>I.E.</label><input type="text" id="ie" placeholder="Ej: Juan Velasco Alvarado" value="Juan Velasco Alvarado"></div>
             </div>
             <div class="form-row">
-                <div><label>Nivel</label><select id="nivel"><option value="">Seleccione</option></select></div>
+                <div><label>Nivel</label><select id="nivel"><option value="">Seleccione Nivel</option></select></div>
                 <div><label>Ciclo</label><select id="ciclo" disabled><option value="">Primero seleccione nivel</option></select></div>
             </div>
             <div class="form-row">
@@ -395,27 +213,27 @@
                 <div><label>Fecha</label><input type="text" id="fecha" placeholder="Ej: junio de 2026"></div>
             </div>
 
-            <h3>📅 II. DATOS DE LA SESIÓN</h3>
+            <h3>📚 II. PROGRAMACIÓN CURRICULAR</h3>
             <div class="form-row">
-                <div><label>N° Sesión / Unidad</label><input type="text" id="numSesion" placeholder="Ej: Sesión 04 - U3"></div>
-                <div><label>Título</label><input type="text" id="titulo" placeholder="Ej: Las conjunciones"></div>
+                <div><label>Unidad de Aprendizaje</label><input type="text" id="unidadNombre" placeholder="Ej: Unidad 3 - Protegiendo nuestro patrimonio"></div>
+                <div><label>Título de la Sesión</label><input type="text" id="titulo" placeholder="Ej: Las conjunciones"></div>
             </div>
             <div class="form-row">
-                <div><label>Duración (min)</label><select id="duracion"><option value="45">45 min</option><option value="90" selected>90 min (2h)</option><option value="135">135 min</option></select></div>
-                <div><label>Propósito</label><input type="text" id="proposito" placeholder="Ej: Conocer las conjunciones"></div>
+                <div><label>N° Sesión</label><input type="text" id="numSesion" placeholder="Ej: Sesión 04"></div>
+                <div><label>Duración (min)</label><select id="duracion"><option value="45">45 min</option><option value="90" selected>90 min</option><option value="135">135 min</option></select></div>
             </div>
             <div class="form-row">
+                <div><label>Propósito</label><input type="text" id="proposito" placeholder="Ej: Conocer las conjunciones y resolver ejercicios"></div>
                 <div><label>Evidencia</label><input type="text" id="evidencia" placeholder="Ej: Ficha de trabajo"></div>
-                <div><label>Instrumento</label><input type="text" id="instrumento" placeholder="Ej: Lista de cotejo"></div>
             </div>
 
-            <h3>📋 III. COMPETENCIAS</h3>
+            <h3>📖 III. COMPETENCIAS</h3>
             <div class="form-row">
                 <div><label>Competencia(s)</label><div id="competenciasContainer" class="checkbox-container"></div></div>
                 <div><label>Capacidad(es)</label><div id="capacidadesContainer" class="checkbox-container"></div></div>
             </div>
 
-            <h3>🎯 IV. ENFOQUES TRANSVERSALES (Múltiple)</h3>
+            <h3>🎯 IV. ENFOQUES TRANSVERSALES</h3>
             <div class="form-row-full"><div id="enfoquesContainer" class="checkbox-container"></div></div>
 
             <h3>🖥️ V. RECURSOS Y MATERIALES</h3>
@@ -428,7 +246,7 @@
         </div>
 
         <div class="panel">
-            <h3>⚡ PROMPT DE INGENIERÍA (COPIA Y PEGA EN IA)</h3>
+            <h3>⚡ PROMPT DE INGENIERÍA</h3>
             <textarea id="promptArea" readonly placeholder="Complete el formulario y presione 'GENERAR PROMPT'..."></textarea>
             <div class="btn-group">
                 <button id="copyPromptBtn" class="btn-gold btn-outline">📋 COPIAR PROMPT</button>
@@ -450,65 +268,111 @@
 </div>
 
 <script>
-    // ==================== DATOS CNEB OFICIALES ====================
+    // ==================== DATOS CNEB OFICIALES (TODAS LAS ÁREAS) ====================
     const nivelesData = {
         "inicial": { "nombre": "Nivel Inicial", "ciclos": {
-            "i": { "nombre": "Ciclo I", "grados": { "0-2": "0-2 años" }, "estandar": "Explora su entorno, regula emociones básicas, se comunica gestualmente." },
-            "ii": { "nombre": "Ciclo II", "grados": { "3": "3 años", "4": "4 años", "5": "5 años" }, "estandar": "Se expresa oralmente, comprende textos sencillos, escribe su nombre." }
+            "i": { "nombre": "Ciclo I", "grados": { "0-2": "0-2 años" }, "estandar": "Explora su entorno, regula emociones básicas." },
+            "ii": { "nombre": "Ciclo II", "grados": { "3": "3 años", "4": "4 años", "5": "5 años" }, "estandar": "Se expresa oralmente, comprende textos sencillos." }
         }, "areas": {
+            "personalSocial": { "nombre": "Personal Social", "competencias": [
+                { "nombre": "Construye su identidad", "capacidades": ["Se valora a sí mismo", "Autorregula sus emociones"] },
+                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Construye acuerdos", "Maneja conflictos", "Delibera", "Participa"] }
+            ] },
             "comunicacion": { "nombre": "Comunicación", "competencias": [
                 { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
                 { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
                 { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
             ] },
-            "personalSocial": { "nombre": "Personal Social", "competencias": [
-                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula emociones"] }
+            "matematica": { "nombre": "Matemática", "competencias": [
+                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce cantidades", "Comunica", "Usa estrategias", "Argumenta"] },
+                { "nombre": "Resuelve problemas de forma y movimiento", "capacidades": ["Modela objetos", "Comunica", "Usa estrategias", "Argumenta"] }
             ] }
         } },
         "primaria": { "nombre": "Nivel Primaria", "ciclos": {
-            "iii": { "nombre": "Ciclo III", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee textos sencillos, escribe oraciones, resuelve problemas básicos." },
-            "iv": { "nombre": "Ciclo IV", "grados": { "3": "3er grado", "4": "4to grado" }, "estandar": "Comprende textos continuos, produce textos narrativos, aplica operaciones matemáticas." },
-            "v": { "nombre": "Ciclo V", "grados": { "5": "5to grado", "6": "6to grado" }, "estandar": "Analiza textos complejos, argumenta, resuelve problemas con fracciones y decimales." }
+            "iii": { "nombre": "Ciclo III", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee textos sencillos, escribe oraciones básicas." },
+            "iv": { "nombre": "Ciclo IV", "grados": { "3": "3er grado", "4": "4to grado" }, "estandar": "Comprende textos continuos, produce textos narrativos." },
+            "v": { "nombre": "Ciclo V", "grados": { "5": "5to grado", "6": "6to grado" }, "estandar": "Analiza textos complejos, argumenta." }
         }, "areas": {
+            "personalSocial": { "nombre": "Personal Social", "competencias": [
+                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula", "Reflexiona éticamente"] },
+                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Acuerdos", "Conflictos", "Delibera", "Participa"] },
+                { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta fuentes", "Comprende tiempo", "Elabora explicaciones"] }
+            ] },
             "comunicacion": { "nombre": "Comunicación", "competencias": [
                 { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
                 { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
-                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
+                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Convenciones", "Reflexiona"] }
             ] },
             "matematica": { "nombre": "Matemática", "competencias": [
-                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
+                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] },
+                { "nombre": "Resuelve problemas de regularidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
+            ] },
+            "cienciaYTecnologia": { "nombre": "Ciencia y Tecnología", "competencias": [
+                { "nombre": "Indaga mediante métodos científicos", "capacidades": ["Problematiza", "Diseña", "Genera datos", "Analiza", "Evalúa"] },
+                { "nombre": "Explica el mundo físico", "capacidades": ["Comprende conocimientos", "Evalúa implicancias"] }
+            ] },
+            "religion": { "nombre": "Religión", "competencias": [
+                { "nombre": "Construye su identidad religiosa", "capacidades": ["Conoce a Dios", "Cultiva espiritualidad"] },
+                { "nombre": "Asume encuentro con Dios", "capacidades": ["Transforma entorno", "Actúa por fe"] }
+            ] },
+            "educacionFisica": { "nombre": "Educación Física", "competencias": [
+                { "nombre": "Se desenvuelve autónomamente", "capacidades": ["Comprende su cuerpo", "Se expresa corporalmente"] },
+                { "nombre": "Asume una vida saludable", "capacidades": ["Relación actividad/salud", "Prácticas de vida"] }
             ] }
         } },
         "secundaria": { "nombre": "Nivel Secundaria", "ciclos": {
-            "vi": { "nombre": "Ciclo VI", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee críticamente, produce textos argumentativos, resuelve problemas algebraicos." },
-            "vii": { "nombre": "Ciclo VII", "grados": { "3": "3er grado", "4": "4to grado", "5": "5to grado" }, "estandar": "Evalúa textos complejos, produce ensayos, resuelve problemas estadísticos." }
+            "vi": { "nombre": "Ciclo VI", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee críticamente, produce textos argumentativos." },
+            "vii": { "nombre": "Ciclo VII", "grados": { "3": "3er grado", "4": "4to grado", "5": "5to grado" }, "estandar": "Evalúa textos complejos, produce ensayos." }
         }, "areas": {
-            "comunicacion": { "nombre": "Comunicación", "competencias": [
-                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
-                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
-                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
-            ] },
             "dpcc": { "nombre": "Desarrollo Personal, Ciudadanía y Cívica", "competencias": [
-                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula", "Reflexiona éticamente", "Vive su sexualidad"] },
-                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Construye acuerdos", "Maneja conflictos", "Delibera", "Participa"] }
+                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula", "Reflexiona éticamente", "Vive sexualidad"] },
+                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Acuerdos", "Conflictos", "Delibera", "Participa"] }
             ] },
-            "matematica": { "nombre": "Matemática", "competencias": [
-                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
+            "comunicacion": { "nombre": "Comunicación", "competencias": [
+                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Recursos no verbales", "Interactúa", "Reflexiona"] },
+                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
+                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Convenciones", "Reflexiona"] }
             ] },
             "cienciasSociales": { "nombre": "Ciencias Sociales", "competencias": [
-                { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta fuentes", "Comprende tiempo", "Elabora explicaciones"] }
+                { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta fuentes", "Comprende tiempo", "Elabora explicaciones"] },
+                { "nombre": "Gestiona el espacio y ambiente", "capacidades": ["Comprende relaciones", "Maneja fuentes", "Genera acciones"] },
+                { "nombre": "Gestiona recursos económicos", "capacidades": ["Comprende sistema económico", "Toma decisiones"] }
+            ] },
+            "matematica": { "nombre": "Matemática", "competencias": [
+                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] },
+                { "nombre": "Resuelve problemas de regularidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
+            ] },
+            "cienciaYTecnologia": { "nombre": "Ciencia y Tecnología", "competencias": [
+                { "nombre": "Indaga mediante métodos científicos", "capacidades": ["Problematiza", "Diseña", "Genera datos", "Analiza", "Evalúa"] },
+                { "nombre": "Explica el mundo físico", "capacidades": ["Comprende conocimientos", "Evalúa implicancias"] }
+            ] },
+            "educacionParaElTrabajo": { "nombre": "Educación para el Trabajo", "competencias": [
+                { "nombre": "Gestiona proyectos de emprendimiento", "capacidades": ["Crea propuesta valor", "Aplica habilidades", "Trabaja cooperativamente", "Evalúa"] }
+            ] },
+            "arteYCultura": { "nombre": "Arte y Cultura", "competencias": [
+                { "nombre": "Crea proyectos artísticos", "capacidades": ["Explora", "Aplica procesos", "Socializa"] },
+                { "nombre": "Aprecia manifestaciones artístico-culturales", "capacidades": ["Percibe", "Contextualiza", "Reflexiona"] }
+            ] },
+            "educacionFisica": { "nombre": "Educación Física", "competencias": [
+                { "nombre": "Se desenvuelve autónomamente", "capacidades": ["Comprende su cuerpo", "Se expresa corporalmente"] },
+                { "nombre": "Asume vida saludable", "capacidades": ["Relación actividad/salud", "Prácticas de vida"] },
+                { "nombre": "Interactúa sociomotrizmente", "capacidades": ["Se relaciona", "Estrategias de juego"] }
+            ] },
+            "religion": { "nombre": "Religión", "competencias": [
+                { "nombre": "Construye identidad religiosa", "capacidades": ["Conoce a Dios", "Cultiva espiritualidad"] },
+                { "nombre": "Asume encuentro con Dios", "capacidades": ["Transforma entorno", "Actúa por fe"] }
             ] }
         } }
     };
 
     const enfoquesData = [
-        { nombre: "Derechos", valores: "Conciencia de derechos, Libertad y responsabilidad", actitudes: "Actitud de reconocimiento del otro como sujeto de derechos." },
-        { nombre: "Inclusivo", valores: "Respeto por las diferencias, Equidad", actitudes: "Disposición a valorar y proteger las diversas identidades." },
-        { nombre: "Intercultural", valores: "Respeto a la identidad cultural", actitudes: "Disposición a conversar e intercambiar ideas." },
-        { nombre: "Igualdad de Género", valores: "Igualdad y Dignidad", actitudes: "Actitud de no hacer distinciones por género." },
-        { nombre: "Ambiental", valores: "Solidaridad planetaria", actitudes: "Disposición a colaborar en la protección del ambiente." },
+        { nombre: "Derechos", valores: "Conciencia de derechos, Libertad y responsabilidad", actitudes: "Reconocimiento del otro como sujeto de derechos." },
+        { nombre: "Inclusivo", valores: "Respeto por las diferencias, Equidad", actitudes: "Valorar y proteger las diversas identidades." },
+        { nombre: "Intercultural", valores: "Respeto a la identidad cultural", actitudes: "Diálogo e intercambio de ideas entre culturas." },
+        { nombre: "Igualdad de Género", valores: "Igualdad y Dignidad", actitudes: "No hacer distinciones ni exclusiones por género." },
+        { nombre: "Ambiental", valores: "Solidaridad planetaria", actitudes: "Cuidado y conservación del medio ambiente." },
         { nombre: "Orientación al Bien Común", valores: "Equidad, Solidaridad", actitudes: "Colaboración para el bienestar colectivo." },
-        { nombre: "Búsqueda de la Excelencia", valores: "Flexibilidad, Superación", actitudes: "Disposición a mejorar continuamente." }
+        { nombre: "Búsqueda de la Excelencia", valores: "Flexibilidad, Superación", actitudes: "Mejora continua y establecimiento de metas." }
     ];
 
     // DOM elements
@@ -545,17 +409,12 @@
         areaSelect.innerHTML = '<option value="">Primero seleccione grado</option>';
         competenciasContainer.innerHTML = '';
         capacidadesContainer.innerHTML = '';
-
         if (nivelKey && nivelesData[nivelKey]) {
             for (const [cKey, cVal] of Object.entries(nivelesData[nivelKey].ciclos)) {
                 cicloSelect.innerHTML += `<option value="${cKey}" data-estandar="${cVal.estandar}">${cVal.nombre}</option>`;
             }
             cicloSelect.disabled = false;
-        } else {
-            cicloSelect.disabled = true;
-            gradoSelect.disabled = true;
-            areaSelect.disabled = true;
-        }
+        } else { cicloSelect.disabled = true; gradoSelect.disabled = true; areaSelect.disabled = true; }
     });
 
     // Al cambiar ciclo
@@ -566,16 +425,12 @@
         areaSelect.innerHTML = '<option value="">Primero seleccione grado</option>';
         competenciasContainer.innerHTML = '';
         capacidadesContainer.innerHTML = '';
-
         if (nivelKey && cicloKey && nivelesData[nivelKey].ciclos[cicloKey]) {
             for (const [gKey, gVal] of Object.entries(nivelesData[nivelKey].ciclos[cicloKey].grados)) {
                 gradoSelect.innerHTML += `<option value="${gKey}">${gVal}</option>`;
             }
             gradoSelect.disabled = false;
-        } else {
-            gradoSelect.disabled = true;
-            areaSelect.disabled = true;
-        }
+        } else { gradoSelect.disabled = true; areaSelect.disabled = true; }
     });
 
     // Al cambiar grado
@@ -584,15 +439,12 @@
         areaSelect.innerHTML = '<option value="">Seleccione Área</option>';
         competenciasContainer.innerHTML = '';
         capacidadesContainer.innerHTML = '';
-
         if (nivelKey && nivelesData[nivelKey].areas) {
             for (const [aKey, aVal] of Object.entries(nivelesData[nivelKey].areas)) {
                 areaSelect.innerHTML += `<option value="${aKey}">${aVal.nombre}</option>`;
             }
             areaSelect.disabled = false;
-        } else {
-            areaSelect.disabled = true;
-        }
+        } else { areaSelect.disabled = true; }
     });
 
     // Al cambiar área
@@ -600,7 +452,6 @@
         const nivelKey = nivelSelect.value;
         const areaKey = this.value;
         competenciasContainer.innerHTML = '';
-
         if (nivelKey && areaKey && nivelesData[nivelKey].areas[areaKey]) {
             const competencias = nivelesData[nivelKey].areas[areaKey].competencias;
             competencias.forEach((comp, idx) => {
@@ -673,6 +524,7 @@
         const cicloKey = cicloSelect.value;
         const gradoKey = gradoSelect.value;
         const areaKey = areaSelect.value;
+        const nivelNombre = nivelSelect.options[nivelSelect.selectedIndex]?.text || '';
         const cicloNombre = cicloSelect.options[cicloSelect.selectedIndex]?.text || '';
         const gradoNombre = gradoSelect.options[gradoSelect.selectedIndex]?.text || '';
         const areaNombre = areaSelect.options[areaSelect.selectedIndex]?.text || '';
@@ -682,18 +534,18 @@
         const capacidadesSeleccionadas = Array.from(capacidadesContainer.querySelectorAll('input:checked')).map(cb => cb.value);
         const enfoquesSeleccionados = Array.from(enfoquesContainer.querySelectorAll('input:checked')).map(cb => ({ nombre: cb.value, valores: cb.dataset.valores, actitudes: cb.dataset.actitudes }));
 
-        const ugel = document.getElementById('ugel').value;
-        const ie = document.getElementById('ie').value;
+        const ugel = document.getElementById('ugel').value || 'Chachapoyas';
+        const ie = document.getElementById('ie').value || 'Institución Educativa';
         const docente = document.getElementById('docente').value || 'Docente';
-        const numSesion = document.getElementById('numSesion').value || 'Sesión';
+        const unidadNombre = document.getElementById('unidadNombre').value || 'Unidad de Aprendizaje';
         const titulo = document.getElementById('titulo').value || 'Sesión de Aprendizaje';
+        const numSesion = document.getElementById('numSesion').value || 'Sesión';
         const duracion = document.getElementById('duracion').value;
         const fecha = document.getElementById('fecha').value || 'junio de 2026';
-        const proposito = document.getElementById('proposito').value || 'Desarrollar competencias comunicativas';
-        const evidencia = document.getElementById('evidencia').value || 'Ficha de trabajo';
-        const instrumento = document.getElementById('instrumento').value || 'Lista de cotejo';
+        const proposito = document.getElementById('proposito').value || 'Desarrollar competencias fundamentales';
+        const evidencia = document.getElementById('evidencia').value || 'Producto de la sesión';
         const recursos = document.getElementById('recursos').value || 'PPT, PC, cuaderno, fichas';
-        const criterios = document.getElementById('criterios').value || 'Integra información explícita, Explica el tema y propósito';
+        const criterios = document.getElementById('criterios').value || 'Criterios de evaluación específicos';
 
         const minutos = parseInt(duracion);
         const inicio = Math.round(minutos * 0.17);
@@ -714,19 +566,19 @@ INSTRUCCIÓN EXPRESA:
 DATOS INSTITUCIONALES:
 - UGEL: ${ugel}
 - I.E.: ${ie}
-- Nivel: ${nivelSelect.options[nivelSelect.selectedIndex]?.text}
+- Nivel: ${nivelNombre}
 - Ciclo: ${cicloNombre}
 - Grado: ${gradoNombre}
 - Área: ${areaNombre}
 - Docente: ${docente}
+- Unidad de Aprendizaje: ${unidadNombre}
 - N° Sesión: ${numSesion}
-- Título: ${titulo}
+- Título de la Sesión: ${titulo}
 - Duración: ${duracion} minutos
 - Fecha: ${fecha}
 
-PROPÓSITO: ${proposito}
-EVIDENCIA: ${evidencia}
-INSTRUMENTO: ${instrumento}
+PROPÓSITO DE LA SESIÓN: ${proposito}
+EVIDENCIA / PRODUCTO: ${evidencia}
 
 COMPETENCIAS:
 ${competenciasSeleccionadas.map(c => `- ${c}`).join('\n')}
@@ -743,26 +595,27 @@ ${enfoquesText}
 RECURSOS Y MATERIALES:
 ${recursos}
 
-CRITERIOS DE EVALUACIÓN (para ${instrumento}):
+CRITERIOS DE EVALUACIÓN:
 ${criterios}
 
-ESTRUCTURA OBLIGATORIA DEL HTML:
-1. TÍTULO PRINCIPAL: "${titulo}"
-2. I. DATOS INFORMATIVOS (tabla: Indicador | Descripción)
-3. II. PROPÓSITOS DE APRENDIZAJE (tabla: Competencia | Capacidades | Desempeños | Criterios | Evidencia)
-4. III. ENFOQUES TRANSVERSALES (tabla: Enfoque | Valores | Actitudes)
+ESTRUCTURA OBLIGATORIA DEL HTML (8 SECCIONES):
+1. TÍTULO PRINCIPAL: "${titulo}" y mención de la Unidad de Aprendizaje
+2. I. DATOS INFORMATIVOS (tabla: Indicador | Descripción - incluir UGEL, IE, Nivel, Ciclo, Grado, Área, Docente, Unidad, N° Sesión, Fecha, Duración)
+3. II. PROPÓSITOS DE APRENDIZAJE (tabla: Competencia | Capacidades | Desempeños | Criterios de Evaluación | Evidencia)
+4. III. ENFOQUES TRANSVERSALES (tabla: Enfoque | Valores | Actitudes Observables)
 5. IV. SECUENCIA DIDÁCTICA (tabla: Momentos | Procesos Pedagógicos | Tiempo)
-   - INICIO (${inicio} min): Motivación, saberes previos, conflicto cognitivo
+   - INICIO (${inicio} min): Motivación, saberes previos, conflicto cognitivo, propósito
    - DESARROLLO (${desarrollo} min): Actividades, estrategias, retroalimentación
-   - CIERRE (${cierre} min): Metacognición, autoevaluación
-6. V. EVALUACIÓN (${instrumento} - incluir tabla con criterios y niveles)
-7. VI. RECURSOS Y MATERIALES
-8. VII. BIBLIOGRAFÍA
+   - CIERRE (${cierre} min): Metacognición, autoevaluación, transferencia
+6. V. EVALUACIÓN (Instrumentos: criterios, niveles de logro, técnicas)
+7. VI. RECURSOS Y MATERIALES (lista organizada)
+8. VII. BIBLIOGRAFÍA (formato APA 7ª)
 
-CRITERIOS DE CALIDAD:
-- Incluir preguntas de metacognición (¿Qué aprendí? ¿Cómo? ¿Para qué sirve?)
-- Incluir autoevaluación con escala: Lo logré / En proceso / Necesito mejorar
+CRITERIOS DE CALIDAD OBLIGATORIOS:
+- Incluir preguntas de metacognición: ¿Qué aprendí? ¿Cómo lo aprendí? ¿Para qué me sirve?
+- Incluir autoevaluación con escala: "Lo logré | En proceso | Necesito mejorar"
 - Tablas con border="1" cellpadding="8" style="border-collapse:collapse; width:100%"
+- Indicadores de primera columna con <strong> y dos puntos (:)
 
 GENERA AHORA EL HTML COMPLETO.`;
 
