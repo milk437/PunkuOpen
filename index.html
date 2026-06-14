@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Punku Open | Generador de Sesiones de Aprendizaje CNEB</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
@@ -13,10 +18,12 @@
             min-height: 100vh;
             transition: all 0.3s ease;
         }
+
         body.light {
             background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
             color: #333;
         }
+
         /* Login */
         .login-container {
             max-width: 450px;
@@ -28,10 +35,19 @@
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
-        body.light .login-container { background: #fff; }
-        .login-container h1 { font-size: 2em; margin-bottom: 10px; }
+
+        body.light .login-container {
+            background: #fff;
+        }
+
+        .login-container h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
         .login-container h1 span:first-child { color: #d4af37; }
         .login-container h1 span:last-child { color: #ff4444; }
+
         .login-container input {
             width: 100%;
             padding: 12px;
@@ -41,7 +57,12 @@
             border-radius: 8px;
             color: #fff;
         }
-        body.light .login-container input { background: #f0f0f0; color: #333; }
+
+        body.light .login-container input {
+            background: #f0f0f0;
+            color: #333;
+        }
+
         .login-container button {
             width: 100%;
             padding: 12px;
@@ -53,9 +74,21 @@
             cursor: pointer;
             margin-top: 10px;
         }
-        .login-error { color: #ff4444; margin-top: 10px; display: none; }
+
+        .login-error {
+            color: #ff4444;
+            margin-top: 10px;
+            display: none;
+        }
+
         /* App Container */
-        .app-container { display: none; max-width: 1600px; margin: 0 auto; padding: 20px; }
+        .app-container {
+            display: none;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
         /* Header */
         .header {
             background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
@@ -65,13 +98,31 @@
             margin-bottom: 30px;
             border-radius: 16px 16px 0 0;
         }
-        body.light .header { background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%); }
-        .header h1 { font-size: 2.2em; letter-spacing: 4px; }
+
+        body.light .header {
+            background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            letter-spacing: 4px;
+        }
+
         .header h1 span:first-child { color: #d4af37; }
         .header h1 span:last-child { color: #ff4444; }
-        .header p { color: #888; margin-top: 5px; }
+
+        .header p {
+            color: #888;
+            margin-top: 5px;
+        }
+
         /* Grid */
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
         /* Paneles */
         .panel {
             background: #111;
@@ -79,7 +130,12 @@
             border-radius: 16px;
             padding: 25px;
         }
-        body.light .panel { background: #fff; border-color: #ddd; }
+
+        body.light .panel {
+            background: #fff;
+            border-color: #ddd;
+        }
+
         .panel h3 {
             color: #d4af37;
             border-left: 4px solid #d4af37;
@@ -88,10 +144,30 @@
             font-size: 0.9em;
             text-transform: uppercase;
         }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .form-row-full { margin-bottom: 15px; }
-        label { display: block; font-size: 0.7em; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
-        body.light label { color: #666; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row-full {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7em;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        body.light label {
+            color: #666;
+        }
+
         input, select, textarea {
             width: 100%;
             padding: 10px;
@@ -101,8 +177,18 @@
             color: #fff;
             font-size: 0.85em;
         }
-        body.light input, body.light select, body.light textarea { background: #f9f9f9; color: #333; border-color: #ddd; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #d4af37; }
+
+        body.light input, body.light select, body.light textarea {
+            background: #f9f9f9;
+            color: #333;
+            border-color: #ddd;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
         /* Botones */
         .btn-gold {
             background: linear-gradient(45deg, #d4af37, #b8860b);
@@ -116,10 +202,28 @@
             margin-top: 15px;
             transition: transform 0.2s;
         }
-        .btn-gold:hover { transform: translateY(-2px); }
-        .btn-outline { background: transparent; border: 2px solid #d4af37; color: #d4af37; }
-        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-group .btn-gold { flex: 1; margin-top: 0; }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-group .btn-gold {
+            flex: 1;
+            margin-top: 0;
+        }
+
         #promptArea {
             background: #050505;
             color: #00ff41;
@@ -131,6 +235,7 @@
             resize: vertical;
             border-radius: 8px;
         }
+
         .result-area {
             background: #fff;
             border-radius: 12px;
@@ -139,10 +244,34 @@
             margin-top: 15px;
             display: none;
         }
-        .result-area iframe { width: 100%; height: 100%; min-height: 350px; border: none; }
-        .status { margin-top: 15px; padding: 10px; border-radius: 8px; text-align: center; display: none; }
-        .status-success { background: rgba(0, 200, 83, 0.2); border: 1px solid #00c853; color: #00c853; }
-        .status-error { background: rgba(255, 59, 48, 0.2); border: 1px solid #ff3b30; color: #ff3b30; }
+
+        .result-area iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 350px;
+            border: none;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background: rgba(0, 200, 83, 0.2);
+            border: 1px solid #00c853;
+            color: #00c853;
+        }
+
+        .status-error {
+            background: rgba(255, 59, 48, 0.2);
+            border: 1px solid #ff3b30;
+            color: #ff3b30;
+        }
+
         .checkbox-container {
             background: #1a1a1a;
             border: 1px solid #333;
@@ -151,14 +280,51 @@
             max-height: 150px;
             overflow-y: auto;
         }
-        body.light .checkbox-container { background: #f0f0f0; }
-        .checkbox-item { display: flex; align-items: center; padding: 5px; cursor: pointer; }
-        .checkbox-item:hover { background: #2a2a2a; }
-        body.light .checkbox-item:hover { background: #e0e0e0; }
-        .checkbox-item input { width: 16px; height: 16px; margin-right: 10px; accent-color: #d4af37; }
-        .checkbox-item label { margin: 0; text-transform: none; font-size: 0.8em; cursor: pointer; color: #fff; }
-        body.light .checkbox-item label { color: #333; }
-        .hint { font-size: 0.65em; color: #d4af37; margin-top: 4px; }
+
+        body.light .checkbox-container {
+            background: #f0f0f0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            background: #2a2a2a;
+        }
+
+        body.light .checkbox-item:hover {
+            background: #e0e0e0;
+        }
+
+        .checkbox-item input {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            accent-color: #d4af37;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            text-transform: none;
+            font-size: 0.8em;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        body.light .checkbox-item label {
+            color: #333;
+        }
+
+        .hint {
+            font-size: 0.65em;
+            color: #d4af37;
+            margin-top: 4px;
+        }
+
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -171,9 +337,28 @@
             font-size: 0.8em;
             z-index: 1000;
         }
-        body.light .theme-toggle { background: #fff; color: #333; }
-        footer { text-align: center; padding: 20px; color: #666; font-size: 0.7em; margin-top: 20px; }
-        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.5em; } }
+
+        body.light .theme-toggle {
+            background: #fff;
+            color: #333;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.7em;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -268,101 +453,211 @@
 </div>
 
 <script>
-    // ==================== DATOS CNEB OFICIALES (TODAS LAS ÁREAS) ====================
+    // ==================== DATOS CNEB OFICIALES (TODAS LAS ÁREAS + INGLÉS) ====================
     const nivelesData = {
-        "inicial": { "nombre": "Nivel Inicial", "ciclos": {
-            "i": { "nombre": "Ciclo I", "grados": { "0-2": "0-2 años" }, "estandar": "Explora su entorno, regula emociones básicas." },
-            "ii": { "nombre": "Ciclo II", "grados": { "3": "3 años", "4": "4 años", "5": "5 años" }, "estandar": "Se expresa oralmente, comprende textos sencillos." }
-        }, "areas": {
-            "personalSocial": { "nombre": "Personal Social", "competencias": [
-                { "nombre": "Construye su identidad", "capacidades": ["Se valora a sí mismo", "Autorregula sus emociones"] },
-                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Construye acuerdos", "Maneja conflictos", "Delibera", "Participa"] }
-            ] },
-            "comunicacion": { "nombre": "Comunicación", "competencias": [
-                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
-                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
-                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Utiliza convenciones", "Reflexiona"] }
-            ] },
-            "matematica": { "nombre": "Matemática", "competencias": [
-                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce cantidades", "Comunica", "Usa estrategias", "Argumenta"] },
-                { "nombre": "Resuelve problemas de forma y movimiento", "capacidades": ["Modela objetos", "Comunica", "Usa estrategias", "Argumenta"] }
-            ] }
-        } },
-        "primaria": { "nombre": "Nivel Primaria", "ciclos": {
-            "iii": { "nombre": "Ciclo III", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee textos sencillos, escribe oraciones básicas." },
-            "iv": { "nombre": "Ciclo IV", "grados": { "3": "3er grado", "4": "4to grado" }, "estandar": "Comprende textos continuos, produce textos narrativos." },
-            "v": { "nombre": "Ciclo V", "grados": { "5": "5to grado", "6": "6to grado" }, "estandar": "Analiza textos complejos, argumenta." }
-        }, "areas": {
-            "personalSocial": { "nombre": "Personal Social", "competencias": [
-                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula", "Reflexiona éticamente"] },
-                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Acuerdos", "Conflictos", "Delibera", "Participa"] },
-                { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta fuentes", "Comprende tiempo", "Elabora explicaciones"] }
-            ] },
-            "comunicacion": { "nombre": "Comunicación", "competencias": [
-                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Utiliza recursos", "Interactúa", "Reflexiona"] },
-                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
-                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Convenciones", "Reflexiona"] }
-            ] },
-            "matematica": { "nombre": "Matemática", "competencias": [
-                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] },
-                { "nombre": "Resuelve problemas de regularidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
-            ] },
-            "cienciaYTecnologia": { "nombre": "Ciencia y Tecnología", "competencias": [
-                { "nombre": "Indaga mediante métodos científicos", "capacidades": ["Problematiza", "Diseña", "Genera datos", "Analiza", "Evalúa"] },
-                { "nombre": "Explica el mundo físico", "capacidades": ["Comprende conocimientos", "Evalúa implicancias"] }
-            ] },
-            "religion": { "nombre": "Religión", "competencias": [
-                { "nombre": "Construye su identidad religiosa", "capacidades": ["Conoce a Dios", "Cultiva espiritualidad"] },
-                { "nombre": "Asume encuentro con Dios", "capacidades": ["Transforma entorno", "Actúa por fe"] }
-            ] },
-            "educacionFisica": { "nombre": "Educación Física", "competencias": [
-                { "nombre": "Se desenvuelve autónomamente", "capacidades": ["Comprende su cuerpo", "Se expresa corporalmente"] },
-                { "nombre": "Asume una vida saludable", "capacidades": ["Relación actividad/salud", "Prácticas de vida"] }
-            ] }
-        } },
-        "secundaria": { "nombre": "Nivel Secundaria", "ciclos": {
-            "vi": { "nombre": "Ciclo VI", "grados": { "1": "1er grado", "2": "2do grado" }, "estandar": "Lee críticamente, produce textos argumentativos." },
-            "vii": { "nombre": "Ciclo VII", "grados": { "3": "3er grado", "4": "4to grado", "5": "5to grado" }, "estandar": "Evalúa textos complejos, produce ensayos." }
-        }, "areas": {
-            "dpcc": { "nombre": "Desarrollo Personal, Ciudadanía y Cívica", "competencias": [
-                { "nombre": "Construye su identidad", "capacidades": ["Se valora", "Autorregula", "Reflexiona éticamente", "Vive sexualidad"] },
-                { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa", "Acuerdos", "Conflictos", "Delibera", "Participa"] }
-            ] },
-            "comunicacion": { "nombre": "Comunicación", "competencias": [
-                { "nombre": "Se comunica oralmente", "capacidades": ["Obtiene información", "Infiere", "Adecúa", "Recursos no verbales", "Interactúa", "Reflexiona"] },
-                { "nombre": "Lee diversos tipos de textos", "capacidades": ["Obtiene información", "Infiere", "Reflexiona"] },
-                { "nombre": "Escribe diversos tipos de textos", "capacidades": ["Adecúa", "Organiza", "Convenciones", "Reflexiona"] }
-            ] },
-            "cienciasSociales": { "nombre": "Ciencias Sociales", "competencias": [
-                { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta fuentes", "Comprende tiempo", "Elabora explicaciones"] },
-                { "nombre": "Gestiona el espacio y ambiente", "capacidades": ["Comprende relaciones", "Maneja fuentes", "Genera acciones"] },
-                { "nombre": "Gestiona recursos económicos", "capacidades": ["Comprende sistema económico", "Toma decisiones"] }
-            ] },
-            "matematica": { "nombre": "Matemática", "competencias": [
-                { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] },
-                { "nombre": "Resuelve problemas de regularidad", "capacidades": ["Traduce", "Comunica", "Estrategias", "Argumenta"] }
-            ] },
-            "cienciaYTecnologia": { "nombre": "Ciencia y Tecnología", "competencias": [
-                { "nombre": "Indaga mediante métodos científicos", "capacidades": ["Problematiza", "Diseña", "Genera datos", "Analiza", "Evalúa"] },
-                { "nombre": "Explica el mundo físico", "capacidades": ["Comprende conocimientos", "Evalúa implicancias"] }
-            ] },
-            "educacionParaElTrabajo": { "nombre": "Educación para el Trabajo", "competencias": [
-                { "nombre": "Gestiona proyectos de emprendimiento", "capacidades": ["Crea propuesta valor", "Aplica habilidades", "Trabaja cooperativamente", "Evalúa"] }
-            ] },
-            "arteYCultura": { "nombre": "Arte y Cultura", "competencias": [
-                { "nombre": "Crea proyectos artísticos", "capacidades": ["Explora", "Aplica procesos", "Socializa"] },
-                { "nombre": "Aprecia manifestaciones artístico-culturales", "capacidades": ["Percibe", "Contextualiza", "Reflexiona"] }
-            ] },
-            "educacionFisica": { "nombre": "Educación Física", "competencias": [
-                { "nombre": "Se desenvuelve autónomamente", "capacidades": ["Comprende su cuerpo", "Se expresa corporalmente"] },
-                { "nombre": "Asume vida saludable", "capacidades": ["Relación actividad/salud", "Prácticas de vida"] },
-                { "nombre": "Interactúa sociomotrizmente", "capacidades": ["Se relaciona", "Estrategias de juego"] }
-            ] },
-            "religion": { "nombre": "Religión", "competencias": [
-                { "nombre": "Construye identidad religiosa", "capacidades": ["Conoce a Dios", "Cultiva espiritualidad"] },
-                { "nombre": "Asume encuentro con Dios", "capacidades": ["Transforma entorno", "Actúa por fe"] }
-            ] }
-        } }
+        "inicial": {
+            "nombre": "Nivel Inicial",
+            "ciclos": {
+                "i": {
+                    "nombre": "Ciclo I",
+                    "grados": { "0-2": "0-2 años" },
+                    "estandar": "Explora su entorno, regula emociones básicas, se comunica gestualmente."
+                },
+                "ii": {
+                    "nombre": "Ciclo II",
+                    "grados": { "3": "3 años", "4": "4 años", "5": "5 años" },
+                    "estandar": "Se expresa oralmente, comprende textos sencillos, escribe su nombre."
+                }
+            },
+            "areas": {
+                "personalSocial": {
+                    "nombre": "Personal Social",
+                    "competencias": [
+                        { "nombre": "Construye su identidad", "capacidades": ["Se valora a sí mismo", "Autorregula sus emociones"] },
+                        { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa con todas las personas", "Construye y asume acuerdos y normas", "Maneja conflictos de manera constructiva", "Delibera sobre asuntos de interés común", "Participa en acciones que promueven el bienestar común"] }
+                    ]
+                },
+                "comunicacion": {
+                    "nombre": "Comunicación",
+                    "competencias": [
+                        { "nombre": "Se comunica oralmente en su lengua materna", "capacidades": ["Obtiene información del texto oral", "Infiere e interpreta información del texto oral", "Adecúa, organiza y desarrolla las ideas", "Utiliza recursos no verbales y paraverbales", "Interactúa estratégicamente con distintos interlocutores", "Reflexiona y evalúa la forma, el contenido y el contexto"] },
+                        { "nombre": "Lee diversos tipos de textos en su lengua materna", "capacidades": ["Obtiene información del texto escrito", "Infiere e interpreta información del texto", "Reflexiona y evalúa la forma, el contenido y el contexto"] },
+                        { "nombre": "Escribe diversos tipos de textos en su lengua materna", "capacidades": ["Adecúa el texto a la situación comunicativa", "Organiza y desarrolla las ideas de forma coherente", "Utiliza convenciones del lenguaje escrito", "Reflexiona y evalúa la forma, el contenido y el contexto"] }
+                    ]
+                },
+                "matematica": {
+                    "nombre": "Matemática",
+                    "competencias": [
+                        { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce cantidades a expresiones numéricas", "Comunica su comprensión sobre los números y las operaciones", "Usa estrategias y procedimientos de estimación y cálculo", "Argumenta afirmaciones sobre las relaciones numéricas y las operaciones"] },
+                        { "nombre": "Resuelve problemas de forma, movimiento y localización", "capacidades": ["Modela objetos con formas geométricas y sus transformaciones", "Comunica su comprensión sobre las formas y relaciones geométricas", "Usa estrategias y procedimientos para orientarse en el espacio", "Argumenta afirmaciones sobre relaciones geométricas"] }
+                    ]
+                }
+            }
+        },
+        "primaria": {
+            "nombre": "Nivel Primaria",
+            "ciclos": {
+                "iii": {
+                    "nombre": "Ciclo III",
+                    "grados": { "1": "1er grado", "2": "2do grado" },
+                    "estandar": "Lee textos sencillos, escribe oraciones básicas, resuelve problemas simples."
+                },
+                "iv": {
+                    "nombre": "Ciclo IV",
+                    "grados": { "3": "3er grado", "4": "4to grado" },
+                    "estandar": "Comprende textos continuos, produce textos narrativos, aplica operaciones matemáticas."
+                },
+                "v": {
+                    "nombre": "Ciclo V",
+                    "grados": { "5": "5to grado", "6": "6to grado" },
+                    "estandar": "Analiza textos complejos, argumenta, resuelve problemas con fracciones y decimales."
+                }
+            },
+            "areas": {
+                "personalSocial": {
+                    "nombre": "Personal Social",
+                    "competencias": [
+                        { "nombre": "Construye su identidad", "capacidades": ["Se valora a sí mismo", "Autorregula sus emociones", "Reflexiona y argumenta éticamente", "Vive su sexualidad de manera integral y responsable"] },
+                        { "nombre": "Convive y participa democráticamente", "capacidades": ["Interactúa con todas las personas", "Construye y asume acuerdos y normas", "Maneja conflictos de manera constructiva", "Delibera sobre asuntos públicos", "Participa en acciones que promueven el bienestar común"] },
+                        { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta críticamente fuentes diversas", "Comprende el tiempo histórico", "Elabora explicaciones sobre procesos históricos"] },
+                        { "nombre": "Gestiona responsablemente el espacio y el ambiente", "capacidades": ["Comprende las relaciones entre los elementos naturales y sociales", "Maneja fuentes de información para comprender el espacio geográfico", "Genera acciones para conservar el ambiente local y global"] },
+                        { "nombre": "Gestiona responsablemente los recursos económicos", "capacidades": ["Comprende las relaciones entre los elementos del sistema económico y financiero", "Toma decisiones económicas y financieras"] }
+                    ]
+                },
+                "comunicacion": {
+                    "nombre": "Comunicación",
+                    "competencias": [
+                        { "nombre": "Se comunica oralmente en su lengua materna", "capacidades": ["Obtiene información del texto oral", "Infiere e interpreta", "Adecúa y organiza", "Utiliza recursos no verbales", "Interactúa", "Reflexiona y evalúa"] },
+                        { "nombre": "Lee diversos tipos de textos en su lengua materna", "capacidades": ["Obtiene información", "Infiere e interpreta", "Reflexiona y evalúa"] },
+                        { "nombre": "Escribe diversos tipos de textos en su lengua materna", "capacidades": ["Adecúa el texto", "Organiza y desarrolla ideas", "Utiliza convenciones", "Reflexiona y evalúa"] }
+                    ]
+                },
+                "matematica": {
+                    "nombre": "Matemática",
+                    "competencias": [
+                        { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce cantidades", "Comunica comprensión", "Usa estrategias", "Argumenta afirmaciones"] },
+                        { "nombre": "Resuelve problemas de regularidad, equivalencia y cambio", "capacidades": ["Traduce datos", "Comunica comprensión", "Usa estrategias", "Argumenta afirmaciones"] },
+                        { "nombre": "Resuelve problemas de forma, movimiento y localización", "capacidades": ["Modela objetos", "Comunica comprensión", "Usa estrategias", "Argumenta afirmaciones"] },
+                        { "nombre": "Resuelve problemas de gestión de datos e incertidumbre", "capacidades": ["Representa datos", "Comunica comprensión", "Usa estrategias", "Sustenta conclusiones"] }
+                    ]
+                },
+                "cienciaYTecnologia": {
+                    "nombre": "Ciencia y Tecnología",
+                    "competencias": [
+                        { "nombre": "Indaga mediante métodos científicos", "capacidades": ["Problematiza situaciones", "Diseña estrategias", "Genera y registra datos", "Analiza datos e información", "Evalúa y comunica el proceso"] },
+                        { "nombre": "Explica el mundo físico", "capacidades": ["Comprende y usa conocimientos", "Evalúa las implicancias del saber"] },
+                        { "nombre": "Diseña y construye soluciones tecnológicas", "capacidades": ["Determina una alternativa", "Diseña la solución", "Implementa y valida", "Evalúa y comunica"] }
+                    ]
+                },
+                "religion": {
+                    "nombre": "Religión",
+                    "competencias": [
+                        { "nombre": "Construye su identidad como persona amada por Dios", "capacidades": ["Conoce a Dios", "Cultiva su dimensión espiritual"] },
+                        { "nombre": "Asume la experiencia del encuentro con Dios", "capacidades": ["Transforma su entorno", "Actúa coherentemente por su fe"] }
+                    ]
+                },
+                "educacionFisica": {
+                    "nombre": "Educación Física",
+                    "competencias": [
+                        { "nombre": "Se desenvuelve de manera autónoma a través de su motricidad", "capacidades": ["Comprende su cuerpo", "Se expresa corporalmente"] },
+                        { "nombre": "Asume una vida saludable", "capacidades": ["Comprende relaciones actividad-salud", "Incorpora prácticas de vida saludable"] }
+                    ]
+                }
+            }
+        },
+        "secundaria": {
+            "nombre": "Nivel Secundaria",
+            "ciclos": {
+                "vi": {
+                    "nombre": "Ciclo VI",
+                    "grados": { "1": "1er grado", "2": "2do grado" },
+                    "estandar": "Lee críticamente, produce textos argumentativos, resuelve problemas algebraicos."
+                },
+                "vii": {
+                    "nombre": "Ciclo VII",
+                    "grados": { "3": "3er grado", "4": "4to grado", "5": "5to grado" },
+                    "estandar": "Evalúa textos complejos, produce ensayos, resuelve problemas estadísticos."
+                }
+            },
+            "areas": {
+                "dpcc": {
+                    "nombre": "Desarrollo Personal, Ciudadanía y Cívica",
+                    "competencias": [
+                        { "nombre": "Construye su identidad", "capacidades": ["Se valora a sí mismo", "Autorregula sus emociones", "Reflexiona y argumenta éticamente", "Vive su sexualidad de manera integral y responsable"] },
+                        { "nombre": "Convive y participa democráticamente en la búsqueda del bien común", "capacidades": ["Interactúa con todas las personas", "Construye y asume acuerdos y normas", "Maneja conflictos de manera constructiva", "Delibera sobre asuntos públicos", "Participa en acciones que promueven el bienestar común"] }
+                    ]
+                },
+                "comunicacion": {
+                    "nombre": "Comunicación",
+                    "competencias": [
+                        { "nombre": "Se comunica oralmente en su lengua materna", "capacidades": ["Obtiene información del texto oral", "Infiere e interpreta información del texto oral", "Adecúa, organiza y desarrolla las ideas", "Utiliza recursos no verbales y paraverbales", "Interactúa estratégicamente con distintos interlocutores", "Reflexiona y evalúa la forma, el contenido y el contexto"] },
+                        { "nombre": "Lee diversos tipos de textos en su lengua materna", "capacidades": ["Obtiene información del texto escrito", "Infiere e interpreta información del texto", "Reflexiona y evalúa la forma, el contenido y el contexto"] },
+                        { "nombre": "Escribe diversos tipos de textos en su lengua materna", "capacidades": ["Adecúa el texto a la situación comunicativa", "Organiza y desarrolla las ideas", "Utiliza convenciones del lenguaje escrito", "Reflexiona y evalúa la forma, el contenido y el contexto"] }
+                    ]
+                },
+                "cienciasSociales": {
+                    "nombre": "Ciencias Sociales",
+                    "competencias": [
+                        { "nombre": "Construye interpretaciones históricas", "capacidades": ["Interpreta críticamente fuentes diversas", "Comprende el tiempo histórico", "Elabora explicaciones sobre procesos históricos"] },
+                        { "nombre": "Gestiona responsablemente el espacio y el ambiente", "capacidades": ["Comprende las relaciones entre elementos naturales y sociales", "Maneja fuentes de información", "Genera acciones para conservar el ambiente"] },
+                        { "nombre": "Gestiona responsablemente los recursos económicos", "capacidades": ["Comprende el sistema económico y financiero", "Toma decisiones económicas y financieras"] }
+                    ]
+                },
+                "matematica": {
+                    "nombre": "Matemática",
+                    "competencias": [
+                        { "nombre": "Resuelve problemas de cantidad", "capacidades": ["Traduce cantidades a expresiones numéricas", "Comunica su comprensión sobre los números", "Usa estrategias y procedimientos", "Argumenta afirmaciones"] },
+                        { "nombre": "Resuelve problemas de regularidad, equivalencia y cambio", "capacidades": ["Traduce datos a expresiones algebraicas", "Comunica su comprensión", "Usa estrategias", "Argumenta afirmaciones"] },
+                        { "nombre": "Resuelve problemas de forma, movimiento y localización", "capacidades": ["Modela objetos con formas geométricas", "Comunica su comprensión", "Usa estrategias", "Argumenta afirmaciones"] },
+                        { "nombre": "Resuelve problemas de gestión de datos e incertidumbre", "capacidades": ["Representa datos con gráficos", "Comunica su comprensión", "Usa estrategias", "Sustenta conclusiones"] }
+                    ]
+                },
+                "cienciaYTecnologia": {
+                    "nombre": "Ciencia y Tecnología",
+                    "competencias": [
+                        { "nombre": "Indaga mediante métodos científicos", "capacidades": ["Problematiza situaciones", "Diseña estrategias", "Genera y registra datos", "Analiza datos e información", "Evalúa y comunica el proceso"] },
+                        { "nombre": "Explica el mundo físico", "capacidades": ["Comprende y usa conocimientos", "Evalúa las implicancias del saber"] },
+                        { "nombre": "Diseña y construye soluciones tecnológicas", "capacidades": ["Determina una alternativa", "Diseña la solución", "Implementa y valida", "Evalúa y comunica"] }
+                    ]
+                },
+                "educacionParaElTrabajo": {
+                    "nombre": "Educación para el Trabajo",
+                    "competencias": [
+                        { "nombre": "Gestiona proyectos de emprendimiento económico o social", "capacidades": ["Crea propuestas de valor", "Aplica habilidades técnicas", "Trabaja cooperativamente para lograr objetivos", "Evalúa los resultados del proyecto"] }
+                    ]
+                },
+                "arteYCultura": {
+                    "nombre": "Arte y Cultura",
+                    "competencias": [
+                        { "nombre": "Crea proyectos desde los lenguajes artísticos", "capacidades": ["Explora y experimenta los lenguajes del arte", "Aplica procesos creativos", "Evalúa y comunica sus procesos"] },
+                        { "nombre": "Aprecia de manera crítica manifestaciones artístico-culturales", "capacidades": ["Percibe manifestaciones", "Contextualiza manifestaciones", "Reflexiona creativa y críticamente"] }
+                    ]
+                },
+                "educacionFisica": {
+                    "nombre": "Educación Física",
+                    "competencias": [
+                        { "nombre": "Se desenvuelve de manera autónoma a través de su motricidad", "capacidades": ["Comprende su cuerpo", "Se expresa corporalmente"] },
+                        { "nombre": "Asume una vida saludable", "capacidades": ["Comprende relaciones entre actividad física y salud", "Incorpora prácticas que mejoran su calidad de vida"] },
+                        { "nombre": "Interactúa a través de sus habilidades sociomotrices", "capacidades": ["Se relaciona utilizando sus habilidades", "Crea y aplica estrategias y tácticas de juego"] }
+                    ]
+                },
+                "religion": {
+                    "nombre": "Religión",
+                    "competencias": [
+                        { "nombre": "Construye su identidad como persona humana, amada por Dios", "capacidades": ["Conoce a Dios y la doctrina", "Cultiva su dimensión espiritual y religiosa"] },
+                        { "nombre": "Asume la experiencia del encuentro personal y comunitario con Dios", "capacidades": ["Transforma su entorno desde el encuentro con Dios", "Actúa coherentemente en razón de su fe"] }
+                    ]
+                },
+                "ingles": {
+                    "nombre": "Inglés",
+                    "competencias": [
+                        { "nombre": "Se comunica oralmente en inglés como lengua extranjera", "capacidades": ["Obtiene información del texto oral", "Infiere e interpreta información del texto oral", "Adecúa, organiza y desarrolla las ideas", "Utiliza recursos no verbales y paraverbales", "Interactúa estratégicamente con distintos interlocutores", "Reflexiona y evalúa la forma, el contenido y el contexto"] },
+                        { "nombre": "Lee diversos tipos de textos en inglés como lengua extranjera", "capacidades": ["Obtiene información del texto escrito", "Infiere e interpreta información del texto", "Reflexiona y evalúa la forma, el contenido y el contexto"] },
+                        { "nombre": "Escribe diversos tipos de textos en inglés como lengua extranjera", "capacidades": ["Adecúa el texto a la situación comunicativa", "Organiza y desarrolla las ideas", "Utiliza convenciones del lenguaje escrito", "Reflexiona y evalúa la forma, el contenido y el contexto"] }
+                    ]
+                }
+            }
+        }
     };
 
     const enfoquesData = [
@@ -414,7 +709,11 @@
                 cicloSelect.innerHTML += `<option value="${cKey}" data-estandar="${cVal.estandar}">${cVal.nombre}</option>`;
             }
             cicloSelect.disabled = false;
-        } else { cicloSelect.disabled = true; gradoSelect.disabled = true; areaSelect.disabled = true; }
+        } else {
+            cicloSelect.disabled = true;
+            gradoSelect.disabled = true;
+            areaSelect.disabled = true;
+        }
     });
 
     // Al cambiar ciclo
@@ -430,7 +729,10 @@
                 gradoSelect.innerHTML += `<option value="${gKey}">${gVal}</option>`;
             }
             gradoSelect.disabled = false;
-        } else { gradoSelect.disabled = true; areaSelect.disabled = true; }
+        } else {
+            gradoSelect.disabled = true;
+            areaSelect.disabled = true;
+        }
     });
 
     // Al cambiar grado
@@ -444,7 +746,9 @@
                 areaSelect.innerHTML += `<option value="${aKey}">${aVal.nombre}</option>`;
             }
             areaSelect.disabled = false;
-        } else { areaSelect.disabled = true; }
+        } else {
+            areaSelect.disabled = true;
+        }
     });
 
     // Al cambiar área
@@ -479,7 +783,9 @@
         const todasCapacidades = [];
         selectedComps.forEach(cb => {
             const capacidades = JSON.parse(cb.dataset.capacidades || '[]');
-            capacidades.forEach(cap => { if (!todasCapacidades.includes(cap)) todasCapacidades.push(cap); });
+            capacidades.forEach(cap => {
+                if (!todasCapacidades.includes(cap)) todasCapacidades.push(cap);
+            });
         });
         todasCapacidades.forEach((cap, idx) => {
             const div = document.createElement('div');
@@ -623,12 +929,66 @@ GENERA AHORA EL HTML COMPLETO.`;
         showStatus("✅ Prompt de ingeniería generado", "success");
     });
 
-    function copyPrompt() { promptArea.select(); document.execCommand('copy'); showStatus("✅ Prompt copiado", "success"); }
-    function exportPrompt() { const blob = new Blob([promptArea.value], {type:'text/plain'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`prompt_${Date.now()}.txt`; link.click(); showStatus("✅ Prompt exportado","success"); }
-    function previewHTML() { const html=iaHtmlInput.value; if(!html.trim()){showStatus("❌ Pegue HTML primero","error");return;} previewArea.style.display='block'; previewArea.innerHTML=`<iframe srcdoc="${escapeHtml(html)}" style="width:100%; min-height:350px; border:none;"></iframe>`; showStatus("✅ Vista previa","success"); }
-    function downloadWord() { const html=iaHtmlInput.value; if(!html.trim()){showStatus("❌ Pegue HTML primero","error");return;} let titulo="Sesion_Aprendizaje"; const match=html.match(/<h1[^>]*>([^<]+)<\/h1>/i); if(match) titulo=match[1].replace(/[^a-z0-9]/gi,'_').substring(0,50); const fullHtml=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:'Times New Roman',Arial,sans-serif;margin:40px;}table{border-collapse:collapse;width:100%;margin:15px 0;}th,td{border:1px solid #000;padding:8px;}th{background:#d4af37;color:#000;}h1,h2,h3{color:#d4af37;}</style></head><body>${html}</body></html>`; const blob=new Blob([fullHtml],{type:'application/msword'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`${titulo}.doc`; link.click(); showStatus("✅ Word descargado","success"); }
-    function showStatus(msg,type){ statusMsg.textContent=msg; statusMsg.className=`status status-${type}`; statusMsg.style.display='block'; setTimeout(()=>{statusMsg.style.display='none';},4000); }
-    function escapeHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+    function copyPrompt() {
+        promptArea.select();
+        document.execCommand('copy');
+        showStatus("✅ Prompt copiado", "success");
+    }
+
+    function exportPrompt() {
+        const blob = new Blob([promptArea.value], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `prompt_${Date.now()}.txt`;
+        link.click();
+        showStatus("✅ Prompt exportado", "success");
+    }
+
+    function previewHTML() {
+        const html = iaHtmlInput.value;
+        if (!html.trim()) {
+            showStatus("❌ Pegue HTML primero", "error");
+            return;
+        }
+        previewArea.style.display = 'block';
+        previewArea.innerHTML = `<iframe srcdoc="${escapeHtml(html)}" style="width:100%; min-height:350px; border:none;"></iframe>`;
+        showStatus("✅ Vista previa", "success");
+    }
+
+    function downloadWord() {
+        const html = iaHtmlInput.value;
+        if (!html.trim()) {
+            showStatus("❌ Pegue HTML primero", "error");
+            return;
+        }
+        let titulo = "Sesion_Aprendizaje";
+        const match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
+        if (match) titulo = match[1].replace(/[^a-z0-9]/gi, '_').substring(0, 50);
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:'Times New Roman',Arial,sans-serif;margin:40px;}table{border-collapse:collapse;width:100%;margin:15px 0;}th,td{border:1px solid #000;padding:8px;}th{background:#d4af37;color:#000;}h1,h2,h3{color:#d4af37;}</style></head><body>${html}</body></html>`;
+        const blob = new Blob([fullHtml], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${titulo}.doc`;
+        link.click();
+        showStatus("✅ Word descargado", "success");
+    }
+
+    function showStatus(msg, type) {
+        statusMsg.textContent = msg;
+        statusMsg.className = `status status-${type}`;
+        statusMsg.style.display = 'block';
+        setTimeout(() => {
+            statusMsg.style.display = 'none';
+        }, 4000);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;')
+                  .replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/'/g, '&#39;');
+    }
 
     copyPromptBtn.addEventListener('click', copyPrompt);
     exportPromptBtn.addEventListener('click', exportPrompt);
@@ -646,7 +1006,9 @@ GENERA AHORA EL HTML COMPLETO.`;
             populateEnfoques();
         } else {
             document.getElementById('loginError').style.display = 'block';
-            setTimeout(() => { document.getElementById('loginError').style.display = 'none'; }, 3000);
+            setTimeout(() => {
+                document.getElementById('loginError').style.display = 'none';
+            }, 3000);
         }
     });
 
@@ -654,8 +1016,13 @@ GENERA AHORA EL HTML COMPLETO.`;
     let isDark = true;
     document.getElementById('themeToggle').addEventListener('click', () => {
         isDark = !isDark;
-        if (isDark) { document.body.classList.remove('light'); document.getElementById('themeToggle').textContent = '🌙 Tema Oscuro'; }
-        else { document.body.classList.add('light'); document.getElementById('themeToggle').textContent = '☀️ Tema Claro'; }
+        if (isDark) {
+            document.body.classList.remove('light');
+            document.getElementById('themeToggle').textContent = '🌙 Tema Oscuro';
+        } else {
+            document.body.classList.add('light');
+            document.getElementById('themeToggle').textContent = '☀️ Tema Claro';
+        }
     });
 </script>
 </body>
