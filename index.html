@@ -860,7 +860,7 @@
 
         const enfoquesText = enfoquesSeleccionados.map(e => `- **${e.nombre}**: ${e.valores} (${e.actitudes})`).join('\n');
 
-        const prompt = `💎 PUNKU OPEN - SESIÓN DE APRENDIZAJE CNEB 2026
+const prompt = `💎 PUNKU OPEN - SESIÓN DE APRENDIZAJE CNEB 2026
 ROL: Especialista Senior en Currículo Nacional del Perú.
 
 INSTRUCCIÓN EXPRESA:
@@ -904,8 +904,9 @@ ${recursos}
 CRITERIOS DE EVALUACIÓN:
 ${criterios}
 
-ESTRUCTURA OBLIGATORIA DEL HTML (8 SECCIONES):
+ESTRUCTURA OBLIGATORIA DEL HTML (9 SECCIONES):
 1. TÍTULO PRINCIPAL: "${titulo}" y mención de la Unidad de Aprendizaje
+1.5. PROPÓSITO DE LA SESIÓN (tabla: "Propósito de la Sesión" | "${proposito}" y "Evidencia / Producto" | "${evidencia}")
 2. I. DATOS INFORMATIVOS (tabla: Indicador | Descripción - incluir UGEL, IE, Nivel, Ciclo, Grado, Área, Docente, Unidad, N° Sesión, Fecha, Duración)
 3. II. PROPÓSITOS DE APRENDIZAJE (tabla: Competencia | Capacidades | Desempeños | Criterios de Evaluación | Evidencia)
 4. III. ENFOQUES TRANSVERSALES (tabla: Enfoque | Valores | Actitudes Observables)
@@ -925,9 +926,8 @@ CRITERIOS DE CALIDAD OBLIGATORIOS:
 
 GENERA AHORA EL HTML COMPLETO.`;
 
-        promptArea.value = prompt;
-        showStatus("✅ Prompt de ingeniería generado", "success");
-    });
+promptArea.value = prompt;
+showStatus("✅ Prompt de ingeniería generado", "success");
 
     function copyPrompt() {
         promptArea.select();
