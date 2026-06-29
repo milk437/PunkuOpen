@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Punku Open | Generador de Sesiones de Aprendizaje CNEB</title>
+    <title>Punku Open | Generador de Sesiones de Aprendizaje</title>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        :root {
+            --dorado: #d4af37;
+            --dorado-oscuro: #b8960f;
+            --verde-pro: #1b5e3b;
+            --verde-claro: #2e7d52;
+            --rojo: #a71d2a;
+            --rojo-claro: #c0392b;
+            --blanco: #ffffff;
+            --negro: #1a1a1a;
+            --gris-fondo: #f5f5f5;
+            --gris-borde: #dddddd;
         }
 
         body {
@@ -255,15 +269,15 @@
         }
 
         .status-success {
-            background: rgba(0, 200, 83, 0.2);
-            border: 1px solid #00c853;
-            color: #00c853;
+            background: rgba(27, 94, 59, 0.2);
+            border: 1px solid #1b5e3b;
+            color: #1b5e3b;
         }
 
         .status-error {
-            background: rgba(255, 59, 48, 0.2);
-            border: 1px solid #ff3b30;
-            color: #ff3b30;
+            background: rgba(167, 29, 42, 0.2);
+            border: 1px solid #a71d2a;
+            color: #a71d2a;
         }
 
         .checkbox-container {
@@ -337,6 +351,209 @@
             color: #666;
             font-size: 0.7em;
             margin-top: 20px;
+        }
+
+        /* ==================== ESTILOS DEL DOCUMENTO GENERADO POR LA IA ==================== */
+        .sesion-aprendizaje {
+            background: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+            font-size: 12pt;
+            line-height: 1.15;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px 35px;
+            border-top: 5px solid #d4af37;
+            border-bottom: 5px solid #d4af37;
+        }
+
+        /* TÍTULOS - DORADO CENTRADOS */
+        .sesion-aprendizaje h1 {
+            color: #d4af37;
+            font-family: 'Arial', sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.5px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #d4af37;
+            line-height: 1.15;
+        }
+
+        /* SUBTÍTULOS - ROJO */
+        .sesion-aprendizaje h2 {
+            color: #a71d2a;
+            font-family: 'Arial', sans-serif;
+            font-size: 14pt;
+            font-weight: 700;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+            line-height: 1.15;
+        }
+
+        .sesion-aprendizaje h3 {
+            color: #a71d2a;
+            font-family: 'Arial', sans-serif;
+            font-size: 12pt;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 10px;
+            line-height: 1.15;
+        }
+
+        /* PÁRRAFOS JUSTIFICADOS */
+        .sesion-aprendizaje p {
+            font-family: 'Arial', sans-serif;
+            font-size: 12pt;
+            line-height: 1.15;
+            text-align: justify;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        /* TABLAS PROFESIONALES CENTRADAS */
+        .sesion-aprendizaje table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px auto;
+            font-family: 'Arial', sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.15;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        /* ENCABEZADOS VERDE ELEGANTE CON LETRA BLANCA */
+        .sesion-aprendizaje th {
+            background-color: #1b5e3b;
+            color: #ffffff !important;
+            font-family: 'Arial', sans-serif;
+            font-weight: 700;
+            font-size: 10pt;
+            text-align: center;
+            padding: 10px 10px;
+            letter-spacing: 0.3px;
+            border: 1px solid #164a2f;
+            line-height: 1.15;
+        }
+
+        /* CELDAS */
+        .sesion-aprendizaje td {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+            padding: 9px 10px;
+            border: 1px solid #cccccc;
+            vertical-align: top;
+            font-size: 10.5pt;
+            line-height: 1.15;
+        }
+
+        /* FILAS ALTERNADAS SUAVES */
+        .sesion-aprendizaje tr:nth-child(even) td {
+            background-color: #fafaf8;
+        }
+
+        /* PRIMERA COLUMNA EN NEGRITA */
+        .sesion-aprendizaje td:first-child {
+            font-weight: 600;
+            color: #111111;
+            background-color: #fdfdfb;
+        }
+
+        /* INDICADORES DE AUTOEVALUACIÓN */
+        .sesion-aprendizaje .logrado {
+            color: #1b5e3b;
+            font-weight: 700;
+            padding: 3px 8px;
+            background: #e8f5e9;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .sesion-aprendizaje .en-proceso {
+            color: #b8860b;
+            font-weight: 700;
+            padding: 3px 8px;
+            background: #fff8e1;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .sesion-aprendizaje .necesita-mejorar {
+            color: #a71d2a;
+            font-weight: 700;
+            padding: 3px 8px;
+            background: #ffebee;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        /* MOMENTOS PEDAGÓGICOS */
+        .sesion-aprendizaje .inicio {
+            background: #f0f7f3;
+            border-left: 4px solid #1b5e3b;
+            padding: 12px 14px;
+            margin: 10px 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .sesion-aprendizaje .desarrollo {
+            background: #fffdf7;
+            border-left: 4px solid #d4af37;
+            padding: 12px 14px;
+            margin: 10px 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .sesion-aprendizaje .cierre {
+            background: #fef7f7;
+            border-left: 4px solid #a71d2a;
+            padding: 12px 14px;
+            margin: 10px 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        /* METACOGNICIÓN */
+        .sesion-aprendizaje .metacognicion {
+            background: #fafafa;
+            border: 1px dashed #cccccc;
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        /* FIRMA DOCENTE */
+        .sesion-aprendizaje .firma-docente {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 15px;
+            border-top: 1px solid #d4af37;
+            font-size: 10pt;
+            color: #555555;
+        }
+
+        /* IMPRESIÓN */
+        @media print {
+            .sesion-aprendizaje {
+                box-shadow: none;
+                border: none;
+                padding: 15px;
+            }
+            .sesion-aprendizaje th {
+                background-color: #1b5e3b !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .sesion-aprendizaje tr:nth-child(even) td {
+                background-color: #fafaf8 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
 
         @media (max-width: 1000px) {
@@ -413,7 +630,9 @@
             <div class="form-row-full"><textarea id="recursos" rows="3" placeholder="Ej: PPT, PC, multimedia, plumones, cuaderno, fichas"></textarea></div>
 
             <h3>📝 VI. CRITERIOS DE EVALUACIÓN</h3>
-            <div class="form-row-full"><textarea id="criterios" rows="4" placeholder="Ej: - Integra información explícita\n- Explica el tema y propósito\n- Opina sobre el contenido"></textarea></div>
+            <div class="form-row-full"><textarea id="criterios" rows="4" placeholder="Ej: - Integra información explícita
+- Explica el tema y propósito
+- Opina sobre el contenido"></textarea></div>
 
             <button id="generateBtn" class="btn-gold">🔮 GENERAR PROMPT DE INGENIERÍA</button>
         </div>
@@ -431,7 +650,7 @@
             <textarea id="iaHtmlInput" rows="6" placeholder="Pegue aquí el HTML que le devolvió la IA..."></textarea>
             <div class="btn-group">
                 <button id="previewBtn" class="btn-gold btn-outline">🖥️ VISTA PREVIA</button>
-                <button id="downloadWordBtn" class="btn-gold">📥 EXPORTAR A WORD</button>
+                <button id="downloadWordBtn" class="btn-gold">📥 EXPORTAR A WORD (DOCX)</button>
             </div>
             <div id="previewArea" class="result-area"></div>
             <div id="statusMsg" class="status"></div>
@@ -719,22 +938,254 @@ function previewHTML() {
     showStatus('✅ Vista previa generada', 'success');
 }
 
+// ==================== FUNCIÓN PRINCIPAL: DESCARGAR DOCX PROFESIONAL ====================
 function downloadWord() {
     var html = iaHtmlInput.value;
     if (!html.trim()) {
         showStatus('❌ Pegue HTML primero', 'error');
         return;
     }
-    var titulo = 'Sesion_Aprendizaje';
+
+    // Extraer título del HTML
+    var titulo = 'Sesion_Aprendizaje_CNEB';
     var match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-    if (match) titulo = match[1].replace(/[^a-z0-9]/gi, '_').substring(0, 50);
-    var fullHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + titulo + '</title><style>body{font-family:"Times New Roman",Arial,sans-serif;margin:40px;}table{border-collapse:collapse;width:100%;margin:15px 0;}th,td{border:1px solid #000;padding:8px;}th{background:#d4af37;color:#000;}h1,h2,h3{color:#d4af37;}</style></head><body>' + html + '</body></html>';
-    var blob = new Blob([fullHtml], { type: 'application/msword' });
-    var link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = titulo + '.doc';
-    link.click();
-    showStatus('✅ Word descargado', 'success');
+    if (match) titulo = match[1].replace(/[^a-z0-9áéíóúñ\s]/gi, '').trim().replace(/\s+/g, '_').substring(0, 60);
+
+    try {
+        // ============ CREAR DOCUMENTO DOCX PROFESIONAL ============
+        const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, 
+                WidthType, AlignmentType, BorderStyle, ShadingType, HeadingLevel,
+                TabStopPosition, TabStopType, convertInchesToTwip } = docx;
+
+        // ============ EXTRAER DATOS DE LAS TABLAS DEL HTML ============
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        var children = [];
+        
+        // TÍTULO PRINCIPAL - DORADO CENTRADO
+        var h1 = tempDiv.querySelector('h1');
+        if (h1) {
+            children.push(new Paragraph({
+                children: [
+                    new TextRun({
+                        text: h1.textContent.trim(),
+                        bold: true,
+                        color: "d4af37",
+                        size: 36,
+                        font: "Arial"
+                    })
+                ],
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 300, line: 276 },
+                border: {
+                    bottom: { color: "d4af37", space: 8, style: BorderStyle.SINGLE, size: 4 }
+                }
+            }));
+        }
+
+        // SUBTÍTULOS (h2) - ROJO
+        var h2s = tempDiv.querySelectorAll('h2');
+        h2s.forEach(function(h2) {
+            children.push(new Paragraph({
+                children: [
+                    new TextRun({
+                        text: h2.textContent.trim(),
+                        bold: true,
+                        color: "a71d2a",
+                        size: 28,
+                        font: "Arial"
+                    })
+                ],
+                spacing: { before: 280, after: 160, line: 276 },
+                border: {
+                    bottom: { color: "e0e0e0", space: 4, style: BorderStyle.SINGLE, size: 1 }
+                }
+            }));
+        });
+
+        // SUBTÍTULOS (h3) - ROJO
+        var h3s = tempDiv.querySelectorAll('h3');
+        h3s.forEach(function(h3) {
+            children.push(new Paragraph({
+                children: [
+                    new TextRun({
+                        text: h3.textContent.trim(),
+                        bold: true,
+                        color: "a71d2a",
+                        size: 24,
+                        font: "Arial"
+                    })
+                ],
+                spacing: { before: 200, after: 120, line: 276 }
+            }));
+        });
+
+        // PROCESAR TABLAS - CENTRADAS, ANCHO COMPLETO
+        var tables = tempDiv.querySelectorAll('table');
+        tables.forEach(function(htmlTable, index) {
+            var rows = htmlTable.querySelectorAll('tr');
+            var tableRows = [];
+            
+            rows.forEach(function(row, rowIndex) {
+                var cells = row.querySelectorAll('th, td');
+                var tableCells = [];
+                
+                cells.forEach(function(cell) {
+                    var isHeader = cell.tagName === 'TH';
+                    var cellChildren = [];
+                    
+                    // Procesar contenido de la celda (texto, strong, etc.)
+                    function extractText(el) {
+                        var result = [];
+                        el.childNodes.forEach(function(node) {
+                            if (node.nodeType === 3) { // Texto
+                                result.push(new TextRun({ 
+                                    text: node.textContent,
+                                    bold: isHeader,
+                                    color: isHeader ? "ffffff" : "1a1a1a",
+                                    size: 21,
+                                    font: "Arial"
+                                }));
+                            } else if (node.nodeName === 'STRONG' || node.nodeName === 'B') {
+                                result.push(new TextRun({ 
+                                    text: node.textContent,
+                                    bold: true,
+                                    color: isHeader ? "ffffff" : "111111",
+                                    size: 21,
+                                    font: "Arial"
+                                }));
+                            } else if (node.nodeType === 1) { // Otro elemento
+                                result = result.concat(extractText(node));
+                            }
+                        });
+                        return result;
+                    }
+                    
+                    cellChildren = extractText(cell);
+                    if (cellChildren.length === 0 && cell.textContent.trim()) {
+                        cellChildren = [new TextRun({ 
+                            text: cell.textContent.trim(),
+                            bold: isHeader,
+                            color: isHeader ? "ffffff" : "1a1a1a",
+                            size: 21,
+                            font: "Arial"
+                        })];
+                    }
+                    
+                    tableCells.push(new TableCell({
+                        children: [new Paragraph({
+                            children: cellChildren,
+                            alignment: AlignmentType.LEFT,
+                            spacing: { line: 276 }
+                        })],
+                        shading: isHeader ? {
+                            type: ShadingType.SOLID,
+                            color: "1b5e3b"
+                        } : (rowIndex % 2 === 0 ? {
+                            type: ShadingType.SOLID,
+                            color: "ffffff"
+                        } : {
+                            type: ShadingType.SOLID,
+                            color: "fafaf8"
+                        }),
+                        width: { size: 100 / cells.length, type: WidthType.PERCENTAGE }
+                    }));
+                });
+                
+                tableRows.push(new TableRow({
+                    children: tableCells
+                }));
+            });
+            
+            children.push(new Table({
+                rows: tableRows,
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                alignment: AlignmentType.CENTER,
+                borders: {
+                    top: { color: "cccccc", style: BorderStyle.SINGLE, size: 1 },
+                    bottom: { color: "cccccc", style: BorderStyle.SINGLE, size: 1 },
+                    left: { color: "cccccc", style: BorderStyle.SINGLE, size: 1 },
+                    right: { color: "cccccc", style: BorderStyle.SINGLE, size: 1 },
+                    insideHorizontal: { color: "cccccc", style: BorderStyle.SINGLE, size: 1 },
+                    insideVertical: { color: "cccccc", style: BorderStyle.SINGLE, size: 1 }
+                }
+            }));
+            
+            children.push(new Paragraph({ spacing: { after: 160 } }));
+        });
+
+        // PROCESAR PÁRRAFOS FUERA DE TABLAS - JUSTIFICADOS
+        var allElements = tempDiv.querySelectorAll('body > *');
+        allElements.forEach(function(el) {
+            if (el.tagName === 'P' || el.tagName === 'DIV') {
+                var text = el.textContent.trim();
+                if (text && !el.closest('table') && el.className !== 'sesion-aprendizaje') {
+                    children.push(new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: text,
+                                color: "1a1a1a",
+                                size: 24,
+                                font: "Arial"
+                            })
+                        ],
+                        alignment: AlignmentType.JUSTIFIED,
+                        spacing: { after: 120, line: 276 }
+                    }));
+                }
+            }
+        });
+
+        // CREAR Y DESCARGAR EL DOCX
+        var doc = new Document({
+            styles: {
+                default: {
+                    document: {
+                        run: { 
+                            font: "Arial", 
+                            size: 24
+                        },
+                        paragraph: {
+                            spacing: { line: 276 }
+                        }
+                    }
+                }
+            },
+            sections: [{
+                properties: {
+                    page: {
+                        margin: {
+                            top: convertInchesToTwip(0.8),
+                            right: convertInchesToTwip(0.8),
+                            bottom: convertInchesToTwip(0.8),
+                            left: convertInchesToTwip(1)
+                        },
+                        size: {
+                            width: convertInchesToTwip(8.27),
+                            height: convertInchesToTwip(11.69)
+                        }
+                    }
+                },
+                children: children
+            }]
+        });
+
+        Packer.toBlob(doc).then(function(blob) {
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = titulo + '.docx';
+            link.click();
+            showStatus('✅ DOCX profesional generado - Listo para imprimir', 'success');
+        }).catch(function(err) {
+            console.error('Error generando DOCX:', err);
+            showStatus('❌ Error al generar DOCX. Verifique que el HTML sea válido.', 'error');
+        });
+
+    } catch (error) {
+        console.error('Error en descarga DOCX:', error);
+        showStatus('❌ Error: ' + error.message, 'error');
+    }
 }
 
 // ==================== FUNCIONES DE POBLADO ====================
@@ -950,7 +1401,7 @@ generateBtn.addEventListener('click', function() {
     prompt += 'INSTRUCCIÓN EXPRESA:\n';
     prompt += '- Genera EXCLUSIVAMENTE el contenido de la sesión de aprendizaje en formato HTML.\n';
     prompt += '- El HTML debe iniciar con <div class="sesion-aprendizaje"> y terminar con </div>.\n';
-    prompt += '- Incluye CSS interno elegante (colores: blanco, negro, gris, dorado #d4af37).\n';
+    prompt += '- Incluye CSS interno elegante (colores: blanco, verde, rojo, dorado #d4af37).\n';
     prompt += '- NO incluyas introducciones, comentarios, preámbulos ni despedidas.\n\n';
     prompt += 'DATOS INSTITUCIONALES:\n';
     prompt += '- UGEL: ' + ugel + '\n';
@@ -1007,7 +1458,7 @@ downloadWordBtn.addEventListener('click', downloadWord);
 document.getElementById('loginBtn').addEventListener('click', function() {
     var user = document.getElementById('loginUser').value.trim();
     var pin = document.getElementById('loginPin').value.trim();
-    if (user === 'admin' && pin === '1234') {
+    if (user === 'PunkuOpen' && pin === '41871468') {
         document.getElementById('loginContainer').style.display = 'none';
         document.getElementById('appContainer').style.display = 'block';
         populateNiveles();
